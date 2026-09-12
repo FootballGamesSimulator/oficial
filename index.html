@@ -1,1015 +1,983 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>⚽ FOOTBALL GAMES Simulator</title>
 
-    <style>
+<style>
 
-        /* =================================
-           CONFIGURACIÓN GENERAL
-        ================================= */
+    /* =====================================================
+       CONFIGURACIÓN GENERAL
+    ===================================================== */
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #050708;
+        color: white;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+
+    /* =====================================================
+       FONDO
+    ===================================================== */
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+
+        background:
+            linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.30),
+                rgba(0, 0, 0, 0.65),
+                rgba(3, 5, 7, 0.98)
+            ),
+            url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2400&q=90")
+            center center / cover no-repeat;
+    }
+
+    body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+
+        background:
+            radial-gradient(
+                circle at 50% 20%,
+                rgba(255,255,255,0.10),
+                transparent 38%
+            );
+    }
+
+
+    /* =====================================================
+       NAVBAR
+    ===================================================== */
+
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 75px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 6%;
+
+        background: rgba(3, 5, 7, 0.78);
+        backdrop-filter: blur(15px);
+
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+
+        z-index: 100;
+    }
+
+    .logo {
+        font-size: 21px;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+    }
+
+    .logo span {
+        color: #42ff88;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 30px;
+    }
+
+    .nav-links a {
+        color: #d5d5d5;
+        text-decoration: none;
+
+        font-size: 14px;
+        font-weight: 700;
+
+        transition: 0.25s;
+    }
+
+    .nav-links a:hover {
+        color: #42ff88;
+    }
+
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+
+    .hero {
+        min-height: 620px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+
+        padding: 130px 20px 80px;
+    }
+
+    .hero-content {
+        max-width: 950px;
+    }
+
+    .small-title {
+        display: inline-block;
+
+        padding: 8px 17px;
+        margin-bottom: 22px;
+
+        border-radius: 30px;
+
+        background: rgba(66,255,136,0.08);
+        border: 1px solid rgba(66,255,136,0.35);
+
+        color: #42ff88;
+
+        font-size: 11px;
+        font-weight: 900;
+
+        letter-spacing: 2px;
+    }
+
+    .hero h1 {
+        font-size: clamp(50px, 8vw, 95px);
+
+        line-height: 0.95;
+
+        font-weight: 950;
+
+        letter-spacing: -4px;
+
+        text-shadow:
+            0 8px 40px rgba(0,0,0,0.8);
+    }
+
+    .hero h1 .green {
+        color: #42ff88;
+    }
+
+    .hero-description {
+        max-width: 720px;
+
+        margin: 30px auto 0;
+
+        color: #d0d0d0;
+
+        font-size: 18px;
+
+        line-height: 1.7;
+    }
+
+
+    /* =====================================================
+       BOTÓN PRINCIPAL
+    ===================================================== */
+
+    .main-button {
+        display: inline-block;
+
+        margin-top: 35px;
+
+        padding: 15px 28px;
+
+        border-radius: 8px;
+
+        background: #42ff88;
+
+        color: #061009;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 900;
+
+        transition: 0.3s;
+
+        box-shadow:
+            0 10px 35px rgba(66,255,136,0.18);
+    }
+
+    .main-button:hover {
+        transform: translateY(-4px);
+
+        box-shadow:
+            0 15px 45px rgba(66,255,136,0.35);
+    }
+
+
+    /* =====================================================
+       SECCIÓN DE JUEGOS
+    ===================================================== */
+
+    .games-section {
+        max-width: 1250px;
+
+        margin: auto;
+
+        padding: 70px 25px 120px;
+    }
+
+    .section-title {
+        text-align: center;
+
+        margin-bottom: 45px;
+    }
+
+    .section-title h2 {
+        font-size: 40px;
+
+        font-weight: 900;
+
+        letter-spacing: -1px;
+    }
+
+    .section-title p {
+        margin-top: 10px;
+
+        color: #999;
+
+        font-size: 15px;
+    }
+
+
+    /* =====================================================
+       CUADRÍCULA
+    ===================================================== */
+
+    .games-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 22px;
+    }
+
+
+    /* =====================================================
+       TARJETAS
+    ===================================================== */
+
+    .game-card {
+        position: relative;
+
+        min-height: 285px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: flex-end;
+
+        padding: 28px;
+
+        overflow: hidden;
+
+        border-radius: 17px;
+
+        background:
+            linear-gradient(
+                180deg,
+                rgba(18,21,25,0.50),
+                rgba(4,6,8,0.97)
+            );
+
+        border: 1px solid rgba(255,255,255,0.10);
+
+        box-shadow:
+            0 15px 45px rgba(0,0,0,0.30);
+
+        transition:
+            transform 0.3s,
+            border-color 0.3s,
+            box-shadow 0.3s;
+    }
+
+    .game-card::before {
+        content: "";
+
+        position: absolute;
+
+        width: 220px;
+        height: 220px;
+
+        top: -110px;
+        right: -70px;
+
+        border-radius: 50%;
+
+        background: rgba(66,255,136,0.12);
+
+        filter: blur(12px);
+
+        transition: 0.4s;
+    }
+
+    .game-card:hover {
+        transform: translateY(-8px);
+
+        border-color:
+            rgba(66,255,136,0.45);
+
+        box-shadow:
+            0 25px 60px rgba(0,0,0,0.45);
+    }
+
+    .game-card:hover::before {
+        transform: scale(1.4);
+    }
+
+
+    /* =====================================================
+       NÚMERO
+    ===================================================== */
+
+    .card-number {
+        position: absolute;
+
+        top: 17px;
+        right: 22px;
+
+        color:
+            rgba(255,255,255,0.13);
+
+        font-size: 48px;
+
+        font-weight: 900;
+    }
+
+
+    /* =====================================================
+       ETIQUETA
+    ===================================================== */
+
+    .card-tag {
+        position: relative;
+
+        width: fit-content;
+
+        padding: 6px 10px;
+
+        margin-bottom: 14px;
+
+        border-radius: 5px;
+
+        background:
+            rgba(66,255,136,0.10);
+
+        color: #42ff88;
+
+        font-size: 10px;
+
+        font-weight: 900;
+
+        letter-spacing: 1px;
+    }
+
+
+    /* =====================================================
+       TÍTULO
+    ===================================================== */
+
+    .game-card h3 {
+        position: relative;
+
+        font-size: 27px;
+
+        font-weight: 900;
+
+        margin-bottom: 10px;
+    }
+
+
+    /* =====================================================
+       DESCRIPCIÓN
+    ===================================================== */
+
+    .game-card p {
+        position: relative;
+
+        max-width: 390px;
+
+        color: #aaa;
+
+        font-size: 14px;
+
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       BOTÓN JUGAR
+    ===================================================== */
+
+    .play-button {
+        position: relative;
+
+        width: fit-content;
+
+        margin-top: 20px;
+
+        padding: 10px 17px;
+
+        border-radius: 7px;
+
+        background:
+            rgba(255,255,255,0.07);
+
+        border:
+            1px solid rgba(255,255,255,0.12);
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 12px;
+
+        font-weight: 900;
+
+        transition: 0.25s;
+    }
+
+    .play-button:hover {
+        background: #42ff88;
+
+        color: #061009;
+
+        border-color: #42ff88;
+    }
+
+
+    /* =====================================================
+       PRÓXIMAMENTE
+    ===================================================== */
+
+    .coming-soon {
+        opacity: 0.58;
+    }
+
+    .coming-soon:hover {
+        opacity: 0.85;
+    }
+
+    .coming-soon .card-tag {
+        background:
+            rgba(255,255,255,0.06);
+
+        color: #999;
+    }
+
+    .coming-soon p {
+        color: #777;
+    }
+
+    .soon-label {
+        position: relative;
+
+        width: fit-content;
+
+        margin-top: 20px;
+
+        padding: 9px 15px;
+
+        border-radius: 6px;
+
+        background:
+            rgba(255,255,255,0.05);
+
+        color: #777;
+
+        font-size: 10px;
+
+        font-weight: 900;
+
+        letter-spacing: 1px;
+    }
+
+
+    /* =====================================================
+       FOOTER / DERECHOS DE AUTOR
+    ===================================================== */
+
+    footer {
+        padding: 55px 20px 35px;
+
+        text-align: center;
+
+        background:
+            rgba(0,0,0,0.78);
+
+        border-top:
+            1px solid rgba(255,255,255,0.08);
+
+        color: #777;
+
+        font-size: 12px;
+    }
+
+    .footer-logo {
+        font-size: 16px;
+
+        margin-bottom: 12px;
+    }
+
+    .footer-logo strong {
+        color: #42ff88;
+    }
+
+    footer p {
+        color: #777;
+
+        margin-bottom: 25px;
+    }
+
+    .copyright {
+        color: #999;
+
+        font-size: 12px;
+
+        margin-bottom: 8px;
+    }
+
+    .created-by {
+        color: #666;
+
+        font-size: 11px;
+    }
+
+    .created-by strong {
+        color: #42ff88;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 900px) {
+
+        .games-grid {
+            grid-template-columns:
+                repeat(2, 1fr);
         }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #050708;
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-
-        /* =================================
-           FONDO DEL ESTADIO
-        ================================= */
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -3;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    rgba(0, 0, 0, 0.30),
-                    rgba(0, 0, 0, 0.65),
-                    rgba(3, 5, 7, 0.98)
-                ),
-                url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2400&q=90")
-                center center / cover no-repeat;
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-
-            background:
-                radial-gradient(
-                    circle at 50% 20%,
-                    rgba(255, 255, 255, 0.10),
-                    transparent 38%
-                );
-        }
-
-
-        /* =================================
-           BARRA SUPERIOR
-        ================================= */
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 75px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0 6%;
-
-            background: rgba(3, 5, 7, 0.78);
-            backdrop-filter: blur(15px);
-
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-            z-index: 100;
-        }
-
-
-        .logo {
-            font-size: 21px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-        }
-
-        .logo span {
-            color: #42ff88;
-        }
-
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            color: #d5d5d5;
-            text-decoration: none;
-
-            font-size: 14px;
-            font-weight: 700;
-
-            transition: 0.25s;
-        }
-
-        .nav-links a:hover {
-            color: #42ff88;
-        }
-
-
-        /* =================================
-           PORTADA / HERO
-        ================================= */
-
-        .hero {
-            min-height: 620px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            text-align: center;
-
-            padding: 130px 20px 80px;
-        }
-
-
-        .hero-content {
-            max-width: 950px;
-        }
-
-
-        .small-title {
-            display: inline-block;
-
-            padding: 8px 17px;
-            margin-bottom: 22px;
-
-            border-radius: 30px;
-
-            background: rgba(66, 255, 136, 0.08);
-            border: 1px solid rgba(66, 255, 136, 0.35);
-
-            color: #42ff88;
-
-            font-size: 11px;
-            font-weight: 900;
-
-            letter-spacing: 2px;
-        }
-
 
         .hero h1 {
-            font-size: clamp(50px, 8vw, 95px);
+            letter-spacing: -2px;
+        }
+    }
 
-            line-height: 0.95;
 
-            font-weight: 950;
+    @media (max-width: 600px) {
 
-            letter-spacing: -4px;
-
-            text-shadow:
-                0 8px 40px rgba(0, 0, 0, 0.8);
+        nav {
+            padding: 0 20px;
         }
 
-
-        .hero h1 .green {
-            color: #42ff88;
+        .nav-links {
+            display: none;
         }
 
+        .hero {
+            min-height: 550px;
+        }
 
         .hero-description {
-            max-width: 720px;
-
-            margin: 30px auto 0;
-
-            color: #d0d0d0;
-
-            font-size: 18px;
-
-            line-height: 1.7;
-        }
-
-
-        /* =================================
-           BOTÓN PRINCIPAL
-        ================================= */
-
-        .main-button {
-            display: inline-block;
-
-            margin-top: 35px;
-
-            padding: 15px 28px;
-
-            border-radius: 8px;
-
-            background: #42ff88;
-
-            color: #061009;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 900;
-
-            transition: 0.3s;
-
-            box-shadow:
-                0 10px 35px rgba(66, 255, 136, 0.18);
-        }
-
-
-        .main-button:hover {
-            transform: translateY(-4px);
-
-            box-shadow:
-                0 15px 45px rgba(66, 255, 136, 0.35);
-        }
-
-
-        /* =================================
-           SECCIÓN DE JUEGOS
-        ================================= */
-
-        .games-section {
-            max-width: 1250px;
-
-            margin: auto;
-
-            padding: 70px 25px 120px;
-        }
-
-
-        .section-title {
-            text-align: center;
-
-            margin-bottom: 45px;
-        }
-
-
-        .section-title h2 {
-            font-size: 40px;
-
-            font-weight: 900;
-
-            letter-spacing: -1px;
-        }
-
-
-        .section-title p {
-            margin-top: 10px;
-
-            color: #999;
-
             font-size: 15px;
         }
 
-
-        /* =================================
-           CUADRÍCULA
-        ================================= */
-
         .games-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 22px;
+            grid-template-columns: 1fr;
         }
-
-
-        /* =================================
-           TARJETAS
-        ================================= */
 
         .game-card {
-            position: relative;
-
-            min-height: 285px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            justify-content: flex-end;
-
-            padding: 28px;
-
-            overflow: hidden;
-
-            border-radius: 17px;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    rgba(18, 21, 25, 0.50),
-                    rgba(4, 6, 8, 0.97)
-                );
-
-            border: 1px solid rgba(255, 255, 255, 0.10);
-
-            box-shadow:
-                0 15px 45px rgba(0, 0, 0, 0.30);
-
-            transition:
-                transform 0.3s,
-                border-color 0.3s,
-                box-shadow 0.3s;
+            min-height: 250px;
         }
 
-
-        .game-card::before {
-            content: "";
-
-            position: absolute;
-
-            width: 220px;
-            height: 220px;
-
-            top: -110px;
-            right: -70px;
-
-            border-radius: 50%;
-
-            background: rgba(66, 255, 136, 0.12);
-
-            filter: blur(12px);
-
-            transition: 0.4s;
+        .section-title h2 {
+            font-size: 31px;
         }
+    }
 
+</style>
 
-        .game-card:hover {
-            transform: translateY(-8px);
-
-            border-color:
-                rgba(66, 255, 136, 0.45);
-
-            box-shadow:
-                0 25px 60px rgba(0, 0, 0, 0.45);
-        }
-
-
-        .game-card:hover::before {
-            transform: scale(1.4);
-        }
-
-
-        /* =================================
-           NÚMERO DE TARJETA
-        ================================= */
-
-        .card-number {
-            position: absolute;
-
-            top: 17px;
-            right: 22px;
-
-            color:
-                rgba(255, 255, 255, 0.13);
-
-            font-size: 48px;
-
-            font-weight: 900;
-        }
-
-
-        /* =================================
-           ETIQUETA
-        ================================= */
-
-        .card-tag {
-            position: relative;
-
-            width: fit-content;
-
-            padding: 6px 10px;
-
-            margin-bottom: 14px;
-
-            border-radius: 5px;
-
-            background:
-                rgba(66, 255, 136, 0.10);
-
-            color: #42ff88;
-
-            font-size: 10px;
-
-            font-weight: 900;
-
-            letter-spacing: 1px;
-        }
-
-
-        /* =================================
-           TÍTULO DEL JUEGO
-        ================================= */
-
-        .game-card h3 {
-            position: relative;
-
-            font-size: 27px;
-
-            font-weight: 900;
-
-            margin-bottom: 10px;
-        }
-
-
-        /* =================================
-           DESCRIPCIÓN
-        ================================= */
-
-        .game-card p {
-            position: relative;
-
-            max-width: 390px;
-
-            color: #aaa;
-
-            font-size: 14px;
-
-            line-height: 1.6;
-        }
-
-
-        /* =================================
-           BOTÓN JUGAR
-        ================================= */
-
-        .play-button {
-            position: relative;
-
-            width: fit-content;
-
-            margin-top: 20px;
-
-            padding: 10px 17px;
-
-            border-radius: 7px;
-
-            background:
-                rgba(255, 255, 255, 0.07);
-
-            border:
-                1px solid rgba(255, 255, 255, 0.12);
-
-            color: white;
-
-            text-decoration: none;
-
-            font-size: 12px;
-
-            font-weight: 900;
-
-            transition: 0.25s;
-        }
-
-
-        .play-button:hover {
-            background: #42ff88;
-
-            color: #061009;
-
-            border-color: #42ff88;
-        }
-
-
-        /* =================================
-           PRÓXIMAMENTE
-        ================================= */
-
-        .coming-soon {
-            opacity: 0.58;
-        }
-
-
-        .coming-soon:hover {
-            opacity: 0.85;
-        }
-
-
-        .coming-soon .card-tag {
-            background:
-                rgba(255, 255, 255, 0.06);
-
-            color: #999;
-        }
-
-
-        .coming-soon p {
-            color: #777;
-        }
-
-
-        .soon-label {
-            position: relative;
-
-            width: fit-content;
-
-            margin-top: 20px;
-
-            padding: 9px 15px;
-
-            border-radius: 6px;
-
-            background:
-                rgba(255, 255, 255, 0.05);
-
-            color: #777;
-
-            font-size: 10px;
-
-            font-weight: 900;
-
-            letter-spacing: 1px;
-        }
-
-
-        /* =================================
-           FOOTER
-        ================================= */
-
-        footer {
-            padding: 55px 20px 35px;
-
-            text-align: center;
-
-            background:
-                rgba(0, 0, 0, 0.78);
-
-            border-top:
-                1px solid rgba(255, 255, 255, 0.08);
-
-            color: #777;
-
-            font-size: 12px;
-        }
-
-
-        .footer-logo {
-            font-size: 16px;
-
-            margin-bottom: 12px;
-        }
-
-
-        .footer-logo strong {
-            color: #42ff88;
-        }
-
-
-        footer p {
-            color: #777;
-
-            margin-bottom: 25px;
-        }
-
-
-        .copyright {
-            color: #999;
-
-            font-size: 12px;
-
-            margin-bottom: 8px;
-        }
-
-
-        .created-by {
-            color: #666;
-
-            font-size: 11px;
-        }
-
-
-        .created-by strong {
-            color: #42ff88;
-        }
-
-
-        /* =================================
-           RESPONSIVE
-        ================================= */
-
-        @media (max-width: 900px) {
-
-            .games-grid {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .hero h1 {
-                letter-spacing: -2px;
-            }
-        }
-
-
-        @media (max-width: 600px) {
-
-            nav {
-                padding: 0 20px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .hero {
-                min-height: 550px;
-            }
-
-            .hero-description {
-                font-size: 15px;
-            }
-
-            .games-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .game-card {
-                min-height: 250px;
-            }
-
-            .section-title h2 {
-                font-size: 31px;
-            }
-        }
-
-    </style>
 </head>
 
 
 <body>
 
 
-    <!-- =================================
-         NAVBAR
-    ================================= -->
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
 
-    <nav>
+<nav>
 
-        <div class="logo">
-            ⚽ FOOTBALL <span>GAMES</span>
-        </div>
+    <div class="logo">
+        ⚽ FOOTBALL <span>GAMES</span>
+    </div>
 
-        <div class="nav-links">
+    <div class="nav-links">
 
-            <a href="#juegos">
-                Juegos
-            </a>
+        <a href="#juegos">
+            Juegos
+        </a>
 
-            <a href="#juegos">
-                Simuladores
-            </a>
+        <a href="#juegos">
+            Simuladores
+        </a>
 
-        </div>
+    </div>
 
-    </nav>
-
-
-
-    <!-- =================================
-         PORTADA
-    ================================= -->
-
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <div class="small-title">
-                FOOTBALL GAMING EXPERIENCE
-            </div>
-
-
-            <h1>
-
-                ⚽ FOOTBALL
-                <span class="green">
-                    GAMES
-                </span>
-
-                <br>
-
-                Simulator
-
-            </h1>
-
-
-            <p class="hero-description">
-
-                Juegos, desafíos y simulaciones de fútbol.
-                Pon a prueba tus conocimientos, crea tu propia historia
-                y descubre hasta dónde puede llegar tu carrera.
-
-            </p>
-
-
-            <a
-                href="#juegos"
-                class="main-button"
-            >
-                EXPLORAR JUEGOS ↓
-            </a>
-
-        </div>
-
-    </section>
+</nav>
 
 
 
-    <!-- =================================
-         JUEGOS
-    ================================= -->
+<!-- =====================================================
+     PORTADA
+====================================================== -->
 
-    <section
-        class="games-section"
-        id="juegos"
-    >
+<section class="hero">
 
-        <div class="section-title">
+    <div class="hero-content">
 
-            <h2>
-                ELIGE TU JUEGO
-            </h2>
-
-            <p>
-                ¿Qué quieres hacer hoy?
-            </p>
-
+        <div class="small-title">
+            FOOTBALL GAMING EXPERIENCE
         </div>
 
 
+        <h1>
 
-        <div class="games-grid">
+            ⚽ FOOTBALL
+            <span class="green">
+                GAMES
+            </span>
 
+            <br>
 
-            <!-- =================================
-                 JUEGO 1
-            ================================= -->
+            Simulator
 
-            <div class="game-card">
+        </h1>
 
-                <div class="card-number">
-                    01
-                </div>
 
+        <p class="hero-description">
 
-                <div class="card-tag">
-                    DESAFÍO
-                </div>
+            Juegos, desafíos y simulaciones de fútbol.
+            Pon a prueba tus conocimientos, crea tu propia historia
+            y descubre hasta dónde puede llegar tu carrera.
 
-
-                <h3>
-                    Ruleta Futbolera
-                </h3>
-
-
-                <p>
-                    Juega solo o con amigos, y conoce
-                    el nivel futbolístico de todos!
-                    (ruleta automática)
-                </p>
-
-
-                <a
-                    href="#"
-                    class="play-button"
-                >
-                    JUGAR →
-                </a>
-
-            </div>
-
-
-
-            <!-- =================================
-                 JUEGO 2
-            ================================= -->
-
-            <div class="game-card">
-
-                <div class="card-number">
-                    02
-                </div>
-
-
-                <div class="card-tag">
-                    CARRERA
-                </div>
-
-
-                <h3>
-                    Career Simulator
-                </h3>
-
-
-                <p>
-                    Simula tu carrera como joven jugador
-                    y construye tu carrera desde 0.
-                    (el sueño de todos)
-                </p>
-
-
-                <a
-                    href="#"
-                    class="play-button"
-                >
-                    JUGAR →
-                </a>
-
-            </div>
-
-
-
-            <!-- =================================
-                 PRÓXIMAMENTE 3
-            ================================= -->
-
-            <div class="game-card coming-soon">
-
-                <div class="card-number">
-                    03
-                </div>
-
-
-                <div class="card-tag">
-                    PRÓXIMAMENTE
-                </div>
-
-
-                <h3>
-                    Próximamente
-                </h3>
-
-
-                <p>
-                    Un nuevo juego futbolístico
-                    llegará próximamente.
-                </p>
-
-
-                <div class="soon-label">
-                    EN DESARROLLO
-                </div>
-
-            </div>
-
-
-
-            <!-- =================================
-                 PRÓXIMAMENTE 4
-            ================================= -->
-
-            <div class="game-card coming-soon">
-
-                <div class="card-number">
-                    04
-                </div>
-
-
-                <div class="card-tag">
-                    PRÓXIMAMENTE
-                </div>
-
-
-                <h3>
-                    Próximamente
-                </h3>
-
-
-                <p>
-                    Una nueva experiencia de fútbol
-                    está en camino.
-                </p>
-
-
-                <div class="soon-label">
-                    EN DESARROLLO
-                </div>
-
-            </div>
-
-
-
-            <!-- =================================
-                 PRÓXIMAMENTE 5
-            ================================= -->
-
-            <div class="game-card coming-soon">
-
-                <div class="card-number">
-                    05
-                </div>
-
-
-                <div class="card-tag">
-                    PRÓXIMAMENTE
-                </div>
-
-
-                <h3>
-                    Próximamente
-                </h3>
-
-
-                <p>
-                    Algo nuevo está siendo preparado.
-                </p>
-
-
-                <div class="soon-label">
-                    EN DESARROLLO
-                </div>
-
-            </div>
-
-
-
-            <!-- =================================
-                 PRÓXIMAMENTE 6
-            ================================= -->
-
-            <div class="game-card coming-soon">
-
-                <div class="card-number">
-                    06
-                </div>
-
-
-                <div class="card-tag">
-                    PRÓXIMAMENTE
-                </div>
-
-
-                <h3>
-                    Próximamente
-                </h3>
-
-
-                <p>
-                    Más juegos y simuladores
-                    de fútbol próximamente.
-                </p>
-
-
-                <div class="soon-label">
-                    EN DESARROLLO
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =================================
-         FOOTER / DERECHOS DE AUTOR
-    ================================= -->
-
-    <footer>
-
-        <div class="footer-logo">
-
-            ⚽
-            <strong>
-                FOOTBALL GAMES Simulator
-            </strong>
-
-        </div>
-
-
-        <p>
-            Una experiencia futbolística creada
-            para los amantes del deporte.
         </p>
 
 
-        <div class="copyright">
-            © 2026 YoSoyAnthony. Todos los derechos reservados.
+        <a
+            href="#juegos"
+            class="main-button"
+        >
+            EXPLORAR JUEGOS ↓
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     JUEGOS
+====================================================== -->
+
+<section
+    class="games-section"
+    id="juegos"
+>
+
+    <div class="section-title">
+
+        <h2>
+            ELIGE TU JUEGO
+        </h2>
+
+        <p>
+            ¿Qué quieres hacer hoy?
+        </p>
+
+    </div>
+
+
+
+    <div class="games-grid">
+
+
+        <!-- =================================================
+             JUEGO 1 — RULETA FUTBOLERA
+        ================================================== -->
+
+        <div class="game-card">
+
+            <div class="card-number">
+                01
+            </div>
+
+            <div class="card-tag">
+                DESAFÍO
+            </div>
+
+            <h3>
+                Ruleta Futbolera
+            </h3>
+
+            <p>
+                Juega solo o con amigos, y conoce
+                el nivel futbolístico de todos!
+                (ruleta automática)
+            </p>
+
+
+            <!-- VINCULADO A ruleta.html -->
+
+            <a
+                href="ruleta.html"
+                class="play-button"
+            >
+                JUGAR →
+            </a>
+
         </div>
 
 
-        <div class="created-by">
-            Creado por <strong>YoSoyAnthony</strong>
+
+        <!-- =================================================
+             JUEGO 2 — CAREER SIMULATOR
+        ================================================== -->
+
+        <div class="game-card">
+
+            <div class="card-number">
+                02
+            </div>
+
+            <div class="card-tag">
+                CARRERA
+            </div>
+
+            <h3>
+                Career Simulator
+            </h3>
+
+            <p>
+                Simula tu carrera como joven jugador
+                y construye tu carrera desde 0.
+                (el sueño de todos)
+            </p>
+
+            <a
+                href="#"
+                class="play-button"
+            >
+                JUGAR →
+            </a>
+
         </div>
 
-    </footer>
+
+
+        <!-- =================================================
+             PRÓXIMAMENTE 3
+        ================================================== -->
+
+        <div class="game-card coming-soon">
+
+            <div class="card-number">
+                03
+            </div>
+
+            <div class="card-tag">
+                PRÓXIMAMENTE
+            </div>
+
+            <h3>
+                Próximamente
+            </h3>
+
+            <p>
+                Un nuevo juego futbolístico
+                llegará próximamente.
+            </p>
+
+            <div class="soon-label">
+                EN DESARROLLO
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PRÓXIMAMENTE 4
+        ================================================== -->
+
+        <div class="game-card coming-soon">
+
+            <div class="card-number">
+                04
+            </div>
+
+            <div class="card-tag">
+                PRÓXIMAMENTE
+            </div>
+
+            <h3>
+                Próximamente
+            </h3>
+
+            <p>
+                Una nueva experiencia de fútbol
+                está en camino.
+            </p>
+
+            <div class="soon-label">
+                EN DESARROLLO
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PRÓXIMAMENTE 5
+        ================================================== -->
+
+        <div class="game-card coming-soon">
+
+            <div class="card-number">
+                05
+            </div>
+
+            <div class="card-tag">
+                PRÓXIMAMENTE
+            </div>
+
+            <h3>
+                Próximamente
+            </h3>
+
+            <p>
+                Algo nuevo está siendo preparado.
+            </p>
+
+            <div class="soon-label">
+                EN DESARROLLO
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PRÓXIMAMENTE 6
+        ================================================== -->
+
+        <div class="game-card coming-soon">
+
+            <div class="card-number">
+                06
+            </div>
+
+            <div class="card-tag">
+                PRÓXIMAMENTE
+            </div>
+
+            <h3>
+                Próximamente
+            </h3>
+
+            <p>
+                Más juegos y simuladores
+                de fútbol próximamente.
+            </p>
+
+            <div class="soon-label">
+                EN DESARROLLO
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer>
+
+    <div class="footer-logo">
+
+        ⚽
+
+        <strong>
+            FOOTBALL GAMES Simulator
+        </strong>
+
+    </div>
+
+
+    <p>
+        Una experiencia futbolística creada
+        para los amantes del deporte.
+    </p>
+
+
+    <div class="copyright">
+
+        © 2026 YoSoyAnthony.
+        Todos los derechos reservados.
+
+    </div>
+
+
+    <div class="created-by">
+
+        Creado por
+
+        <strong>
+            YoSoyAnthony
+        </strong>
+
+    </div>
+
+</footer>
 
 
 </body>
+
 </html>
