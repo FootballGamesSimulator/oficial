@@ -4372,73 +4372,38 @@ function stayClub(){
 
 function nextSeason(){
 
-    /*
-    MÁXIMO ABSOLUTO:
-    20 TEMPORADAS
-    */
+    /* AVANCE SEGURO: máximo 20 temporadas. */
+    if(!player) return;
 
     if(season>=20){
-
         finishCareer();
-
         return;
-
     }
 
-
-    season++;
-
-    player.age++;
-
-
-    /*
-    NUNCA MÁS DE 45
-    */
+    season += 1;
+    player.age += 1;
 
     if(player.age>45){
-
         finishCareer();
-
         return;
-
     }
 
-
-    /*
-    DECLIVE
-    */
-
+    /* Declive natural por edad. */
     if(player.age>=30){
-
-        player.rating=
-            Math.max(
-                45,
-                player.rating-
-                Math.random()*.6
-            );
-
+        player.rating=Math.max(45,player.rating-Math.random()*.6);
     }
-
 
     if(player.age>=34){
-
-        player.rating=
-            Math.max(
-                45,
-                player.rating-
-                Math.random()*1.2
-            );
-
+        player.rating=Math.max(45,player.rating-Math.random()*1.2);
     }
 
-
+    /* Limpiamos la interfaz de la temporada anterior. */
     $("offersArea").innerHTML="";
-
     $("situationArea").innerHTML="";
+    $("seasonEvent").innerHTML="";
 
-
+    renderDashboard();
     runSeason();
-
 }
 
 
