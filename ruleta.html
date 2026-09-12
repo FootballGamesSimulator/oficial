@@ -136,15 +136,13 @@
 
         .logo span {
 
-            color:
-                #42ff88;
+            color: #42ff88;
         }
 
 
         .back-button {
 
-            color:
-                #aaa;
+            color: #aaa;
 
             text-decoration: none;
 
@@ -152,15 +150,13 @@
 
             font-weight: 700;
 
-            transition:
-                0.25s;
+            transition: 0.25s;
         }
 
 
         .back-button:hover {
 
-            color:
-                #42ff88;
+            color: #42ff88;
         }
 
 
@@ -397,11 +393,10 @@
 
 
         /* =====================================================
-           CONTENEDOR DE LA RULETA
+           CONTENEDOR DE RULETA
 
-           IMPORTANTE:
-           LA FLECHA ESTÁ FUERA DE .roulette
-           PARA QUE NUNCA GIRE CON ELLA.
+           LA FLECHA ESTÁ FUERA DE LA RULETA.
+           POR ESO PERMANECE COMPLETAMENTE FIJA.
         ===================================================== */
 
         .roulette-wrapper {
@@ -410,10 +405,10 @@
                 relative;
 
             width:
-                min(370px, 82vw);
+                min(390px, 85vw);
 
             height:
-                min(405px, 90vw);
+                min(410px, 92vw);
 
             display:
                 flex;
@@ -428,6 +423,9 @@
 
         /* =====================================================
            RULETA
+
+           EXACTAMENTE 6 SECTORES IGUALES.
+           1 - 2 - 3 - 1 - 2 - 3
         ===================================================== */
 
         .roulette {
@@ -447,6 +445,7 @@
             background:
 
                 conic-gradient(
+                    from -30deg,
 
                     #42ff88 0deg 60deg,
 
@@ -463,28 +462,35 @@
 
             border:
                 8px solid
-                rgba(255,255,255,0.12);
+                rgba(255,255,255,0.13);
 
             box-shadow:
 
                 0 0 0 8px
-                rgba(0,0,0,0.25),
+                rgba(0,0,0,0.28),
+
+                inset 0 0 35px
+                rgba(0,0,0,0.30),
 
                 0 25px 70px
-                rgba(0,0,0,0.55);
+                rgba(0,0,0,0.60);
 
             transform:
                 rotate(0deg);
+
+            will-change:
+                transform;
         }
 
 
         /* =====================================================
-           LÍNEAS DE SEPARACIÓN
+           SEPARADORES DE SECTORES
         ===================================================== */
 
         .roulette::after {
 
-            content: "";
+            content:
+                "";
 
             position:
                 absolute;
@@ -499,33 +505,32 @@
 
                 conic-gradient(
 
-                    transparent 0deg 58.5deg,
+                    from -30deg,
 
-                    rgba(255,255,255,0.20) 58.5deg 61.5deg,
+                    transparent 0deg 58.5deg,
+                    rgba(255,255,255,0.25) 58.5deg 61.5deg,
 
                     transparent 61.5deg 118.5deg,
-
-                    rgba(255,255,255,0.20) 118.5deg 121.5deg,
+                    rgba(255,255,255,0.25) 118.5deg 121.5deg,
 
                     transparent 121.5deg 178.5deg,
-
-                    rgba(255,255,255,0.20) 178.5deg 181.5deg,
+                    rgba(255,255,255,0.25) 178.5deg 181.5deg,
 
                     transparent 181.5deg 238.5deg,
-
-                    rgba(255,255,255,0.20) 238.5deg 241.5deg,
+                    rgba(255,255,255,0.25) 238.5deg 241.5deg,
 
                     transparent 241.5deg 298.5deg,
-
-                    rgba(255,255,255,0.20) 298.5deg 301.5deg,
+                    rgba(255,255,255,0.25) 298.5deg 301.5deg,
 
                     transparent 301.5deg 358.5deg,
-
-                    rgba(255,255,255,0.20) 358.5deg 360deg
+                    rgba(255,255,255,0.25) 358.5deg 360deg
                 );
 
             pointer-events:
                 none;
+
+            z-index:
+                2;
         }
 
 
@@ -559,17 +564,15 @@
                 none;
 
             z-index:
-                2;
+                3;
         }
 
 
         /* =====================================================
-           NÚMEROS DE LA RULETA
+           NÚMEROS
 
-           1 - 2 - 3
-           1 - 2 - 3
-
-           TODOS ESTÁN DENTRO DE SUS SECTORES.
+           SE GENERAN EN EL CENTRO Y SE COLOCAN
+           EXACTAMENTE EN EL CENTRO DE CADA SECTOR.
         ===================================================== */
 
         .roulette-text {
@@ -577,11 +580,20 @@
             position:
                 absolute;
 
+            top:
+                50%;
+
+            left:
+                50%;
+
             width:
-                45px;
+                48px;
 
             height:
-                45px;
+                48px;
+
+            margin:
+                -24px;
 
             display:
                 flex;
@@ -598,6 +610,9 @@
             font-weight:
                 950;
 
+            border-radius:
+                50%;
+
             z-index:
                 6;
 
@@ -605,100 +620,31 @@
                 none;
 
             text-shadow:
-                0 3px 8px rgba(0,0,0,0.35);
-        }
-
-
-        /* 1 superior */
-
-        .text-one {
-
-            top:
-                17%;
-
-            left:
-                50%;
+                0 3px 8px
+                rgba(0,0,0,0.45);
 
             transform:
-                translateX(-50%);
+                rotate(var(--angle))
+                translateY(-105px)
+                rotate(calc(-1 * var(--angle)));
+
+            will-change:
+                transform;
+        }
+
+
+        /* =====================================================
+           COLORES DE LOS NÚMEROS
+        ===================================================== */
+
+        .number-green {
 
             color:
                 #061009;
         }
 
 
-        /* 2 superior derecha */
-
-        .text-two {
-
-            top:
-                35%;
-
-            right:
-                18%;
-
-            color:
-                white;
-        }
-
-
-        /* 3 inferior derecha */
-
-        .text-three {
-
-            bottom:
-                18%;
-
-            right:
-                28%;
-
-            color:
-                #061009;
-        }
-
-
-        /* 1 inferior */
-
-        .text-four {
-
-            bottom:
-                17%;
-
-            left:
-                50%;
-
-            transform:
-                translateX(-50%);
-
-            color:
-                white;
-        }
-
-
-        /* 2 inferior izquierda */
-
-        .text-five {
-
-            bottom:
-                18%;
-
-            left:
-                28%;
-
-            color:
-                #061009;
-        }
-
-
-        /* 3 superior izquierda */
-
-        .text-six {
-
-            top:
-                35%;
-
-            left:
-                18%;
+        .number-dark {
 
             color:
                 white;
@@ -756,15 +702,15 @@
                 rgba(66,255,136,0.25);
 
             z-index:
-                8;
+                10;
         }
 
 
         /* =====================================================
            FLECHA FIJA
 
-           ESTA FLECHA NO ESTÁ DENTRO DE .roulette.
-           POR ESO NO GIRA.
+           NO ES HIJA DE .roulette.
+           NUNCA GIRA.
         ===================================================== */
 
         .pointer {
@@ -1085,7 +1031,7 @@
 
 
         /* =====================================================
-           OPCIONES
+           RESPUESTAS
         ===================================================== */
 
         .answers {
@@ -1531,7 +1477,6 @@
 
                 <div class="roulette-wrapper">
 
-
                     <!-- FLECHA FIJA -->
 
                     <div class="pointer"></div>
@@ -1544,29 +1489,62 @@
                         id="roulette"
                     >
 
-                        <!-- NÚMEROS -->
+                        <!-- 1 -->
 
-                        <div class="roulette-text text-one">
+                        <div
+                            class="roulette-text number-green"
+                            data-angle="0"
+                        >
                             1
                         </div>
 
-                        <div class="roulette-text text-two">
+
+                        <!-- 2 -->
+
+                        <div
+                            class="roulette-text number-dark"
+                            data-angle="60"
+                        >
                             2
                         </div>
 
-                        <div class="roulette-text text-three">
+
+                        <!-- 3 -->
+
+                        <div
+                            class="roulette-text number-green"
+                            data-angle="120"
+                        >
                             3
                         </div>
 
-                        <div class="roulette-text text-four">
+
+                        <!-- 1 -->
+
+                        <div
+                            class="roulette-text number-dark"
+                            data-angle="180"
+                        >
                             1
                         </div>
 
-                        <div class="roulette-text text-five">
+
+                        <!-- 2 -->
+
+                        <div
+                            class="roulette-text number-green"
+                            data-angle="240"
+                        >
                             2
                         </div>
 
-                        <div class="roulette-text text-six">
+
+                        <!-- 3 -->
+
+                        <div
+                            class="roulette-text number-dark"
+                            data-angle="300"
+                        >
                             3
                         </div>
 
@@ -1677,7 +1655,6 @@
 
             <div class="info-grid">
 
-
                 <div class="info-card">
 
                     <strong>
@@ -1719,19 +1696,17 @@
 
                 </div>
 
-
             </div>
 
 
         </section>
-
 
     </main>
 
 
     <!-- =====================================================
          FOOTER
-    ====================================================== -->
+    ===================================================== -->
 
     <footer>
 
@@ -1770,14 +1745,14 @@
 
     <!-- =====================================================
          JAVASCRIPT
-    ====================================================== -->
+    ===================================================== -->
 
     <script>
 
 
         /* =====================================================
            BANCO DE PREGUNTAS
-           
+
            30 PREGUNTAS:
            10 DE 1 PUNTO
            10 DE 2 PUNTOS
@@ -1785,7 +1760,6 @@
         ===================================================== */
 
         const questions = {
-
 
             /* =================================================
                1 PUNTO
@@ -1807,8 +1781,7 @@
                         "Brasil"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -1826,8 +1799,7 @@
                         "12"
                     ],
 
-                    correct:
-                        2
+                    correct: 2
                 },
 
 
@@ -1845,8 +1817,7 @@
                         "España"
                     ],
 
-                    correct:
-                        1
+                    correct: 1
                 },
 
 
@@ -1864,8 +1835,7 @@
                         "Valencia"
                     ],
 
-                    correct:
-                        1
+                    correct: 1
                 },
 
 
@@ -1883,8 +1853,7 @@
                         "Italia"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -1902,8 +1871,7 @@
                         "Luis Suárez"
                     ],
 
-                    correct:
-                        2
+                    correct: 2
                 },
 
 
@@ -1921,8 +1889,7 @@
                         "España"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -1940,8 +1907,7 @@
                         "Nations League"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -1959,8 +1925,7 @@
                         "120"
                     ],
 
-                    correct:
-                        1
+                    correct: 1
                 },
 
 
@@ -1978,8 +1943,7 @@
                         "Bélgica"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 }
 
             ],
@@ -2005,8 +1969,7 @@
                         "Toni Kroos"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -2024,8 +1987,7 @@
                         "Brasil"
                     ],
 
-                    correct:
-                        1
+                    correct: 1
                 },
 
 
@@ -2043,8 +2005,7 @@
                         "Manchester United"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -2062,8 +2023,7 @@
                         "Ronaldinho"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -2081,8 +2041,7 @@
                         "Bebeto"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -2100,8 +2059,7 @@
                         "Portugal"
                     ],
 
-                    correct:
-                        1
+                    correct: 1
                 },
 
 
@@ -2119,8 +2077,7 @@
                         "Neymar"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -2138,8 +2095,7 @@
                         "Barcelona"
                     ],
 
-                    correct:
-                        1
+                    correct: 1
                 },
 
 
@@ -2157,8 +2113,7 @@
                         "Xavi"
                     ],
 
-                    correct:
-                        2
+                    correct: 2
                 },
 
 
@@ -2176,8 +2131,7 @@
                         "Uruguay"
                     ],
 
-                    correct:
-                        1
+                    correct: 1
                 }
 
             ],
@@ -2203,8 +2157,7 @@
                         "Roger Milla"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -2222,8 +2175,7 @@
                         "Ruud Gullit"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -2241,8 +2193,7 @@
                         "Argentina"
                     ],
 
-                    correct:
-                        2
+                    correct: 2
                 },
 
 
@@ -2260,8 +2211,7 @@
                         "Barcelona"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -2279,8 +2229,7 @@
                         "Zico"
                     ],
 
-                    correct:
-                        1
+                    correct: 1
                 },
 
 
@@ -2298,8 +2247,7 @@
                         "Argentina"
                     ],
 
-                    correct:
-                        1
+                    correct: 1
                 },
 
 
@@ -2317,8 +2265,7 @@
                         "Sergio Ramos"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 },
 
 
@@ -2336,8 +2283,7 @@
                         "Neymar"
                     ],
 
-                    correct:
-                        2
+                    correct: 2
                 },
 
 
@@ -2355,8 +2301,7 @@
                         "Hungría"
                     ],
 
-                    correct:
-                        2
+                    correct: 2
                 },
 
 
@@ -2374,8 +2319,7 @@
                         "Cafu"
                     ],
 
-                    correct:
-                        0
+                    correct: 0
                 }
 
             ]
@@ -2410,10 +2354,6 @@
 
         let audioContext = null;
 
-        let tickTimer = null;
-
-        let lastTickAngle = 0;
-
 
         function initAudio() {
 
@@ -2424,7 +2364,6 @@
                         window.AudioContext ||
                         window.webkitAudioContext
                     )();
-
             }
 
             if (
@@ -2432,14 +2371,20 @@
             ) {
 
                 audioContext.resume();
-
             }
-
         }
 
 
         /* =====================================================
-           SONIDO DE CLICK DE RULETA
+           CLICK DE RULETA
+
+           EL CLICK SE PRODUCE SEGÚN LOS GRADOS
+           REALES QUE RECORRE LA RULETA.
+
+           Por eso:
+
+           rápido = clicks rápidos
+           lento = clicks lentos
         ===================================================== */
 
         function playRouletteTick(speed = 1) {
@@ -2449,8 +2394,13 @@
             }
 
 
+            const now =
+                audioContext.currentTime;
+
+
             const oscillator =
                 audioContext.createOscillator();
+
 
             const gain =
                 audioContext.createGain();
@@ -2460,25 +2410,31 @@
                 "square";
 
 
-            oscillator.frequency.value =
-                650 + (speed * 90);
+            const frequency =
+                700 + Math.min(speed * 25, 350);
+
+
+            oscillator.frequency.setValueAtTime(
+                frequency,
+                now
+            );
 
 
             gain.gain.setValueAtTime(
                 0.0001,
-                audioContext.currentTime
+                now
             );
 
 
             gain.gain.exponentialRampToValueAtTime(
-                0.055,
-                audioContext.currentTime + 0.005
+                0.075,
+                now + 0.004
             );
 
 
             gain.gain.exponentialRampToValueAtTime(
                 0.0001,
-                audioContext.currentTime + 0.045
+                now + 0.035
             );
 
 
@@ -2489,12 +2445,11 @@
             );
 
 
-            oscillator.start();
+            oscillator.start(now);
 
             oscillator.stop(
-                audioContext.currentTime + 0.05
+                now + 0.04
             );
-
         }
 
 
@@ -2513,62 +2468,71 @@
                 audioContext.currentTime;
 
 
-            const oscillator =
-                audioContext.createOscillator();
-
-            const gain =
-                audioContext.createGain();
-
-
-            oscillator.type =
-                "sine";
+            const notes = [
+                523.25,
+                659.25,
+                783.99
+            ];
 
 
-            oscillator.frequency.setValueAtTime(
-                523,
-                now
+            notes.forEach(
+                (frequency, index) => {
+
+                    const oscillator =
+                        audioContext.createOscillator();
+
+                    const gain =
+                        audioContext.createGain();
+
+
+                    const start =
+                        now +
+                        index * 0.09;
+
+
+                    oscillator.type =
+                        "sine";
+
+
+                    oscillator.frequency.setValueAtTime(
+                        frequency,
+                        start
+                    );
+
+
+                    gain.gain.setValueAtTime(
+                        0.0001,
+                        start
+                    );
+
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.16,
+                        start + 0.015
+                    );
+
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.0001,
+                        start + 0.25
+                    );
+
+
+                    oscillator.connect(gain);
+
+                    gain.connect(
+                        audioContext.destination
+                    );
+
+
+                    oscillator.start(start);
+
+                    oscillator.stop(
+                        start + 0.27
+                    );
+
+                }
             );
-
-            oscillator.frequency.setValueAtTime(
-                659,
-                now + 0.10
-            );
-
-            oscillator.frequency.setValueAtTime(
-                784,
-                now + 0.20
-            );
-
-
-            gain.gain.setValueAtTime(
-                0.0001,
-                now
-            );
-
-            gain.gain.exponentialRampToValueAtTime(
-                0.18,
-                now + 0.02
-            );
-
-            gain.gain.exponentialRampToValueAtTime(
-                0.0001,
-                now + 0.35
-            );
-
-
-            oscillator.connect(gain);
-
-            gain.connect(
-                audioContext.destination
-            );
-
-
-            oscillator.start(now);
-
-            oscillator.stop(
-                now + 0.36
-            );
-
         }
 
 
@@ -2590,6 +2554,7 @@
             const oscillator =
                 audioContext.createOscillator();
 
+
             const gain =
                 audioContext.createGain();
 
@@ -2603,6 +2568,7 @@
                 now
             );
 
+
             oscillator.frequency.exponentialRampToValueAtTime(
                 100,
                 now + 0.25
@@ -2614,10 +2580,12 @@
                 now
             );
 
+
             gain.gain.exponentialRampToValueAtTime(
                 0.15,
-                now + 0.02
+                now + 0.015
             );
+
 
             gain.gain.exponentialRampToValueAtTime(
                 0.0001,
@@ -2637,7 +2605,6 @@
             oscillator.stop(
                 now + 0.31
             );
-
         }
 
 
@@ -2699,6 +2666,33 @@
             );
 
 
+        const rouletteLabels =
+            document.querySelectorAll(
+                ".roulette-text"
+            );
+
+
+        /* =====================================================
+           PREPARAR POSICIONES DE LOS NÚMEROS
+        ===================================================== */
+
+        rouletteLabels.forEach(
+            label => {
+
+                const angle =
+                    Number(
+                        label.dataset.angle
+                    );
+
+                label.style.setProperty(
+                    "--angle",
+                    `${angle}deg`
+                );
+
+            }
+        );
+
+
         /* =====================================================
            RÉCORD
         ===================================================== */
@@ -2722,21 +2716,48 @@
         function shuffle(array) {
 
             return array.sort(
-                () => Math.random() - 0.5
+                () =>
+                    Math.random() - 0.5
             );
-
         }
 
 
         /* =====================================================
+           ACTUALIZAR NÚMEROS
+
+           Los números permanecen derechos mientras
+           se desplazan junto con la ruleta.
+        ===================================================== */
+
+        function updateLabels(currentRotation) {
+
+            rouletteLabels.forEach(
+                label => {
+
+                    const angle =
+                        Number(
+                            label.dataset.angle
+                        );
+
+
+                    label.style.transform =
+                        `rotate(${angle}deg)
+                         translateY(-105px)
+                         rotate(${-angle - currentRotation}deg)`;
+
+                }
+            );
+        }
+
+
+        updateLabels(0);
+
+
+        /* =====================================================
            GIRAR RULETA
-           
-           AHORA LA ANIMACIÓN Y EL SONIDO VAN
-           CONTROLADOS POR EL MISMO PROCESO.
         ===================================================== */
 
         function spinRoulette() {
-
 
             if (
                 isSpinning ||
@@ -2744,7 +2765,6 @@
             ) {
 
                 return;
-
             }
 
 
@@ -2776,9 +2796,9 @@
             );
 
 
-            /* ================================================
+            /* =================================================
                ELEGIR DIFICULTAD
-            ================================================ */
+            ================================================= */
 
             const possible =
                 [1, 2, 3];
@@ -2793,26 +2813,31 @@
                 ];
 
 
-            /* ================================================
-               ELEGIR UNO DE LOS DOS SECTORES
-               QUE CORRESPONDEN A ESA PUNTUACIÓN
-            ================================================ */
+            /* =================================================
+               SECTORES
+
+               Cada dificultad aparece dos veces.
+
+               1 = 0° / 180°
+               2 = 60° / 240°
+               3 = 120° / 300°
+            ================================================= */
 
             const sectors = {
 
                 1: [
-                    30,
-                    210
+                    0,
+                    180
                 ],
 
                 2: [
-                    90,
-                    270
+                    60,
+                    240
                 ],
 
                 3: [
-                    150,
-                    330
+                    120,
+                    300
                 ]
 
             };
@@ -2821,90 +2846,94 @@
             const targetAngle =
                 sectors[currentPoints][
                     Math.floor(
-                        Math.random() *
-                        2
+                        Math.random() * 2
                     )
                 ];
 
 
-            /* ================================================
+            /* =================================================
                CALCULAR ROTACIÓN
 
                El puntero está arriba.
-               Buscamos que el centro del sector elegido
-               termine exactamente debajo del puntero.
-            ================================================ */
+
+               El centro del sector elegido
+               termina exactamente debajo del puntero.
+            ================================================= */
 
             const currentMod =
                 ((rotation % 360) + 360) % 360;
 
 
-            let targetRotation =
-                360 - targetAngle;
+            const desiredRotation =
+                -targetAngle;
 
 
             let difference =
-                targetRotation -
+                desiredRotation -
                 currentMod;
 
 
-            if (difference < 0) {
-
-                difference += 360;
-
-            }
+            difference =
+                ((difference % 360) + 360) % 360;
 
 
-            /* Muchas vueltas */
+            /* =================================================
+               VUELTAS
+
+               Entre 7 y 9 vueltas completas.
+            ================================================= */
 
             const extraTurns =
-                6 + Math.floor(
+                7 +
+                Math.floor(
                     Math.random() * 3
                 );
 
 
-            rotation +=
-                (extraTurns * 360) +
-                difference;
-
-
-            /* ================================================
-               ANIMACIÓN MANUAL
-
-               Usamos requestAnimationFrame para que el sonido
-               pueda seguir exactamente el movimiento.
-            ================================================ */
-
             const startRotation =
-                ((rotation -
-                    (
-                        (extraTurns * 360) +
-                        difference
-                    )
-                ));
-
-
-            const finalRotation =
                 rotation;
 
 
+            const finalRotation =
+                rotation +
+                extraTurns * 360 +
+                difference;
+
+
+            rotation =
+                finalRotation;
+
+
+            /* =================================================
+               ANIMACIÓN
+
+               requestAnimationFrame permite que el sonido
+               utilice exactamente la velocidad de la ruleta.
+            ================================================= */
+
             const duration =
-                4300;
+                4800;
 
 
             const startTime =
                 performance.now();
 
 
-            let previousAngle =
-                0;
+            let previousRotation =
+                startRotation;
+
+
+            let lastTickBoundary =
+                Math.floor(
+                    startRotation / 18
+                );
 
 
             function animateRoulette(now) {
 
-
                 const elapsed =
-                    now - startTime;
+                    now -
+                    startTime;
 
 
                 const progress =
@@ -2914,8 +2943,12 @@
                     );
 
 
-                /* Cubic-bezier aproximada:
-                   rápida al principio y suave al final */
+                /* ---------------------------------------------
+                   EASING
+
+                   Muy rápida al principio.
+                   Frena progresivamente al final.
+                --------------------------------------------- */
 
                 const eased =
                     1 -
@@ -2928,53 +2961,96 @@
                 const currentRotation =
                     startRotation +
                     (
-                        (finalRotation - startRotation)
-                        * eased
-                    );
+                        finalRotation -
+                        startRotation
+                    ) *
+                    eased;
 
 
                 roulette.style.transform =
                     `rotate(${currentRotation}deg)`;
 
 
-                /* ============================================
-                   SONIDO SINCRONIZADO
+                updateLabels(
+                    currentRotation
+                );
 
-                   Calculamos cuánto ha girado realmente
-                   entre frames.
-                ============================================ */
 
-                const currentAngle =
-                    currentRotation;
+                /* ---------------------------------------------
+                   VELOCIDAD REAL
 
+                   Diferencia de grados recorridos
+                   desde el frame anterior.
+                --------------------------------------------- */
 
                 const delta =
                     Math.abs(
-                        currentAngle -
-                        previousAngle
+                        currentRotation -
+                        previousRotation
                     );
 
 
+                const currentBoundary =
+                    Math.floor(
+                        currentRotation / 18
+                    );
+
+
+                /* ---------------------------------------------
+                   SONIDO SINCRONIZADO
+
+                   Un click cada 18 grados.
+
+                   Si la ruleta va rápido:
+                   los clicks son rápidos.
+
+                   Si empieza a frenar:
+                   los clicks se separan.
+
+                   Cuando se detiene:
+                   dejan de sonar.
+                --------------------------------------------- */
+
                 if (
-                    delta >= 28
+                    currentBoundary >
+                    lastTickBoundary
                 ) {
 
-                    const speed =
+                    const crossed =
                         Math.min(
-                            delta / 5,
-                            10
+                            currentBoundary -
+                            lastTickBoundary,
+                            3
                         );
 
 
-                    playRouletteTick(
-                        speed
-                    );
+                    const speed =
+                        Math.max(
+                            delta,
+                            0.1
+                        );
 
 
-                    previousAngle =
-                        currentAngle;
+                    for (
+                        let i = 0;
+                        i < crossed;
+                        i++
+                    ) {
 
+                        playRouletteTick(
+                            speed
+                        );
+
+                    }
+
+
+                    lastTickBoundary =
+                        currentBoundary;
                 }
+
+
+                previousRotation =
+                    currentRotation;
 
 
                 if (
@@ -2990,11 +3066,17 @@
                     roulette.style.transform =
                         `rotate(${finalRotation}deg)`;
 
+
+                    updateLabels(
+                        finalRotation
+                    );
+
+
                     isSpinning =
                         false;
 
-                    showResult();
 
+                    showResult();
                 }
 
             }
@@ -3013,17 +3095,24 @@
 
         function showResult() {
 
-
             document.getElementById(
                 "pointsResult"
             ).textContent =
-                `+${currentPoints} PUNTO${currentPoints > 1 ? "S" : ""}`;
+                `+${currentPoints} PUNTO${
+                    currentPoints > 1
+                        ? "S"
+                        : ""
+                }`;
 
 
             document.getElementById(
                 "resultTitle"
             ).textContent =
-                `${currentPoints} PUNTO${currentPoints > 1 ? "S" : ""}`;
+                `${currentPoints} PUNTO${
+                    currentPoints > 1
+                        ? "S"
+                        : ""
+                }`;
 
 
             document.getElementById(
@@ -3056,7 +3145,6 @@
 
         function generateQuestion() {
 
-
             let available =
                 questions[currentPoints]
                 .filter(
@@ -3076,7 +3164,6 @@
 
                 available =
                     questions[currentPoints];
-
             }
 
 
@@ -3101,7 +3188,11 @@
             document.getElementById(
                 "difficulty"
             ).textContent =
-                `${currentPoints} PUNTO${currentPoints > 1 ? "S" : ""}`;
+                `${currentPoints} PUNTO${
+                    currentPoints > 1
+                        ? "S"
+                        : ""
+                }`;
 
 
             document.getElementById(
@@ -3117,7 +3208,10 @@
             const shuffledAnswers =
                 currentQuestion.answers
                 .map(
-                    (answer, index) => ({
+                    (
+                        answer,
+                        index
+                    ) => ({
                         answer,
                         index
                     })
@@ -3131,7 +3225,6 @@
 
             shuffledAnswers.forEach(
                 item => {
-
 
                     const button =
                         document.createElement(
@@ -3186,7 +3279,6 @@
             selectedIndex
         ) {
 
-
             const allButtons =
                 document.querySelectorAll(
                     ".answer"
@@ -3209,7 +3301,6 @@
                 currentQuestion.correct
             ) {
 
-
                 button.classList.add(
                     "correct"
                 );
@@ -3225,9 +3316,7 @@
 
                 playCorrectSound();
 
-
             } else {
-
 
                 button.classList.add(
                     "wrong"
@@ -3239,7 +3328,6 @@
 
                 allButtons.forEach(
                     b => {
-
 
                         const answerText =
                             b.textContent;
@@ -3264,9 +3352,9 @@
             }
 
 
-            /* ================================================
+            /* =================================================
                ACTUALIZAR RÉCORD
-            ================================================ */
+            ================================================= */
 
             if (
                 score > record
@@ -3284,7 +3372,6 @@
 
                 recordElement.textContent =
                     record;
-
             }
 
 
@@ -3302,7 +3389,6 @@
         ===================================================== */
 
         function nextQuestion() {
-
 
             document.getElementById(
                 "nextButton"
@@ -3328,7 +3414,6 @@
                 finishGame();
 
                 return;
-
             }
 
 
@@ -3347,7 +3432,6 @@
         ===================================================== */
 
         function finishGame() {
-
 
             result.classList.add(
                 "show"
@@ -3389,7 +3473,6 @@
 
         async function generateAIQuestion(points) {
 
-
             /*
              * IMPORTANTE:
              *
@@ -3398,14 +3481,13 @@
              *
              * GitHub Pages es público.
              *
-             * Posteriormente podemos conectar esto
-             * a un backend seguro.
+             * Más adelante podemos conectar
+             * esta función a un backend seguro.
              */
 
-
             return null;
-
         }
+
 
     </script>
 
