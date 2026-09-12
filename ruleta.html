@@ -3,1351 +3,1223 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>⚽ Ruleta Futbolera | FOOTBALL GAMES Simulator</title>
+<title>⚽ Ruleta Futbolera | FOOTBALL GAMES Simulator</title>
 
-    <style>
+<style>
 
-        /* =====================================================
-           CONFIGURACIÓN GENERAL
-        ===================================================== */
+/* =========================================================
+   GENERAL
+========================================================= */
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        html {
-            scroll-behavior: smooth;
-        }
+html{
+    scroll-behavior:smooth;
+}
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #050708;
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#050708;
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+}
 
 
-        /* =====================================================
-           FONDO
-        ===================================================== */
+/* =========================================================
+   FONDO
+========================================================= */
 
-        body::before {
+body::before{
 
-            content: "";
+    content:"";
 
-            position: fixed;
+    position:fixed;
 
-            inset: 0;
+    inset:0;
 
-            z-index: -3;
+    z-index:-3;
 
-            background:
+    background:
 
-                linear-gradient(
-                    to bottom,
-                    rgba(0,0,0,0.35),
-                    rgba(0,0,0,0.70),
-                    rgba(3,5,7,0.98)
-                ),
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.70),
+            rgba(3,5,7,.98)
+        ),
 
-                url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2400&q=90")
+        url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2400&q=90")
 
-                center center / cover no-repeat;
-        }
+        center center / cover no-repeat;
+}
 
 
-        body::after {
+body::after{
 
-            content: "";
+    content:"";
 
-            position: fixed;
+    position:fixed;
 
-            inset: 0;
+    inset:0;
 
-            z-index: -2;
+    z-index:-2;
 
-            background:
+    background:
 
-                radial-gradient(
-                    circle at 50% 15%,
-                    rgba(66,255,136,0.08),
-                    transparent 40%
-                );
-        }
+        radial-gradient(
+            circle at 50% 15%,
+            rgba(66,255,136,.08),
+            transparent 40%
+        );
+}
 
 
-        /* =====================================================
-           NAVBAR
-        ===================================================== */
+/* =========================================================
+   NAV
+========================================================= */
 
-        nav {
+nav{
 
-            position: fixed;
+    position:fixed;
 
-            top: 0;
-            left: 0;
+    top:0;
+    left:0;
 
-            width: 100%;
+    width:100%;
+    height:72px;
 
-            height: 72px;
+    display:flex;
 
-            display: flex;
+    align-items:center;
 
-            align-items: center;
+    justify-content:space-between;
 
-            justify-content: space-between;
+    padding:0 6%;
 
-            padding: 0 6%;
+    background:rgba(3,5,7,.82);
 
-            background:
-                rgba(3,5,7,0.82);
+    backdrop-filter:blur(15px);
 
-            backdrop-filter:
-                blur(15px);
+    border-bottom:1px solid rgba(255,255,255,.08);
 
-            border-bottom:
-                1px solid rgba(255,255,255,0.08);
+    z-index:100;
+}
 
-            z-index: 100;
-        }
 
+.logo{
 
-        .logo {
+    color:white;
 
-            color: white;
+    text-decoration:none;
 
-            text-decoration: none;
+    font-size:20px;
 
-            font-size: 20px;
+    font-weight:900;
+}
 
-            font-weight: 900;
-        }
 
+.logo span{
+    color:#42ff88;
+}
 
-        .logo span {
 
-            color: #42ff88;
-        }
+.back-button{
 
+    color:#aaa;
 
-        .back-button {
+    text-decoration:none;
 
-            color: #aaa;
+    font-size:13px;
 
-            text-decoration: none;
+    font-weight:700;
 
-            font-size: 13px;
+    transition:.25s;
+}
 
-            font-weight: 700;
 
-            transition: 0.25s;
-        }
+.back-button:hover{
+    color:#42ff88;
+}
 
 
-        .back-button:hover {
+/* =========================================================
+   CONTENEDOR
+========================================================= */
 
-            color: #42ff88;
-        }
+.container{
 
+    width:100%;
 
-        /* =====================================================
-           CONTENEDOR
-        ===================================================== */
+    max-width:1100px;
 
-        .container {
+    margin:auto;
 
-            width: 100%;
+    padding:125px 20px 80px;
+}
 
-            max-width: 1100px;
 
-            margin: auto;
+/* =========================================================
+   TITULO
+========================================================= */
 
-            padding:
-                125px 20px 80px;
-        }
+.page-title{
 
+    text-align:center;
 
-        /* =====================================================
-           TÍTULO
-        ===================================================== */
+    margin-bottom:40px;
+}
 
-        .page-title {
 
-            text-align: center;
+.tag{
 
-            margin-bottom: 40px;
-        }
+    display:inline-block;
 
+    padding:7px 14px;
 
-        .tag {
+    margin-bottom:15px;
 
-            display: inline-block;
+    border-radius:30px;
 
-            padding:
-                7px 14px;
+    background:rgba(66,255,136,.08);
 
-            margin-bottom:
-                15px;
+    border:1px solid rgba(66,255,136,.30);
 
-            border-radius:
-                30px;
+    color:#42ff88;
 
-            background:
-                rgba(66,255,136,0.08);
+    font-size:10px;
 
-            border:
-                1px solid
-                rgba(66,255,136,0.30);
+    font-weight:900;
 
-            color:
-                #42ff88;
+    letter-spacing:2px;
+}
 
-            font-size:
-                10px;
 
-            font-weight:
-                900;
+.page-title h1{
 
-            letter-spacing:
-                2px;
-        }
+    font-size:clamp(42px,7vw,75px);
 
+    line-height:.95;
 
-        .page-title h1 {
+    font-weight:950;
 
-            font-size:
-                clamp(42px, 7vw, 75px);
+    letter-spacing:-3px;
+}
 
-            line-height:
-                0.95;
 
-            font-weight:
-                950;
+.page-title h1 span{
+    color:#42ff88;
+}
 
-            letter-spacing:
-                -3px;
-        }
 
+.page-title p{
 
-        .page-title h1 span {
+    max-width:650px;
 
-            color:
-                #42ff88;
-        }
+    margin:20px auto 0;
 
+    color:#aaa;
 
-        .page-title p {
+    font-size:15px;
 
-            max-width:
-                650px;
+    line-height:1.7;
+}
 
-            margin:
-                20px auto 0;
 
-            color:
-                #aaa;
+/* =========================================================
+   PANEL
+========================================================= */
 
-            font-size:
-                15px;
+.game-panel{
 
-            line-height:
-                1.7;
-        }
+    background:rgba(5,8,10,.82);
 
+    border:1px solid rgba(255,255,255,.09);
 
-        /* =====================================================
-           PANEL PRINCIPAL
-        ===================================================== */
+    border-radius:22px;
 
-        .game-panel {
+    padding:35px;
 
-            background:
-                rgba(5,8,10,0.82);
+    backdrop-filter:blur(18px);
 
-            border:
-                1px solid
-                rgba(255,255,255,0.09);
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.45);
+}
 
-            border-radius:
-                22px;
 
-            padding:
-                35px;
+/* =========================================================
+   MARCADOR
+========================================================= */
 
-            backdrop-filter:
-                blur(18px);
+.scoreboard{
 
-            box-shadow:
-                0 25px 80px
-                rgba(0,0,0,0.45);
-        }
+    display:grid;
 
+    grid-template-columns:repeat(3,1fr);
 
-        /* =====================================================
-           MARCADOR
-        ===================================================== */
+    gap:15px;
 
-        .scoreboard {
+    margin-bottom:30px;
+}
 
-            display:
-                grid;
 
-            grid-template-columns:
-                repeat(3, 1fr);
+.score-box{
 
-            gap:
-                15px;
+    padding:17px;
 
-            margin-bottom:
-                30px;
-        }
+    text-align:center;
 
+    border-radius:12px;
 
-        .score-box {
+    background:rgba(255,255,255,.04);
 
-            padding:
-                17px;
+    border:1px solid rgba(255,255,255,.07);
+}
 
-            text-align:
-                center;
 
-            border-radius:
-                12px;
+.score-box .label{
 
-            background:
-                rgba(255,255,255,0.04);
+    color:#777;
 
-            border:
-                1px solid
-                rgba(255,255,255,0.07);
-        }
+    font-size:10px;
 
+    font-weight:900;
 
-        .score-box .label {
+    letter-spacing:1px;
 
-            color:
-                #777;
+    margin-bottom:7px;
+}
 
-            font-size:
-                10px;
 
-            font-weight:
-                900;
+.score-box .value{
 
-            letter-spacing:
-                1px;
+    font-size:25px;
 
-            margin-bottom:
-                7px;
-        }
+    font-weight:900;
+}
 
 
-        .score-box .value {
+.score-box .value.green{
+    color:#42ff88;
+}
 
-            font-size:
-                25px;
 
-            font-weight:
-                900;
-        }
+/* =========================================================
+   ZONA RULETA
+========================================================= */
 
+.roulette-area{
 
-        .score-box .value.green {
+    display:flex;
 
-            color:
-                #42ff88;
-        }
+    flex-direction:column;
 
+    align-items:center;
 
-        /* =====================================================
-           ZONA DE RULETA
-        ===================================================== */
+    justify-content:center;
 
-        .roulette-area {
+    padding:20px 0 35px;
+}
 
-            display:
-                flex;
 
-            flex-direction:
-                column;
+/* =========================================================
+   WRAPPER
 
-            align-items:
-                center;
+   IMPORTANTE:
+   EL BALÓN Y LA FLECHA ESTÁN FUERA DEL DISCO.
+========================================================= */
 
-            justify-content:
-                center;
+.roulette-wrapper{
 
-            padding:
-                20px 0 35px;
-        }
+    position:relative;
 
+    width:min(390px,85vw);
 
-        /* =====================================================
-           CONTENEDOR DE RULETA
+    height:min(390px,85vw);
 
-           LA FLECHA ESTÁ FUERA DE LA RULETA.
-           POR ESO PERMANECE COMPLETAMENTE FIJA.
-        ===================================================== */
+    display:flex;
 
-        .roulette-wrapper {
+    align-items:center;
 
-            position:
-                relative;
+    justify-content:center;
+}
 
-            width:
-                min(390px, 85vw);
 
-            height:
-                min(410px, 92vw);
+/* =========================================================
+   DISCO DE RULETA
 
-            display:
-                flex;
+   ESTE ELEMENTO ES EL ÚNICO QUE GIRA.
+========================================================= */
 
-            align-items:
-                flex-end;
+.roulette{
 
-            justify-content:
-                center;
-        }
+    position:absolute;
 
+    left:50%;
+    top:50%;
 
-        /* =====================================================
-           RULETA
+    width:min(350px,78vw);
+    height:min(350px,78vw);
 
-           EXACTAMENTE 6 SECTORES IGUALES.
-           1 - 2 - 3 - 1 - 2 - 3
-        ===================================================== */
+    transform:
+        translate(-50%,-50%)
+        rotate(0deg);
 
-        .roulette {
+    border-radius:50%;
 
-            position:
-                relative;
+    overflow:hidden;
 
-            width:
-                min(350px, 78vw);
+    /*
+       6 SECTORES PERFECTAMENTE IGUALES
+       
+       1 = VERDE
+       2 = OSCURO
+       3 = VERDE
+       1 = OSCURO
+       2 = VERDE
+       3 = OSCURO
+    */
 
-            height:
-                min(350px, 78vw);
+    background:
 
-            border-radius:
-                50%;
+        conic-gradient(
+            from -30deg,
 
-            background:
+            #42ff88 0deg 60deg,
 
-                conic-gradient(
-                    from -30deg,
+            #101619 60deg 120deg,
 
-                    #42ff88 0deg 60deg,
+            #42ff88 120deg 180deg,
 
-                    #101619 60deg 120deg,
+            #101619 180deg 240deg,
 
-                    #42ff88 120deg 180deg,
+            #42ff88 240deg 300deg,
 
-                    #101619 180deg 240deg,
+            #101619 300deg 360deg
+        );
 
-                    #42ff88 240deg 300deg,
+    border:8px solid #c99a42;
 
-                    #101619 300deg 360deg
-                );
+    box-shadow:
 
-            border:
-                8px solid
-                rgba(255,255,255,0.13);
+        0 0 0 3px #e2bd6a,
 
-            box-shadow:
+        0 0 0 8px rgba(0,0,0,.35),
 
-                0 0 0 8px
-                rgba(0,0,0,0.28),
+        inset 0 0 25px rgba(0,0,0,.35),
 
-                inset 0 0 35px
-                rgba(0,0,0,0.30),
+        0 20px 50px rgba(0,0,0,.65);
 
-                0 25px 70px
-                rgba(0,0,0,0.60);
+    will-change:transform;
+}
 
-            transform:
-                rotate(0deg);
 
-            will-change:
-                transform;
-        }
+/* =========================================================
+   BORDE INTERIOR DORADO
 
+   IMITA EL ARO DE LA IMAGEN.
+========================================================= */
 
-        /* =====================================================
-           SEPARADORES DE SECTORES
-        ===================================================== */
+.roulette::before{
 
-        .roulette::after {
+    content:"";
 
-            content:
-                "";
+    position:absolute;
 
-            position:
-                absolute;
+    inset:10px;
 
-            inset:
-                0;
+    border-radius:50%;
 
-            border-radius:
-                50%;
+    border:3px solid rgba(255,255,255,.25);
 
-            background:
+    box-shadow:
+        inset 0 0 0 3px rgba(120,75,15,.35);
 
-                conic-gradient(
+    pointer-events:none;
 
-                    from -30deg,
+    z-index:5;
+}
 
-                    transparent 0deg 58.5deg,
-                    rgba(255,255,255,0.25) 58.5deg 61.5deg,
 
-                    transparent 61.5deg 118.5deg,
-                    rgba(255,255,255,0.25) 118.5deg 121.5deg,
+/* =========================================================
+   SEPARADORES
 
-                    transparent 121.5deg 178.5deg,
-                    rgba(255,255,255,0.25) 178.5deg 181.5deg,
+   6 RADIOS EXACTOS
+========================================================= */
 
-                    transparent 181.5deg 238.5deg,
-                    rgba(255,255,255,0.25) 238.5deg 241.5deg,
+.roulette::after{
 
-                    transparent 241.5deg 298.5deg,
-                    rgba(255,255,255,0.25) 298.5deg 301.5deg,
+    content:"";
 
-                    transparent 301.5deg 358.5deg,
-                    rgba(255,255,255,0.25) 358.5deg 360deg
-                );
+    position:absolute;
 
-            pointer-events:
-                none;
+    inset:0;
 
-            z-index:
-                2;
-        }
+    border-radius:50%;
 
+    background:
 
-        /* =====================================================
-           ANILLO INTERIOR
-        ===================================================== */
+        conic-gradient(
 
-        .roulette::before {
+            from -30deg,
 
-            content:
-                "";
+            transparent 0deg 58deg,
 
-            position:
-                absolute;
+            rgba(255,255,255,.35) 58deg 62deg,
 
-            inset:
-                12%;
+            transparent 62deg 118deg,
 
-            border-radius:
-                50%;
+            rgba(255,255,255,.35) 118deg 122deg,
 
-            border:
-                1px solid
-                rgba(255,255,255,0.22);
+            transparent 122deg 178deg,
 
-            box-shadow:
-                inset 0 0 30px
-                rgba(0,0,0,0.25);
+            rgba(255,255,255,.35) 178deg 182deg,
 
-            pointer-events:
-                none;
+            transparent 182deg 238deg,
 
-            z-index:
-                3;
-        }
+            rgba(255,255,255,.35) 238deg 242deg,
 
+            transparent 242deg 298deg,
 
-        /* =====================================================
-           NÚMEROS
+            rgba(255,255,255,.35) 298deg 302deg,
 
-           SE GENERAN EN EL CENTRO Y SE COLOCAN
-           EXACTAMENTE EN EL CENTRO DE CADA SECTOR.
-        ===================================================== */
+            transparent 302deg 358deg,
 
-        .roulette-text {
+            rgba(255,255,255,.35) 358deg 360deg
+        );
 
-            position:
-                absolute;
+    pointer-events:none;
 
-            top:
-                50%;
+    z-index:4;
+}
 
-            left:
-                50%;
 
-            width:
-                48px;
+/* =========================================================
+   NUMEROS
 
-            height:
-                48px;
+   MUY IMPORTANTE:
 
-            margin:
-                -24px;
+   LOS NÚMEROS ESTÁN DENTRO DEL DISCO.
 
-            display:
-                flex;
+   NO SE ACTUALIZAN DURANTE EL GIRO.
+   NO TIENEN TRANSFORMACIONES INDIVIDUALES.
+========================================================= */
 
-            align-items:
-                center;
+.roulette-text{
 
-            justify-content:
-                center;
+    position:absolute;
 
-            font-size:
-                27px;
+    left:50%;
+    top:50%;
 
-            font-weight:
-                950;
+    width:48px;
+    height:48px;
 
-            border-radius:
-                50%;
+    margin-left:-24px;
+    margin-top:-24px;
 
-            z-index:
-                6;
+    display:flex;
 
-            pointer-events:
-                none;
+    align-items:center;
+    justify-content:center;
 
-            text-shadow:
-                0 3px 8px
-                rgba(0,0,0,0.45);
+    font-size:28px;
 
-            transform:
-                rotate(var(--angle))
-                translateY(-105px)
-                rotate(calc(-1 * var(--angle)));
+    font-weight:950;
 
-            will-change:
-                transform;
-        }
+    z-index:7;
 
+    pointer-events:none;
 
-        /* =====================================================
-           COLORES DE LOS NÚMEROS
-        ===================================================== */
+    /*
+       SIN SOMBRA NEGRA
+    */
 
-        .number-green {
+    text-shadow:none;
 
-            color:
-                #061009;
-        }
+    /*
+       Cada número se coloca una sola vez.
+    */
+}
 
 
-        .number-dark {
+/* =========================================================
+   POSICIONES DE LOS NUMEROS
 
-            color:
-                white;
-        }
+   RADIO FIJO.
+========================================================= */
 
+.number-1{
+    transform:
+        rotate(0deg)
+        translateY(-105px);
+}
 
-        /* =====================================================
-           CENTRO
-        ===================================================== */
 
-        .roulette-center {
+.number-2{
+    transform:
+        rotate(60deg)
+        translateY(-105px);
+}
 
-            position:
-                absolute;
 
-            left:
-                50%;
+.number-3{
+    transform:
+        rotate(120deg)
+        translateY(-105px);
+}
 
-            top:
-                50%;
 
-            transform:
-                translate(-50%, -50%);
+.number-4{
+    transform:
+        rotate(180deg)
+        translateY(-105px);
+}
 
-            width:
-                82px;
 
-            height:
-                82px;
+.number-5{
+    transform:
+        rotate(240deg)
+        translateY(-105px);
+}
 
-            border-radius:
-                50%;
 
-            display:
-                flex;
+.number-6{
+    transform:
+        rotate(300deg)
+        translateY(-105px);
+}
 
-            align-items:
-                center;
 
-            justify-content:
-                center;
+/*
+   Como el número está girado junto al sector,
+   lo corregimos SOLO visualmente.
 
-            background:
-                #070a0c;
+   Esto mantiene el texto derecho mientras
+   permanece físicamente en su sector.
+*/
 
-            border:
-                5px solid
-                #42ff88;
+.number-1{
+    margin-left:-24px;
+    margin-top:-24px;
+}
 
-            font-size:
-                28px;
 
-            box-shadow:
-                0 0 30px
-                rgba(66,255,136,0.25);
+.number-2{
+    margin-left:-24px;
+    margin-top:-24px;
+}
 
-            z-index:
-                10;
-        }
 
+.number-3{
+    margin-left:-24px;
+    margin-top:-24px;
+}
 
-        /* =====================================================
-           FLECHA FIJA
 
-           NO ES HIJA DE .roulette.
-           NUNCA GIRA.
-        ===================================================== */
+.number-4{
+    margin-left:-24px;
+    margin-top:-24px;
+}
 
-        .pointer {
 
-            position:
-                absolute;
+.number-5{
+    margin-left:-24px;
+    margin-top:-24px;
+}
 
-            top:
-                0;
 
-            left:
-                50%;
+.number-6{
+    margin-left:-24px;
+    margin-top:-24px;
+}
 
-            transform:
-                translateX(-50%);
 
-            width:
-                0;
+/* =========================================================
+   COLORES
+========================================================= */
 
-            height:
-                0;
+.number-green{
+    color:#061009;
+}
 
-            border-left:
-                17px solid transparent;
 
-            border-right:
-                17px solid transparent;
+.number-dark{
+    color:white;
+}
 
-            border-top:
-                38px solid white;
 
-            filter:
-                drop-shadow(
-                    0 6px 7px
-                    rgba(0,0,0,0.60)
-                );
+/* =========================================================
+   CENTRO FIJO
 
-            z-index:
-                30;
-        }
+   ESTE ELEMENTO NO ESTÁ DENTRO DE .roulette.
 
+   POR ESO NUNCA GIRA.
+========================================================= */
 
-        /* =====================================================
-           BOTÓN GIRAR
-        ===================================================== */
+.roulette-center{
 
-        .spin-button {
+    position:absolute;
 
-            margin-top:
-                30px;
+    left:50%;
+    top:50%;
 
-            padding:
-                16px 40px;
+    transform:translate(-50%,-50%);
 
-            border:
-                none;
+    width:76px;
+    height:76px;
 
-            border-radius:
-                9px;
+    border-radius:50%;
 
-            background:
-                #42ff88;
+    display:flex;
 
-            color:
-                #061009;
+    align-items:center;
+    justify-content:center;
 
-            font-size:
-                14px;
+    background:
 
-            font-weight:
-                950;
+        radial-gradient(
+            circle at 35% 30%,
+            #f4d47a 0%,
+            #d39b35 35%,
+            #9a6417 70%,
+            #70440c 100%
+        );
 
-            cursor:
-                pointer;
+    border:5px solid #e2bd6a;
 
-            transition:
-                0.25s;
+    box-shadow:
 
-            box-shadow:
-                0 12px 35px
-                rgba(66,255,136,0.20);
-        }
+        0 0 0 3px #80520f,
 
+        0 7px 18px rgba(0,0,0,.55);
 
-        .spin-button:hover {
+    font-size:30px;
 
-            transform:
-                translateY(-3px);
+    z-index:20;
 
-            box-shadow:
-                0 18px 45px
-                rgba(66,255,136,0.35);
-        }
+    pointer-events:none;
+}
 
 
-        .spin-button:disabled {
+/* =========================================================
+   DETALLE DEL CENTRO
+========================================================= */
 
-            opacity:
-                0.45;
+.roulette-center::after{
 
-            cursor:
-                not-allowed;
+    content:"";
 
-            transform:
-                none;
+    position:absolute;
 
-            box-shadow:
-                none;
-        }
+    width:18px;
+    height:18px;
 
+    border-radius:50%;
 
-        /* =====================================================
-           RESULTADO
-        ===================================================== */
+    background:rgba(255,255,255,.25);
 
-        .result {
+    top:13px;
+    left:17px;
 
-            display:
-                none;
+    filter:blur(2px);
+}
 
-            margin-top:
-                10px;
 
-            padding:
-                25px;
+/* =========================================================
+   FLECHA FIJA
+========================================================= */
 
-            text-align:
-                center;
+.pointer{
 
-            border-radius:
-                15px;
+    position:absolute;
 
-            background:
-                rgba(66,255,136,0.06);
+    top:-1px;
 
-            border:
-                1px solid
-                rgba(66,255,136,0.20);
-        }
+    left:50%;
 
+    transform:translateX(-50%);
 
-        .result.show {
+    width:0;
+    height:0;
 
-            display:
-                block;
+    border-left:17px solid transparent;
 
-            animation:
-                appear 0.35s ease;
-        }
+    border-right:17px solid transparent;
 
+    border-top:38px solid white;
 
-        @keyframes appear {
+    filter:
+        drop-shadow(
+            0 4px 5px rgba(0,0,0,.55)
+        );
 
-            from {
+    z-index:40;
+}
 
-                opacity:
-                    0;
 
-                transform:
-                    translateY(10px);
-            }
+/* =========================================================
+   BOTON
+========================================================= */
 
-            to {
+.spin-button{
 
-                opacity:
-                    1;
+    margin-top:30px;
 
-                transform:
-                    translateY(0);
-            }
-        }
+    padding:16px 40px;
 
+    border:none;
 
-        .points-result {
+    border-radius:9px;
 
-            color:
-                #42ff88;
+    background:#42ff88;
 
-            font-size:
-                13px;
+    color:#061009;
 
-            font-weight:
-                900;
+    font-size:14px;
 
-            letter-spacing:
-                2px;
+    font-weight:950;
 
-            margin-bottom:
-                10px;
-        }
+    cursor:pointer;
 
+    transition:.25s;
 
-        .result h2 {
+    box-shadow:
+        0 12px 35px rgba(66,255,136,.20);
+}
 
-            font-size:
-                34px;
 
-            margin-bottom:
-                7px;
-        }
+.spin-button:hover{
 
+    transform:translateY(-3px);
 
-        .result p {
+    box-shadow:
+        0 18px 45px rgba(66,255,136,.35);
+}
 
-            color:
-                #999;
 
-            font-size:
-                13px;
-        }
+.spin-button:disabled{
 
+    opacity:.45;
 
-        /* =====================================================
-           PREGUNTA
-        ===================================================== */
+    cursor:not-allowed;
 
-        .question-box {
+    transform:none;
 
-            display:
-                none;
+    box-shadow:none;
+}
 
-            margin-top:
-                25px;
 
-            padding:
-                30px;
+/* =========================================================
+   RESULTADO
+========================================================= */
 
-            border-radius:
-                16px;
+.result{
 
-            background:
-                rgba(255,255,255,0.035);
+    display:none;
 
-            border:
-                1px solid
-                rgba(255,255,255,0.08);
-        }
+    margin-top:10px;
 
+    padding:25px;
 
-        .question-box.show {
+    text-align:center;
 
-            display:
-                block;
+    border-radius:15px;
 
-            animation:
-                appear 0.4s ease;
-        }
+    background:rgba(66,255,136,.06);
 
+    border:1px solid rgba(66,255,136,.20);
+}
 
-        .question-top {
 
-            display:
-                flex;
+.result.show{
 
-            justify-content:
-                space-between;
+    display:block;
 
-            align-items:
-                center;
+    animation:appear .35s ease;
+}
 
-            gap:
-                15px;
 
-            margin-bottom:
-                18px;
-        }
+@keyframes appear{
 
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
 
-        .difficulty {
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
 
-            font-size:
-                10px;
 
-            font-weight:
-                950;
+.points-result{
 
-            letter-spacing:
-                1.5px;
+    color:#42ff88;
 
-            padding:
-                7px 11px;
+    font-size:13px;
 
-            border-radius:
-                5px;
+    font-weight:900;
 
-            background:
-                rgba(66,255,136,0.10);
+    letter-spacing:2px;
 
-            color:
-                #42ff88;
-        }
+    margin-bottom:10px;
+}
 
 
-        .category {
+.result h2{
 
-            color:
-                #777;
+    font-size:34px;
 
-            font-size:
-                11px;
+    margin-bottom:7px;
+}
 
-            font-weight:
-                800;
-        }
 
+.result p{
 
-        .question-box h3 {
+    color:#999;
 
-            font-size:
-                clamp(20px, 3vw, 28px);
+    font-size:13px;
+}
 
-            line-height:
-                1.35;
 
-            margin-bottom:
-                25px;
-        }
+/* =========================================================
+   PREGUNTA
+========================================================= */
 
+.question-box{
 
-        /* =====================================================
-           RESPUESTAS
-        ===================================================== */
+    display:none;
 
-        .answers {
+    margin-top:25px;
 
-            display:
-                grid;
+    padding:30px;
 
-            grid-template-columns:
-                repeat(2, 1fr);
+    border-radius:16px;
 
-            gap:
-                12px;
-        }
+    background:rgba(255,255,255,.035);
 
+    border:1px solid rgba(255,255,255,.08);
+}
 
-        .answer {
 
-            padding:
-                16px;
+.question-box.show{
 
-            text-align:
-                left;
+    display:block;
 
-            border-radius:
-                9px;
+    animation:appear .4s ease;
+}
 
-            border:
-                1px solid
-                rgba(255,255,255,0.08);
 
-            background:
-                rgba(255,255,255,0.035);
+.question-top{
 
-            color:
-                #ddd;
+    display:flex;
 
-            font-size:
-                13px;
+    justify-content:space-between;
 
-            font-weight:
-                700;
+    align-items:center;
 
-            cursor:
-                pointer;
+    gap:15px;
 
-            transition:
-                0.2s;
-        }
+    margin-bottom:18px;
+}
 
 
-        .answer:hover {
+.difficulty{
 
-            border-color:
-                rgba(66,255,136,0.40);
+    font-size:10px;
 
-            background:
-                rgba(66,255,136,0.06);
+    font-weight:950;
 
-            transform:
-                translateY(-2px);
-        }
+    letter-spacing:1.5px;
 
+    padding:7px 11px;
 
-        .answer.correct {
+    border-radius:5px;
 
-            background:
-                rgba(66,255,136,0.15);
+    background:rgba(66,255,136,.10);
 
-            border-color:
-                #42ff88;
+    color:#42ff88;
+}
 
-            color:
-                #42ff88;
-        }
 
+.category{
 
-        .answer.wrong {
+    color:#777;
 
-            background:
-                rgba(255,60,60,0.12);
+    font-size:11px;
 
-            border-color:
-                #ff5555;
+    font-weight:800;
+}
 
-            color:
-                #ff7777;
-        }
 
+.question-box h3{
 
-        .answer.disabled {
+    font-size:clamp(20px,3vw,28px);
 
-            cursor:
-                default;
+    line-height:1.35;
 
-            pointer-events:
-                none;
-        }
+    margin-bottom:25px;
+}
 
 
-        /* =====================================================
-           SIGUIENTE
-        ===================================================== */
+/* =========================================================
+   RESPUESTAS
+========================================================= */
 
-        .next-button {
+.answers{
 
-            display:
-                none;
+    display:grid;
 
-            margin:
-                22px auto 0;
+    grid-template-columns:repeat(2,1fr);
 
-            padding:
-                13px 25px;
+    gap:12px;
+}
 
-            border:
-                none;
 
-            border-radius:
-                8px;
+.answer{
 
-            background:
-                white;
+    padding:16px;
 
-            color:
-                #070909;
+    text-align:left;
 
-            font-size:
-                12px;
+    border-radius:9px;
 
-            font-weight:
-                950;
+    border:1px solid rgba(255,255,255,.08);
 
-            cursor:
-                pointer;
-        }
+    background:rgba(255,255,255,.035);
 
+    color:#ddd;
 
-        .next-button.show {
+    font-size:13px;
 
-            display:
-                block;
-        }
+    font-weight:700;
 
+    cursor:pointer;
 
-        /* =====================================================
-           INFORMACIÓN
-        ===================================================== */
+    transition:.2s;
+}
 
-        .info-grid {
 
-            display:
-                grid;
+.answer:hover{
 
-            grid-template-columns:
-                repeat(3, 1fr);
+    border-color:rgba(66,255,136,.40);
 
-            gap:
-                15px;
+    background:rgba(66,255,136,.06);
 
-            margin-top:
-                25px;
-        }
+    transform:translateY(-2px);
+}
 
 
-        .info-card {
+.answer.correct{
 
-            padding:
-                20px;
+    background:rgba(66,255,136,.15);
 
-            border-radius:
-                12px;
+    border-color:#42ff88;
 
-            background:
-                rgba(255,255,255,0.025);
+    color:#42ff88;
+}
 
-            border:
-                1px solid
-                rgba(255,255,255,0.06);
-        }
 
+.answer.wrong{
 
-        .info-card strong {
+    background:rgba(255,60,60,.12);
 
-            display:
-                block;
+    border-color:#ff5555;
 
-            color:
-                white;
+    color:#ff7777;
+}
 
-            font-size:
-                13px;
 
-            margin-bottom:
-                7px;
-        }
+.answer.disabled{
 
+    cursor:default;
 
-        .info-card span {
+    pointer-events:none;
+}
 
-            color:
-                #777;
 
-            font-size:
-                12px;
+/* =========================================================
+   SIGUIENTE
+========================================================= */
 
-            line-height:
-                1.5;
-        }
+.next-button{
 
+    display:none;
 
-        /* =====================================================
-           FOOTER
-        ===================================================== */
+    margin:22px auto 0;
 
-        footer {
+    padding:13px 25px;
 
-            padding:
-                45px 20px 30px;
+    border:none;
 
-            text-align:
-                center;
+    border-radius:8px;
 
-            background:
-                rgba(0,0,0,0.78);
+    background:white;
 
-            border-top:
-                1px solid
-                rgba(255,255,255,0.08);
+    color:#070909;
 
-            color:
-                #777;
+    font-size:12px;
 
-            font-size:
-                12px;
-        }
+    font-weight:950;
 
+    cursor:pointer;
+}
 
-        footer strong {
 
-            color:
-                #42ff88;
-        }
+.next-button.show{
+    display:block;
+}
 
 
-        .copyright {
+/* =========================================================
+   INFO
+========================================================= */
 
-            margin-top:
-                15px;
+.info-grid{
 
-            color:
-                #999;
-        }
+    display:grid;
 
+    grid-template-columns:repeat(3,1fr);
 
-        .created {
+    gap:15px;
 
-            margin-top:
-                7px;
+    margin-top:25px;
+}
 
-            color:
-                #666;
-        }
 
+.info-card{
 
-        .created strong {
+    padding:20px;
 
-            color:
-                #42ff88;
-        }
+    border-radius:12px;
 
+    background:rgba(255,255,255,.025);
 
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
+    border:1px solid rgba(255,255,255,.06);
+}
 
-        @media (max-width: 700px) {
 
-            .game-panel {
+.info-card strong{
 
-                padding:
-                    20px;
-            }
+    display:block;
 
-            .scoreboard {
+    color:white;
 
-                grid-template-columns:
-                    1fr;
-            }
+    font-size:13px;
 
-            .answers {
+    margin-bottom:7px;
+}
 
-                grid-template-columns:
-                    1fr;
-            }
 
-            .info-grid {
+.info-card span{
 
-                grid-template-columns:
-                    1fr;
-            }
+    color:#777;
 
-            .page-title h1 {
+    font-size:12px;
 
-                letter-spacing:
-                    -2px;
-            }
+    line-height:1.5;
+}
 
-            .roulette-wrapper {
 
-                height:
-                    min(390px, 90vw);
-            }
+/* =========================================================
+   FOOTER
+========================================================= */
 
-        }
+footer{
 
-    </style>
+    padding:45px 20px 30px;
+
+    text-align:center;
+
+    background:rgba(0,0,0,.78);
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    color:#777;
+
+    font-size:12px;
+}
+
+
+footer strong{
+    color:#42ff88;
+}
+
+
+.copyright{
+
+    margin-top:15px;
+
+    color:#999;
+}
+
+
+.created{
+
+    margin-top:7px;
+
+    color:#666;
+}
+
+
+.created strong{
+    color:#42ff88;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:700px){
+
+    .game-panel{
+        padding:20px;
+    }
+
+    .scoreboard{
+        grid-template-columns:1fr;
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .page-title h1{
+        letter-spacing:-2px;
+    }
+
+    .roulette-wrapper{
+
+        width:min(350px,90vw);
+
+        height:min(350px,90vw);
+    }
+
+    .roulette{
+
+        width:min(315px,80vw);
+
+        height:min(315px,80vw);
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -1355,2143 +1227,1466 @@
 <body>
 
 
-    <!-- =====================================================
-         NAVBAR
-    ====================================================== -->
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
-    <nav>
+<nav>
 
-        <a
-            href="index.html"
-            class="logo"
+    <a href="index.html" class="logo">
+        ⚽ FOOTBALL <span>GAMES</span>
+    </a>
+
+    <a href="index.html" class="back-button">
+        ← Volver al inicio
+    </a>
+
+</nav>
+
+
+<!-- =====================================================
+     CONTENIDO
+===================================================== -->
+
+<main class="container">
+
+
+<section class="page-title">
+
+    <div class="tag">
+        FOOTBALL GAMES • DESAFÍO
+    </div>
+
+    <h1>
+        RULETA
+        <span>FUTBOLERA</span>
+    </h1>
+
+    <p>
+        Gira la ruleta, consigue puntos y demuestra
+        cuánto sabes de fútbol. Cada partida utiliza
+        preguntas diferentes.
+    </p>
+
+</section>
+
+
+<section class="game-panel">
+
+
+<!-- =====================================================
+     MARCADOR
+===================================================== -->
+
+<div class="scoreboard">
+
+    <div class="score-box">
+
+        <div class="label">
+            PUNTUACIÓN
+        </div>
+
+        <div
+            class="value green"
+            id="score"
         >
-            ⚽ FOOTBALL <span>GAMES</span>
-        </a>
+            0
+        </div>
+
+    </div>
 
 
-        <a
-            href="index.html"
-            class="back-button"
+    <div class="score-box">
+
+        <div class="label">
+            PREGUNTAS
+        </div>
+
+        <div
+            class="value"
+            id="questionNumber"
         >
-            ← Volver al inicio
-        </a>
+            0 / 30
+        </div>
 
-    </nav>
-
-
-    <!-- =====================================================
-         CONTENIDO
-    ====================================================== -->
-
-    <main class="container">
+    </div>
 
 
-        <!-- TÍTULO -->
+    <div class="score-box">
 
-        <section class="page-title">
+        <div class="label">
+            RÉCORD
+        </div>
 
-            <div class="tag">
-                FOOTBALL GAMES • DESAFÍO
+        <div
+            class="value"
+            id="record"
+        >
+            0
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RULETA
+===================================================== -->
+
+<div class="roulette-area">
+
+    <div class="roulette-wrapper">
+
+
+        <!-- FLECHA FIJA -->
+
+        <div class="pointer"></div>
+
+
+        <!-- DISCO QUE GIRA -->
+
+        <div
+            class="roulette"
+            id="roulette"
+        >
+
+
+            <!-- NUMERO 1 -->
+
+            <div
+                class="roulette-text number-green number-1"
+            >
+                1
             </div>
 
-            <h1>
-                RULETA
-                <span>FUTBOLERA</span>
-            </h1>
 
-            <p>
-                Gira la ruleta, consigue puntos y demuestra
-                cuánto sabes de fútbol. Cada partida utiliza
-                preguntas diferentes.
-            </p>
+            <!-- NUMERO 2 -->
 
-        </section>
+            <div
+                class="roulette-text number-dark number-2"
+            >
+                2
+            </div>
+
+
+            <!-- NUMERO 3 -->
+
+            <div
+                class="roulette-text number-green number-3"
+            >
+                3
+            </div>
+
+
+            <!-- NUMERO 1 -->
+
+            <div
+                class="roulette-text number-dark number-4"
+            >
+                1
+            </div>
+
+
+            <!-- NUMERO 2 -->
+
+            <div
+                class="roulette-text number-green number-5"
+            >
+                2
+            </div>
+
+
+            <!-- NUMERO 3 -->
+
+            <div
+                class="roulette-text number-dark number-6"
+            >
+                3
+            </div>
+
+
+        </div>
 
 
         <!-- =================================================
-             PANEL DEL JUEGO
+             BALÓN FIJO
+
+             ESTÁ FUERA DE .roulette
         ================================================== -->
 
-        <section class="game-panel">
+        <div class="roulette-center">
+            ⚽
+        </div>
 
 
-            <!-- MARCADOR -->
+    </div>
 
-            <div class="scoreboard">
 
-                <div class="score-box">
+    <button
+        class="spin-button"
+        id="spinButton"
+        onclick="spinRoulette()"
+    >
+        GIRAR RULETA
+    </button>
 
-                    <div class="label">
-                        PUNTUACIÓN
-                    </div>
+</div>
 
-                    <div
-                        class="value green"
-                        id="score"
-                    >
-                        0
-                    </div>
 
-                </div>
+<!-- =====================================================
+     RESULTADO
+===================================================== -->
 
+<div
+    class="result"
+    id="result"
+>
 
-                <div class="score-box">
+    <div
+        class="points-result"
+        id="pointsResult"
+    >
+        +1 PUNTO
+    </div>
 
-                    <div class="label">
-                        PREGUNTAS
-                    </div>
+    <h2 id="resultTitle">
+        ¡1 PUNTO!
+    </h2>
 
-                    <div
-                        class="value"
-                        id="questionNumber"
-                    >
-                        0 / 30
-                    </div>
+    <p id="resultDescription">
+        Prepárate para la pregunta.
+    </p>
 
-                </div>
+</div>
 
 
-                <div class="score-box">
+<!-- =====================================================
+     PREGUNTA
+===================================================== -->
 
-                    <div class="label">
-                        RÉCORD
-                    </div>
+<div
+    class="question-box"
+    id="questionBox"
+>
 
-                    <div
-                        class="value"
-                        id="record"
-                    >
-                        0
-                    </div>
+    <div class="question-top">
 
-                </div>
+        <div
+            class="difficulty"
+            id="difficulty"
+        >
+            1 PUNTO
+        </div>
 
-            </div>
+        <div
+            class="category"
+            id="category"
+        >
+            HISTORIA
+        </div>
 
+    </div>
 
-            <!-- =================================================
-                 RULETA
-            ================================================== -->
 
-            <div class="roulette-area">
+    <h3 id="question">
+        Pregunta
+    </h3>
 
-                <div class="roulette-wrapper">
 
-                    <!-- FLECHA FIJA -->
+    <div
+        class="answers"
+        id="answers"
+    ></div>
 
-                    <div class="pointer"></div>
 
+    <button
+        class="next-button"
+        id="nextButton"
+        onclick="nextQuestion()"
+    >
+        SIGUIENTE PREGUNTA →
+    </button>
 
-                    <!-- RULETA -->
+</div>
 
-                    <div
-                        class="roulette"
-                        id="roulette"
-                    >
 
-                        <!-- 1 -->
+<!-- =====================================================
+     INFO
+===================================================== -->
 
-                        <div
-                            class="roulette-text number-green"
-                            data-angle="0"
-                        >
-                            1
-                        </div>
+<div class="info-grid">
 
 
-                        <!-- 2 -->
-
-                        <div
-                            class="roulette-text number-dark"
-                            data-angle="60"
-                        >
-                            2
-                        </div>
-
-
-                        <!-- 3 -->
-
-                        <div
-                            class="roulette-text number-green"
-                            data-angle="120"
-                        >
-                            3
-                        </div>
-
-
-                        <!-- 1 -->
-
-                        <div
-                            class="roulette-text number-dark"
-                            data-angle="180"
-                        >
-                            1
-                        </div>
-
-
-                        <!-- 2 -->
-
-                        <div
-                            class="roulette-text number-green"
-                            data-angle="240"
-                        >
-                            2
-                        </div>
-
-
-                        <!-- 3 -->
-
-                        <div
-                            class="roulette-text number-dark"
-                            data-angle="300"
-                        >
-                            3
-                        </div>
-
-
-                        <!-- CENTRO -->
-
-                        <div class="roulette-center">
-                            ⚽
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="spin-button"
-                    id="spinButton"
-                    onclick="spinRoulette()"
-                >
-                    GIRAR RULETA
-                </button>
-
-            </div>
-
-
-            <!-- =================================================
-                 RESULTADO
-            ================================================== -->
-
-            <div
-                class="result"
-                id="result"
-            >
-
-                <div
-                    class="points-result"
-                    id="pointsResult"
-                >
-                    +1 PUNTO
-                </div>
-
-                <h2 id="resultTitle">
-                    ¡1 PUNTO!
-                </h2>
-
-                <p id="resultDescription">
-                    Prepárate para la pregunta.
-                </p>
-
-            </div>
-
-
-            <!-- =================================================
-                 PREGUNTA
-            ================================================== -->
-
-            <div
-                class="question-box"
-                id="questionBox"
-            >
-
-                <div class="question-top">
-
-                    <div
-                        class="difficulty"
-                        id="difficulty"
-                    >
-                        1 PUNTO
-                    </div>
-
-                    <div
-                        class="category"
-                        id="category"
-                    >
-                        HISTORIA
-                    </div>
-
-                </div>
-
-
-                <h3 id="question">
-                    Pregunta
-                </h3>
-
-
-                <div
-                    class="answers"
-                    id="answers"
-                >
-                </div>
-
-
-                <button
-                    class="next-button"
-                    id="nextButton"
-                    onclick="nextQuestion()"
-                >
-                    SIGUIENTE PREGUNTA →
-                </button>
-
-            </div>
-
-
-            <!-- =================================================
-                 INFORMACIÓN
-            ================================================== -->
-
-            <div class="info-grid">
-
-                <div class="info-card">
-
-                    <strong>
-                        🟢 1 PUNTO
-                    </strong>
-
-                    <span>
-                        Preguntas accesibles sobre datos,
-                        clubes, títulos y fútbol general.
-                    </span>
-
-                </div>
-
-
-                <div class="info-card">
-
-                    <strong>
-                        🟡 2 PUNTOS
-                    </strong>
-
-                    <span>
-                        Preguntas de dificultad media sobre
-                        jugadores, carreras e historia.
-                    </span>
-
-                </div>
-
-
-                <div class="info-card">
-
-                    <strong>
-                        🔴 3 PUNTOS
-                    </strong>
-
-                    <span>
-                        Preguntas difíciles para los verdaderos
-                        enfermos del fútbol.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-        </section>
-
-    </main>
-
-
-    <!-- =====================================================
-         FOOTER
-    ===================================================== -->
-
-    <footer>
-
-        ⚽
+    <div class="info-card">
 
         <strong>
-            FOOTBALL GAMES Simulator
+            🟢 1 PUNTO
         </strong>
 
-        <br><br>
+        <span>
+            Preguntas accesibles sobre datos,
+            clubes, títulos y fútbol general.
+        </span>
 
-        Una experiencia futbolística creada
-        para los amantes del deporte.
+    </div>
 
 
-        <div class="copyright">
+    <div class="info-card">
 
-            © 2026 YoSoyAnthony.
-            Todos los derechos reservados.
+        <strong>
+            🟡 2 PUNTOS
+        </strong>
 
-        </div>
+        <span>
+            Preguntas de dificultad media sobre
+            jugadores, carreras e historia.
+        </span>
 
+    </div>
 
-        <div class="created">
 
-            Creado por
+    <div class="info-card">
 
-            <strong>
-                YoSoyAnthony
-            </strong>
+        <strong>
+            🔴 3 PUNTOS
+        </strong>
 
-        </div>
+        <span>
+            Preguntas difíciles para los verdaderos
+            enfermos del fútbol.
+        </span>
 
-    </footer>
+    </div>
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ===================================================== -->
+</div>
 
-    <script>
 
+</section>
 
-        /* =====================================================
-           BANCO DE PREGUNTAS
+</main>
 
-           30 PREGUNTAS:
-           10 DE 1 PUNTO
-           10 DE 2 PUNTOS
-           10 DE 3 PUNTOS
-        ===================================================== */
 
-        const questions = {
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
-            /* =================================================
-               1 PUNTO
-            ================================================= */
+<footer>
 
-            1: [
+    ⚽
 
-                {
-                    question:
-                        "¿Qué selección ganó el Mundial de 2018?",
+    <strong>
+        FOOTBALL GAMES Simulator
+    </strong>
 
-                    category:
-                        "MUNDIALES",
+    <br><br>
 
-                    answers: [
-                        "Francia",
-                        "Croacia",
-                        "Alemania",
-                        "Brasil"
-                    ],
+    Una experiencia futbolística creada
+    para los amantes del deporte.
 
-                    correct: 0
-                },
 
+    <div class="copyright">
 
-                {
-                    question:
-                        "¿Cuántos jugadores tiene un equipo en el campo?",
+        © 2026 YoSoyAnthony.
+        Todos los derechos reservados.
 
-                    category:
-                        "REGLAS",
+    </div>
 
-                    answers: [
-                        "9",
-                        "10",
-                        "11",
-                        "12"
-                    ],
 
-                    correct: 2
-                },
+    <div class="created">
 
+        Creado por
 
-                {
-                    question:
-                        "¿Qué país ganó el Mundial de 2022?",
+        <strong>
+            YoSoyAnthony
+        </strong>
 
-                    category:
-                        "MUNDIALES",
+    </div>
 
-                    answers: [
-                        "Francia",
-                        "Argentina",
-                        "Brasil",
-                        "España"
-                    ],
+</footer>
 
-                    correct: 1
-                },
 
+<script>
 
-                {
-                    question:
-                        "¿Qué club juega en el Santiago Bernabéu?",
+/* =========================================================
+   PREGUNTAS
+========================================================= */
 
-                    category:
-                        "CLUBES",
+const questions = {
 
-                    answers: [
-                        "Barcelona",
-                        "Real Madrid",
-                        "Sevilla",
-                        "Valencia"
-                    ],
+1:[
 
-                    correct: 1
-                },
+{
+question:"¿Qué selección ganó el Mundial de 2018?",
+category:"MUNDIALES",
+answers:["Francia","Croacia","Alemania","Brasil"],
+correct:0
+},
 
+{
+question:"¿Cuántos jugadores tiene un equipo en el campo?",
+category:"REGLAS",
+answers:["9","10","11","12"],
+correct:2
+},
+
+{
+question:"¿Qué país ganó el Mundial de 2022?",
+category:"MUNDIALES",
+answers:["Francia","Argentina","Brasil","España"],
+correct:1
+},
+
+{
+question:"¿Qué club juega en el Santiago Bernabéu?",
+category:"CLUBES",
+answers:["Barcelona","Real Madrid","Sevilla","Valencia"],
+correct:1
+},
+
+{
+question:"¿Qué selección ganó el Mundial de 2010?",
+category:"MUNDIALES",
+answers:["España","Países Bajos","Alemania","Italia"],
+correct:0
+},
+
+{
+question:"¿Quién es conocido como 'La Pulga'?",
+category:"JUGADORES",
+answers:["Cristiano Ronaldo","Neymar","Lionel Messi","Luis Suárez"],
+correct:2
+},
+
+{
+question:"¿Qué país ganó la Eurocopa 2016?",
+category:"EUROCOPA",
+answers:["Portugal","Francia","Alemania","España"],
+correct:0
+},
+
+{
+question:"¿Qué torneo disputan las selecciones sudamericanas?",
+category:"SUDAMÉRICA",
+answers:["Copa América","Copa Oro","Eurocopa","Nations League"],
+correct:0
+},
+
+{
+question:"¿Cuántos minutos dura normalmente un partido?",
+category:"REGLAS",
+answers:["80","90","100","120"],
+correct:1
+},
+
+{
+question:"¿Qué selección tiene como apodo 'La Roja'?",
+category:"SELECCIONES",
+answers:["España","Italia","Portugal","Bélgica"],
+correct:0
+}
+
+],
+
+
+2:[
+
+{
+question:"¿Qué jugador ganó la Champions con Real Madrid y Manchester United?",
+category:"CARRERAS",
+answers:["Cristiano Ronaldo","Karim Benzema","Luka Modrić","Toni Kroos"],
+correct:0
+},
+
+{
+question:"¿Qué selección perdió la final del Mundial 2018?",
+category:"MUNDIALES",
+answers:["Bélgica","Croacia","Inglaterra","Brasil"],
+correct:1
+},
+
+{
+question:"¿Qué club ganó la Champions League 2012?",
+category:"CHAMPIONS",
+answers:["Chelsea","Inter","Barcelona","Manchester United"],
+correct:0
+},
+
+{
+question:"¿Quién ganó el Balón de Oro en 2007?",
+category:"PREMIOS",
+answers:["Kaká","Cristiano Ronaldo","Lionel Messi","Ronaldinho"],
+correct:0
+},
+
+{
+question:"¿Qué delantero fue conocido como 'El Fenómeno'?",
+category:"LEYENDAS",
+answers:["Ronaldo Nazário","Romário","Adriano","Bebeto"],
+correct:0
+},
+
+{
+question:"¿Qué selección ganó la Eurocopa 2020?",
+category:"EUROCOPA",
+answers:["Inglaterra","Italia","España","Portugal"],
+correct:1
+},
+
+{
+question:"¿Qué jugador ganó el Balón de Oro en 2018?",
+category:"PREMIOS",
+answers:["Luka Modrić","Cristiano Ronaldo","Lionel Messi","Neymar"],
+correct:0
+},
+
+{
+question:"¿Qué club ganó la Champions League en 2013?",
+category:"CHAMPIONS",
+answers:["Borussia Dortmund","Bayern Múnich","Real Madrid","Barcelona"],
+correct:1
+},
+
+{
+question:"¿Quién marcó el gol de España en la final del Mundial 2010?",
+category:"MUNDIALES",
+answers:["David Villa","Fernando Torres","Andrés Iniesta","Xavi"],
+correct:2
+},
+
+{
+question:"¿Qué selección ganó la Copa América 2021?",
+category:"SUDAMÉRICA",
+answers:["Brasil","Argentina","Chile","Uruguay"],
+correct:1
+}
+
+],
+
+
+3:[
+
+{
+question:"¿Quién fue el máximo goleador del Mundial de 1990?",
+category:"MUNDIALES",
+answers:["Salvatore Schillaci","Gary Lineker","Diego Maradona","Roger Milla"],
+correct:0
+},
+
+{
+question:"¿Qué jugador ganó la Champions con Ajax, Real Madrid y AC Milan?",
+category:"CARRERAS",
+answers:["Clarence Seedorf","Edgar Davids","Patrick Kluivert","Ruud Gullit"],
+correct:0
+},
+
+{
+question:"¿Qué selección ganó el Mundial de 1966?",
+category:"HISTORIA",
+answers:["Brasil","Alemania","Inglaterra","Argentina"],
+correct:2
+},
+
+{
+question:"¿Qué club ganó la primera Copa de Europa?",
+category:"CHAMPIONS",
+answers:["Real Madrid","AC Milan","Benfica","Barcelona"],
+correct:0
+},
+
+{
+question:"¿Quién marcó el famoso gol de la 'Mano de Dios'?",
+category:"LEYENDAS",
+answers:["Pelé","Diego Maradona","Johan Cruyff","Zico"],
+correct:1
+},
+
+{
+question:"¿Qué país organizó el Mundial de 1970?",
+category:"HISTORIA",
+answers:["Brasil","México","Italia","Argentina"],
+correct:1
+},
+
+{
+question:"¿Qué jugador ganó la Champions con tres clubes diferentes?",
+category:"CHAMPIONS",
+answers:["Clarence Seedorf","Xavi","Iker Casillas","Sergio Ramos"],
+correct:0
+},
+
+{
+question:"¿Quién fue Bota de Oro del Mundial de 2014?",
+category:"MUNDIALES",
+answers:["Thomas Müller","Lionel Messi","James Rodríguez","Neymar"],
+correct:2
+},
+
+{
+question:"¿Qué selección ganó el Mundial de 1954?",
+category:"HISTORIA",
+answers:["Brasil","Uruguay","Alemania Occidental","Hungría"],
+correct:2
+},
+
+{
+question:"¿Qué jugador marcó dos goles en la final del Mundial 2002?",
+category:"MUNDIALES",
+answers:["Ronaldo Nazário","Rivaldo","Ronaldinho","Cafu"],
+correct:0
+}
+
+]
+
+};
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let score=0;
+
+let questionCount=0;
+
+let currentPoints=0;
+
+let rotation=0;
+
+let usedQuestions=[];
+
+let currentQuestion=null;
+
+let isSpinning=false;
+
+const maxQuestions=30;
+
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+let audioContext=null;
+
+
+function initAudio(){
+
+    if(!audioContext){
+
+        audioContext=
+            new(
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+    }
+
+    if(audioContext.state==="suspended"){
+        audioContext.resume();
+    }
+}
+
+
+function playRouletteTick(speed=1){
+
+    if(!audioContext)return;
+
+    const now=audioContext.currentTime;
 
-                {
-                    question:
-                        "¿Qué selección ganó el Mundial de 2010?",
+    const oscillator=
+        audioContext.createOscillator();
 
-                    category:
-                        "MUNDIALES",
+    const gain=
+        audioContext.createGain();
 
-                    answers: [
-                        "España",
-                        "Países Bajos",
-                        "Alemania",
-                        "Italia"
-                    ],
+    oscillator.type="square";
 
-                    correct: 0
-                },
+    oscillator.frequency.setValueAtTime(
+        700+Math.min(speed*25,350),
+        now
+    );
 
+    gain.gain.setValueAtTime(
+        .0001,
+        now
+    );
 
-                {
-                    question:
-                        "¿Quién es conocido como 'La Pulga'?",
+    gain.gain.exponentialRampToValueAtTime(
+        .075,
+        now+.004
+    );
 
-                    category:
-                        "JUGADORES",
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now+.035
+    );
 
-                    answers: [
-                        "Cristiano Ronaldo",
-                        "Neymar",
-                        "Lionel Messi",
-                        "Luis Suárez"
-                    ],
+    oscillator.connect(gain);
 
-                    correct: 2
-                },
+    gain.connect(audioContext.destination);
 
+    oscillator.start(now);
+
+    oscillator.stop(now+.04);
+}
 
-                {
-                    question:
-                        "¿Qué país ganó la Eurocopa 2016?",
 
-                    category:
-                        "EUROCOPA",
+function playCorrectSound(){
 
-                    answers: [
-                        "Portugal",
-                        "Francia",
-                        "Alemania",
-                        "España"
-                    ],
+    if(!audioContext)return;
 
-                    correct: 0
-                },
+    const now=audioContext.currentTime;
 
+    const notes=[
+        523.25,
+        659.25,
+        783.99
+    ];
 
-                {
-                    question:
-                        "¿Qué torneo disputan selecciones sudamericanas?",
+    notes.forEach((frequency,index)=>{
 
-                    category:
-                        "SUDAMÉRICA",
+        const oscillator=
+            audioContext.createOscillator();
 
-                    answers: [
-                        "Copa América",
-                        "Copa Oro",
-                        "Eurocopa",
-                        "Nations League"
-                    ],
+        const gain=
+            audioContext.createGain();
 
-                    correct: 0
-                },
+        const start=
+            now+index*.09;
 
+        oscillator.type="sine";
 
-                {
-                    question:
-                        "¿Cuántos minutos dura un partido normalmente?",
+        oscillator.frequency.setValueAtTime(
+            frequency,
+            start
+        );
 
-                    category:
-                        "REGLAS",
+        gain.gain.setValueAtTime(
+            .0001,
+            start
+        );
 
-                    answers: [
-                        "80",
-                        "90",
-                        "100",
-                        "120"
-                    ],
+        gain.gain.exponentialRampToValueAtTime(
+            .16,
+            start+.015
+        );
 
-                    correct: 1
-                },
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            start+.25
+        );
 
+        oscillator.connect(gain);
 
-                {
-                    question:
-                        "¿Qué selección tiene como apodo 'La Roja'?",
+        gain.connect(audioContext.destination);
 
-                    category:
-                        "SELECCIONES",
+        oscillator.start(start);
 
-                    answers: [
-                        "España",
-                        "Italia",
-                        "Portugal",
-                        "Bélgica"
-                    ],
+        oscillator.stop(start+.27);
 
-                    correct: 0
-                }
+    });
+}
 
-            ],
 
+function playWrongSound(){
 
-            /* =================================================
-               2 PUNTOS
-            ================================================= */
+    if(!audioContext)return;
 
-            2: [
+    const now=audioContext.currentTime;
 
-                {
-                    question:
-                        "¿Qué jugador ganó la Champions con Real Madrid y Manchester United?",
+    const oscillator=
+        audioContext.createOscillator();
 
-                    category:
-                        "CARRERAS",
+    const gain=
+        audioContext.createGain();
 
-                    answers: [
-                        "Cristiano Ronaldo",
-                        "Karim Benzema",
-                        "Luka Modrić",
-                        "Toni Kroos"
-                    ],
+    oscillator.type="sawtooth";
 
-                    correct: 0
-                },
+    oscillator.frequency.setValueAtTime(
+        220,
+        now
+    );
 
+    oscillator.frequency.exponentialRampToValueAtTime(
+        100,
+        now+.25
+    );
 
-                {
-                    question:
-                        "¿Qué selección perdió la final del Mundial 2018?",
+    gain.gain.setValueAtTime(
+        .0001,
+        now
+    );
 
-                    category:
-                        "MUNDIALES",
+    gain.gain.exponentialRampToValueAtTime(
+        .15,
+        now+.015
+    );
 
-                    answers: [
-                        "Bélgica",
-                        "Croacia",
-                        "Inglaterra",
-                        "Brasil"
-                    ],
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now+.30
+    );
 
-                    correct: 1
-                },
+    oscillator.connect(gain);
 
+    gain.connect(audioContext.destination);
 
-                {
-                    question:
-                        "¿Qué club ganó la Champions League 2012?",
+    oscillator.start(now);
 
-                    category:
-                        "CHAMPIONS",
+    oscillator.stop(now+.31);
+}
 
-                    answers: [
-                        "Chelsea",
-                        "Inter",
-                        "Barcelona",
-                        "Manchester United"
-                    ],
 
-                    correct: 0
-                },
+/* =========================================================
+   ELEMENTOS
+========================================================= */
 
+const roulette=
+    document.getElementById("roulette");
 
-                {
-                    question:
-                        "¿Quién ganó el Balón de Oro en 2007?",
+const spinButton=
+    document.getElementById("spinButton");
 
-                    category:
-                        "PREMIOS",
+const result=
+    document.getElementById("result");
 
-                    answers: [
-                        "Kaká",
-                        "Cristiano Ronaldo",
-                        "Lionel Messi",
-                        "Ronaldinho"
-                    ],
+const questionBox=
+    document.getElementById("questionBox");
 
-                    correct: 0
-                },
+const question=
+    document.getElementById("question");
 
+const answers=
+    document.getElementById("answers");
 
-                {
-                    question:
-                        "¿Qué delantero fue conocido como 'El Fenómeno'?",
+const scoreElement=
+    document.getElementById("score");
 
-                    category:
-                        "LEYENDAS",
+const questionNumber=
+    document.getElementById("questionNumber");
 
-                    answers: [
-                        "Ronaldo Nazário",
-                        "Romário",
-                        "Adriano",
-                        "Bebeto"
-                    ],
+const recordElement=
+    document.getElementById("record");
 
-                    correct: 0
-                },
 
+/* =========================================================
+   RECORD
+========================================================= */
 
-                {
-                    question:
-                        "¿Qué selección ganó la Eurocopa 2020?",
+let record=
+    Number(
+        localStorage.getItem(
+            "footballGamesRecord"
+        )
+    )||0;
 
-                    category:
-                        "EUROCOPA",
+recordElement.textContent=record;
 
-                    answers: [
-                        "Inglaterra",
-                        "Italia",
-                        "España",
-                        "Portugal"
-                    ],
 
-                    correct: 1
-                },
+/* =========================================================
+   SHUFFLE
+========================================================= */
 
+function shuffle(array){
 
-                {
-                    question:
-                        "¿Qué jugador ganó el Balón de Oro en 2018?",
+    for(
+        let i=array.length-1;
+        i>0;
+        i--
+    ){
 
-                    category:
-                        "PREMIOS",
-
-                    answers: [
-                        "Luka Modrić",
-                        "Cristiano Ronaldo",
-                        "Lionel Messi",
-                        "Neymar"
-                    ],
-
-                    correct: 0
-                },
-
-
-                {
-                    question:
-                        "¿Qué club ganó la Champions League en 2013?",
-
-                    category:
-                        "CHAMPIONS",
-
-                    answers: [
-                        "Borussia Dortmund",
-                        "Bayern Múnich",
-                        "Real Madrid",
-                        "Barcelona"
-                    ],
-
-                    correct: 1
-                },
-
-
-                {
-                    question:
-                        "¿Quién marcó el gol de España en la final del Mundial 2010?",
-
-                    category:
-                        "MUNDIALES",
-
-                    answers: [
-                        "David Villa",
-                        "Fernando Torres",
-                        "Andrés Iniesta",
-                        "Xavi"
-                    ],
-
-                    correct: 2
-                },
-
-
-                {
-                    question:
-                        "¿Qué selección ganó la Copa América 2021?",
-
-                    category:
-                        "SUDAMÉRICA",
-
-                    answers: [
-                        "Brasil",
-                        "Argentina",
-                        "Chile",
-                        "Uruguay"
-                    ],
-
-                    correct: 1
-                }
-
-            ],
-
-
-            /* =================================================
-               3 PUNTOS
-            ================================================= */
-
-            3: [
-
-                {
-                    question:
-                        "¿Quién fue el máximo goleador del Mundial de 1990?",
-
-                    category:
-                        "MUNDIALES",
-
-                    answers: [
-                        "Salvatore Schillaci",
-                        "Gary Lineker",
-                        "Diego Maradona",
-                        "Roger Milla"
-                    ],
-
-                    correct: 0
-                },
-
-
-                {
-                    question:
-                        "¿Qué jugador ganó la Champions con Ajax, Real Madrid y AC Milan?",
-
-                    category:
-                        "CARRERAS",
-
-                    answers: [
-                        "Clarence Seedorf",
-                        "Edgar Davids",
-                        "Patrick Kluivert",
-                        "Ruud Gullit"
-                    ],
-
-                    correct: 0
-                },
-
-
-                {
-                    question:
-                        "¿Qué selección ganó el Mundial de 1966?",
-
-                    category:
-                        "HISTORIA",
-
-                    answers: [
-                        "Brasil",
-                        "Alemania",
-                        "Inglaterra",
-                        "Argentina"
-                    ],
-
-                    correct: 2
-                },
-
-
-                {
-                    question:
-                        "¿Qué club ganó la primera Copa de Europa?",
-
-                    category:
-                        "CHAMPIONS",
-
-                    answers: [
-                        "Real Madrid",
-                        "AC Milan",
-                        "Benfica",
-                        "Barcelona"
-                    ],
-
-                    correct: 0
-                },
-
-
-                {
-                    question:
-                        "¿Quién marcó el famoso gol de la 'Mano de Dios'?",
-
-                    category:
-                        "LEYENDAS",
-
-                    answers: [
-                        "Pelé",
-                        "Diego Maradona",
-                        "Johan Cruyff",
-                        "Zico"
-                    ],
-
-                    correct: 1
-                },
-
-
-                {
-                    question:
-                        "¿Qué país organizó el Mundial de 1970?",
-
-                    category:
-                        "HISTORIA",
-
-                    answers: [
-                        "Brasil",
-                        "México",
-                        "Italia",
-                        "Argentina"
-                    ],
-
-                    correct: 1
-                },
-
-
-                {
-                    question:
-                        "¿Qué jugador ganó la Champions con tres clubes diferentes?",
-
-                    category:
-                        "CHAMPIONS",
-
-                    answers: [
-                        "Clarence Seedorf",
-                        "Xavi",
-                        "Iker Casillas",
-                        "Sergio Ramos"
-                    ],
-
-                    correct: 0
-                },
-
-
-                {
-                    question:
-                        "¿Quién fue Bota de Oro del Mundial de 2014?",
-
-                    category:
-                        "MUNDIALES",
-
-                    answers: [
-                        "Thomas Müller",
-                        "Lionel Messi",
-                        "James Rodríguez",
-                        "Neymar"
-                    ],
-
-                    correct: 2
-                },
-
-
-                {
-                    question:
-                        "¿Qué selección ganó el Mundial de 1954?",
-
-                    category:
-                        "HISTORIA",
-
-                    answers: [
-                        "Brasil",
-                        "Uruguay",
-                        "Alemania Occidental",
-                        "Hungría"
-                    ],
-
-                    correct: 2
-                },
-
-
-                {
-                    question:
-                        "¿Qué jugador marcó dos goles en la final del Mundial 2002?",
-
-                    category:
-                        "MUNDIALES",
-
-                    answers: [
-                        "Ronaldo Nazário",
-                        "Rivaldo",
-                        "Ronaldinho",
-                        "Cafu"
-                    ],
-
-                    correct: 0
-                }
-
-            ]
-
-        };
-
-
-        /* =====================================================
-           VARIABLES
-        ===================================================== */
-
-        let score = 0;
-
-        let questionCount = 0;
-
-        let currentPoints = 0;
-
-        let rotation = 0;
-
-        let usedQuestions = [];
-
-        let currentQuestion = null;
-
-        let isSpinning = false;
-
-        const maxQuestions = 30;
-
-
-        /* =====================================================
-           AUDIO
-        ===================================================== */
-
-        let audioContext = null;
-
-
-        function initAudio() {
-
-            if (!audioContext) {
-
-                audioContext =
-                    new (
-                        window.AudioContext ||
-                        window.webkitAudioContext
-                    )();
-            }
-
-            if (
-                audioContext.state === "suspended"
-            ) {
-
-                audioContext.resume();
-            }
-        }
-
-
-        /* =====================================================
-           CLICK DE RULETA
-
-           EL CLICK SE PRODUCE SEGÚN LOS GRADOS
-           REALES QUE RECORRE LA RULETA.
-
-           Por eso:
-
-           rápido = clicks rápidos
-           lento = clicks lentos
-        ===================================================== */
-
-        function playRouletteTick(speed = 1) {
-
-            if (!audioContext) {
-                return;
-            }
-
-
-            const now =
-                audioContext.currentTime;
-
-
-            const oscillator =
-                audioContext.createOscillator();
-
-
-            const gain =
-                audioContext.createGain();
-
-
-            oscillator.type =
-                "square";
-
-
-            const frequency =
-                700 + Math.min(speed * 25, 350);
-
-
-            oscillator.frequency.setValueAtTime(
-                frequency,
-                now
+        const j=
+            Math.floor(
+                Math.random()*(i+1)
             );
 
+        [
+            array[i],
+            array[j]
+        ]=[
+            array[j],
+            array[i]
+        ];
+    }
 
-            gain.gain.setValueAtTime(
-                0.0001,
-                now
-            );
+    return array;
+}
 
 
-            gain.gain.exponentialRampToValueAtTime(
-                0.075,
-                now + 0.004
-            );
+/* =========================================================
+   GIRAR RULETA
 
+   IMPORTANTE:
 
-            gain.gain.exponentialRampToValueAtTime(
-                0.0001,
-                now + 0.035
-            );
+   YA NO SE TOCAN LOS NUMEROS.
 
+   SE MUEVE ENTERO EL DISCO.
+========================================================= */
 
-            oscillator.connect(gain);
+function spinRoulette(){
 
-            gain.connect(
-                audioContext.destination
-            );
+    if(
+        isSpinning ||
+        questionCount>=maxQuestions
+    ){
+        return;
+    }
 
 
-            oscillator.start(now);
+    initAudio();
 
-            oscillator.stop(
-                now + 0.04
-            );
-        }
+    isSpinning=true;
 
+    spinButton.disabled=true;
 
-        /* =====================================================
-           SONIDO CORRECTO
-        ===================================================== */
 
-        function playCorrectSound() {
+    result.classList.remove("show");
 
-            if (!audioContext) {
-                return;
-            }
+    questionBox.classList.remove("show");
 
+    document
+        .getElementById("nextButton")
+        .classList.remove("show");
 
-            const now =
-                audioContext.currentTime;
 
+    /* =====================================================
+       ELEGIR PUNTOS
+    ===================================================== */
 
-            const notes = [
-                523.25,
-                659.25,
-                783.99
-            ];
+    const possible=[1,2,3];
 
+    currentPoints=
+        possible[
+            Math.floor(
+                Math.random()*possible.length
+            )
+        ];
 
-            notes.forEach(
-                (frequency, index) => {
 
-                    const oscillator =
-                        audioContext.createOscillator();
+    /* =====================================================
+       SECTORES
 
-                    const gain =
-                        audioContext.createGain();
+       Los sectores están centrados en:
 
+       0
+       60
+       120
+       180
+       240
+       300
+    ===================================================== */
 
-                    const start =
-                        now +
-                        index * 0.09;
+    const sectors={
 
+        1:[0,180],
 
-                    oscillator.type =
-                        "sine";
+        2:[60,240],
 
+        3:[120,300]
 
-                    oscillator.frequency.setValueAtTime(
-                        frequency,
-                        start
-                    );
+    };
 
 
-                    gain.gain.setValueAtTime(
-                        0.0001,
-                        start
-                    );
+    const targetAngle=
+        sectors[currentPoints][
+            Math.floor(
+                Math.random()*2
+            )
+        ];
 
 
-                    gain.gain.exponentialRampToValueAtTime(
-                        0.16,
-                        start + 0.015
-                    );
+    /* =====================================================
+       POSICION ACTUAL
 
+       El puntero apunta hacia arriba.
 
-                    gain.gain.exponentialRampToValueAtTime(
-                        0.0001,
-                        start + 0.25
-                    );
+       Queremos que el centro del sector
+       elegido termine exactamente arriba.
+    ===================================================== */
 
+    const currentMod=
+        ((rotation%360)+360)%360;
 
-                    oscillator.connect(gain);
 
-                    gain.connect(
-                        audioContext.destination
-                    );
+    const desiredRotation=
+        -targetAngle;
 
 
-                    oscillator.start(start);
+    let difference=
+        desiredRotation-currentMod;
 
-                    oscillator.stop(
-                        start + 0.27
-                    );
 
-                }
-            );
-        }
+    difference=
+        ((difference%360)+360)%360;
 
 
-        /* =====================================================
-           SONIDO INCORRECTO
-        ===================================================== */
+    /* =====================================================
+       VUELTAS
+    ===================================================== */
 
-        function playWrongSound() {
-
-            if (!audioContext) {
-                return;
-            }
-
-
-            const now =
-                audioContext.currentTime;
-
-
-            const oscillator =
-                audioContext.createOscillator();
-
-
-            const gain =
-                audioContext.createGain();
-
-
-            oscillator.type =
-                "sawtooth";
-
-
-            oscillator.frequency.setValueAtTime(
-                220,
-                now
-            );
-
-
-            oscillator.frequency.exponentialRampToValueAtTime(
-                100,
-                now + 0.25
-            );
-
-
-            gain.gain.setValueAtTime(
-                0.0001,
-                now
-            );
-
-
-            gain.gain.exponentialRampToValueAtTime(
-                0.15,
-                now + 0.015
-            );
-
-
-            gain.gain.exponentialRampToValueAtTime(
-                0.0001,
-                now + 0.30
-            );
-
-
-            oscillator.connect(gain);
-
-            gain.connect(
-                audioContext.destination
-            );
-
-
-            oscillator.start(now);
-
-            oscillator.stop(
-                now + 0.31
-            );
-        }
-
-
-        /* =====================================================
-           ELEMENTOS
-        ===================================================== */
-
-        const roulette =
-            document.getElementById(
-                "roulette"
-            );
-
-
-        const spinButton =
-            document.getElementById(
-                "spinButton"
-            );
-
-
-        const result =
-            document.getElementById(
-                "result"
-            );
-
-
-        const questionBox =
-            document.getElementById(
-                "questionBox"
-            );
-
-
-        const question =
-            document.getElementById(
-                "question"
-            );
-
-
-        const answers =
-            document.getElementById(
-                "answers"
-            );
-
-
-        const scoreElement =
-            document.getElementById(
-                "score"
-            );
-
-
-        const questionNumber =
-            document.getElementById(
-                "questionNumber"
-            );
-
-
-        const recordElement =
-            document.getElementById(
-                "record"
-            );
-
-
-        const rouletteLabels =
-            document.querySelectorAll(
-                ".roulette-text"
-            );
-
-
-        /* =====================================================
-           PREPARAR POSICIONES DE LOS NÚMEROS
-        ===================================================== */
-
-        rouletteLabels.forEach(
-            label => {
-
-                const angle =
-                    Number(
-                        label.dataset.angle
-                    );
-
-                label.style.setProperty(
-                    "--angle",
-                    `${angle}deg`
-                );
-
-            }
+    const extraTurns=
+        7+
+        Math.floor(
+            Math.random()*3
         );
 
 
-        /* =====================================================
-           RÉCORD
-        ===================================================== */
-
-        let record =
-            Number(
-                localStorage.getItem(
-                    "footballGamesRecord"
-                )
-            ) || 0;
+    const startRotation=
+        rotation;
 
 
-        recordElement.textContent =
-            record;
+    const finalRotation=
+        rotation+
+        extraTurns*360+
+        difference;
 
 
-        /* =====================================================
-           MEZCLAR ARRAY
-        ===================================================== */
+    rotation=finalRotation;
 
-        function shuffle(array) {
 
-            return array.sort(
-                () =>
-                    Math.random() - 0.5
+    /* =====================================================
+       ANIMACION
+    ===================================================== */
+
+    const duration=4800;
+
+    const startTime=
+        performance.now();
+
+
+    let previousRotation=
+        startRotation;
+
+
+    let lastTickBoundary=
+        Math.floor(
+            startRotation/18
+        );
+
+
+    function animateRoulette(now){
+
+        const elapsed=
+            now-startTime;
+
+
+        const progress=
+            Math.min(
+                elapsed/duration,
+                1
             );
-        }
 
 
-        /* =====================================================
-           ACTUALIZAR NÚMEROS
+        /*
+           Frenado progresivo.
+        */
 
-           Los números permanecen derechos mientras
-           se desplazan junto con la ruleta.
-        ===================================================== */
-
-        function updateLabels(currentRotation) {
-
-            rouletteLabels.forEach(
-                label => {
-
-                    const angle =
-                        Number(
-                            label.dataset.angle
-                        );
-
-
-                    label.style.transform =
-                        `rotate(${angle}deg)
-                         translateY(-105px)
-                         rotate(${-angle - currentRotation}deg)`;
-
-                }
+        const eased=
+            1-
+            Math.pow(
+                1-progress,
+                4
             );
-        }
 
 
-        updateLabels(0);
+        const currentRotation=
+            startRotation+
+            (
+                finalRotation-
+                startRotation
+            )*
+            eased;
 
 
-        /* =====================================================
-           GIRAR RULETA
-        ===================================================== */
+        /*
+           SOLO GIRA EL DISCO.
 
-        function spinRoulette() {
+           El balón NO está aquí.
+           La flecha NO está aquí.
+        */
 
-            if (
-                isSpinning ||
-                questionCount >= maxQuestions
-            ) {
+        roulette.style.transform=
+            `translate(-50%,-50%) rotate(${currentRotation}deg)`;
 
-                return;
+
+        /* =================================================
+           AUDIO
+        ================================================= */
+
+        const delta=
+            Math.abs(
+                currentRotation-
+                previousRotation
+            );
+
+
+        const currentBoundary=
+            Math.floor(
+                currentRotation/18
+            );
+
+
+        if(
+            currentBoundary>
+            lastTickBoundary
+        ){
+
+            const crossed=
+                Math.min(
+                    currentBoundary-
+                    lastTickBoundary,
+                    3
+                );
+
+
+            const speed=
+                Math.max(
+                    delta,
+                    .1
+                );
+
+
+            for(
+                let i=0;
+                i<crossed;
+                i++
+            ){
+
+                playRouletteTick(speed);
+
             }
 
 
-            initAudio();
+            lastTickBoundary=
+                currentBoundary;
+        }
 
 
-            isSpinning =
-                true;
+        previousRotation=
+            currentRotation;
 
 
-            spinButton.disabled =
-                true;
-
-
-            result.classList.remove(
-                "show"
-            );
-
-
-            questionBox.classList.remove(
-                "show"
-            );
-
-
-            document.getElementById(
-                "nextButton"
-            ).classList.remove(
-                "show"
-            );
-
-
-            /* =================================================
-               ELEGIR DIFICULTAD
-            ================================================= */
-
-            const possible =
-                [1, 2, 3];
-
-
-            currentPoints =
-                possible[
-                    Math.floor(
-                        Math.random() *
-                        possible.length
-                    )
-                ];
-
-
-            /* =================================================
-               SECTORES
-
-               Cada dificultad aparece dos veces.
-
-               1 = 0° / 180°
-               2 = 60° / 240°
-               3 = 120° / 300°
-            ================================================= */
-
-            const sectors = {
-
-                1: [
-                    0,
-                    180
-                ],
-
-                2: [
-                    60,
-                    240
-                ],
-
-                3: [
-                    120,
-                    300
-                ]
-
-            };
-
-
-            const targetAngle =
-                sectors[currentPoints][
-                    Math.floor(
-                        Math.random() * 2
-                    )
-                ];
-
-
-            /* =================================================
-               CALCULAR ROTACIÓN
-
-               El puntero está arriba.
-
-               El centro del sector elegido
-               termina exactamente debajo del puntero.
-            ================================================= */
-
-            const currentMod =
-                ((rotation % 360) + 360) % 360;
-
-
-            const desiredRotation =
-                -targetAngle;
-
-
-            let difference =
-                desiredRotation -
-                currentMod;
-
-
-            difference =
-                ((difference % 360) + 360) % 360;
-
-
-            /* =================================================
-               VUELTAS
-
-               Entre 7 y 9 vueltas completas.
-            ================================================= */
-
-            const extraTurns =
-                7 +
-                Math.floor(
-                    Math.random() * 3
-                );
-
-
-            const startRotation =
-                rotation;
-
-
-            const finalRotation =
-                rotation +
-                extraTurns * 360 +
-                difference;
-
-
-            rotation =
-                finalRotation;
-
-
-            /* =================================================
-               ANIMACIÓN
-
-               requestAnimationFrame permite que el sonido
-               utilice exactamente la velocidad de la ruleta.
-            ================================================= */
-
-            const duration =
-                4800;
-
-
-            const startTime =
-                performance.now();
-
-
-            let previousRotation =
-                startRotation;
-
-
-            let lastTickBoundary =
-                Math.floor(
-                    startRotation / 18
-                );
-
-
-            function animateRoulette(now) {
-
-                const elapsed =
-                    now -
-                    startTime;
-
-
-                const progress =
-                    Math.min(
-                        elapsed / duration,
-                        1
-                    );
-
-
-                /* ---------------------------------------------
-                   EASING
-
-                   Muy rápida al principio.
-                   Frena progresivamente al final.
-                --------------------------------------------- */
-
-                const eased =
-                    1 -
-                    Math.pow(
-                        1 - progress,
-                        4
-                    );
-
-
-                const currentRotation =
-                    startRotation +
-                    (
-                        finalRotation -
-                        startRotation
-                    ) *
-                    eased;
-
-
-                roulette.style.transform =
-                    `rotate(${currentRotation}deg)`;
-
-
-                updateLabels(
-                    currentRotation
-                );
-
-
-                /* ---------------------------------------------
-                   VELOCIDAD REAL
-
-                   Diferencia de grados recorridos
-                   desde el frame anterior.
-                --------------------------------------------- */
-
-                const delta =
-                    Math.abs(
-                        currentRotation -
-                        previousRotation
-                    );
-
-
-                const currentBoundary =
-                    Math.floor(
-                        currentRotation / 18
-                    );
-
-
-                /* ---------------------------------------------
-                   SONIDO SINCRONIZADO
-
-                   Un click cada 18 grados.
-
-                   Si la ruleta va rápido:
-                   los clicks son rápidos.
-
-                   Si empieza a frenar:
-                   los clicks se separan.
-
-                   Cuando se detiene:
-                   dejan de sonar.
-                --------------------------------------------- */
-
-                if (
-                    currentBoundary >
-                    lastTickBoundary
-                ) {
-
-                    const crossed =
-                        Math.min(
-                            currentBoundary -
-                            lastTickBoundary,
-                            3
-                        );
-
-
-                    const speed =
-                        Math.max(
-                            delta,
-                            0.1
-                        );
-
-
-                    for (
-                        let i = 0;
-                        i < crossed;
-                        i++
-                    ) {
-
-                        playRouletteTick(
-                            speed
-                        );
-
-                    }
-
-
-                    lastTickBoundary =
-                        currentBoundary;
-                }
-
-
-                previousRotation =
-                    currentRotation;
-
-
-                if (
-                    progress < 1
-                ) {
-
-                    requestAnimationFrame(
-                        animateRoulette
-                    );
-
-                } else {
-
-                    roulette.style.transform =
-                        `rotate(${finalRotation}deg)`;
-
-
-                    updateLabels(
-                        finalRotation
-                    );
-
-
-                    isSpinning =
-                        false;
-
-
-                    showResult();
-                }
-
-            }
-
+        if(progress<1){
 
             requestAnimationFrame(
                 animateRoulette
             );
 
+        }else{
+
+            roulette.style.transform=
+                `translate(-50%,-50%) rotate(${finalRotation}deg)`;
+
+
+            isSpinning=false;
+
+            showResult();
         }
 
-
-        /* =====================================================
-           MOSTRAR RESULTADO
-        ===================================================== */
-
-        function showResult() {
-
-            document.getElementById(
-                "pointsResult"
-            ).textContent =
-                `+${currentPoints} PUNTO${
-                    currentPoints > 1
-                        ? "S"
-                        : ""
-                }`;
+    }
 
 
-            document.getElementById(
-                "resultTitle"
-            ).textContent =
-                `${currentPoints} PUNTO${
-                    currentPoints > 1
-                        ? "S"
-                        : ""
-                }`;
+    requestAnimationFrame(
+        animateRoulette
+    );
+
+}
 
 
-            document.getElementById(
-                "resultDescription"
-            ).textContent =
-                "La ruleta ha elegido tu nivel de dificultad.";
+/* =========================================================
+   RESULTADO
+========================================================= */
+
+function showResult(){
+
+    document.getElementById(
+        "pointsResult"
+    ).textContent=
+        `+${currentPoints} PUNTO${
+            currentPoints>1?"S":""
+        }`;
 
 
-            result.classList.add(
-                "show"
-            );
+    document.getElementById(
+        "resultTitle"
+    ).textContent=
+        `${currentPoints} PUNTO${
+            currentPoints>1?"S":""
+        }`;
 
 
-            setTimeout(
-                () => {
-
-                    generateQuestion();
-
-                },
-
-                700
-            );
-
-        }
+    document.getElementById(
+        "resultDescription"
+    ).textContent=
+        "La ruleta ha elegido tu nivel de dificultad.";
 
 
-        /* =====================================================
-           GENERAR PREGUNTA
-        ===================================================== */
+    result.classList.add("show");
 
-        function generateQuestion() {
 
-            let available =
-                questions[currentPoints]
-                .filter(
-                    q =>
-                        !usedQuestions.includes(
-                            q.question
-                        )
+    setTimeout(
+        ()=>{
+            generateQuestion();
+        },
+        700
+    );
+
+}
+
+
+/* =========================================================
+   GENERAR PREGUNTA
+========================================================= */
+
+function generateQuestion(){
+
+    let available=
+        questions[currentPoints]
+        .filter(
+            q=>
+                !usedQuestions.includes(
+                    q.question
+                )
+        );
+
+
+    if(available.length===0){
+
+        usedQuestions=[];
+
+        available=
+            questions[currentPoints];
+    }
+
+
+    currentQuestion=
+        available[
+            Math.floor(
+                Math.random()*available.length
+            )
+        ];
+
+
+    usedQuestions.push(
+        currentQuestion.question
+    );
+
+
+    question.textContent=
+        currentQuestion.question;
+
+
+    document.getElementById(
+        "difficulty"
+    ).textContent=
+        `${currentPoints} PUNTO${
+            currentPoints>1?"S":""
+        }`;
+
+
+    document.getElementById(
+        "category"
+    ).textContent=
+        currentQuestion.category;
+
+
+    answers.innerHTML="";
+
+
+    const shuffledAnswers=
+        currentQuestion.answers
+        .map(
+            (answer,index)=>({
+                answer,
+                index
+            })
+        );
+
+
+    shuffle(shuffledAnswers);
+
+
+    shuffledAnswers.forEach(item=>{
+
+        const button=
+            document.createElement("button");
+
+
+        button.className="answer";
+
+        button.textContent=
+            item.answer;
+
+
+        button.onclick=
+            ()=>{
+                checkAnswer(
+                    button,
+                    item.index
                 );
+            };
 
 
-            if (
-                available.length === 0
-            ) {
+        answers.appendChild(button);
 
-                usedQuestions = [];
+    });
 
 
-                available =
-                    questions[currentPoints];
-            }
+    questionBox.classList.add("show");
 
 
-            currentQuestion =
-                available[
-                    Math.floor(
-                        Math.random() *
-                        available.length
-                    )
-                ];
+    questionCount++;
 
 
-            usedQuestions.push(
-                currentQuestion.question
-            );
+    questionNumber.textContent=
+        `${questionCount} / ${maxQuestions}`;
 
+}
 
-            question.textContent =
-                currentQuestion.question;
 
+/* =========================================================
+   RESPUESTA
+========================================================= */
 
-            document.getElementById(
-                "difficulty"
-            ).textContent =
-                `${currentPoints} PUNTO${
-                    currentPoints > 1
-                        ? "S"
-                        : ""
-                }`;
+function checkAnswer(
+    button,
+    selectedIndex
+){
 
+    const allButtons=
+        document.querySelectorAll(
+            ".answer"
+        );
 
-            document.getElementById(
-                "category"
-            ).textContent =
-                currentQuestion.category;
 
+    allButtons.forEach(b=>{
+        b.classList.add("disabled");
+    });
 
-            answers.innerHTML =
-                "";
 
+    if(
+        selectedIndex===
+        currentQuestion.correct
+    ){
 
-            const shuffledAnswers =
-                currentQuestion.answers
-                .map(
-                    (
-                        answer,
-                        index
-                    ) => ({
-                        answer,
-                        index
-                    })
-                );
+        button.classList.add("correct");
 
+        score+=currentPoints;
 
-            shuffle(
-                shuffledAnswers
-            );
+        scoreElement.textContent=score;
 
+        playCorrectSound();
 
-            shuffledAnswers.forEach(
-                item => {
+    }else{
 
-                    const button =
-                        document.createElement(
-                            "button"
-                        );
+        button.classList.add("wrong");
 
+        playWrongSound();
 
-                    button.className =
-                        "answer";
 
+        allButtons.forEach(b=>{
 
-                    button.textContent =
-                        item.answer;
+            if(
+                b.textContent===
+                currentQuestion.answers[
+                    currentQuestion.correct
+                ]
+            ){
 
-
-                    button.onclick =
-                        () =>
-                            checkAnswer(
-                                button,
-                                item.index
-                            );
-
-
-                    answers.appendChild(
-                        button
-                    );
-
-                }
-            );
-
-
-            questionBox.classList.add(
-                "show"
-            );
-
-
-            questionCount++;
-
-
-            questionNumber.textContent =
-                `${questionCount} / ${maxQuestions}`;
-
-        }
-
-
-        /* =====================================================
-           COMPROBAR RESPUESTA
-        ===================================================== */
-
-        function checkAnswer(
-            button,
-            selectedIndex
-        ) {
-
-            const allButtons =
-                document.querySelectorAll(
-                    ".answer"
-                );
-
-
-            allButtons.forEach(
-                b => {
-
-                    b.classList.add(
-                        "disabled"
-                    );
-
-                }
-            );
-
-
-            if (
-                selectedIndex ===
-                currentQuestion.correct
-            ) {
-
-                button.classList.add(
-                    "correct"
-                );
-
-
-                score +=
-                    currentPoints;
-
-
-                scoreElement.textContent =
-                    score;
-
-
-                playCorrectSound();
-
-            } else {
-
-                button.classList.add(
-                    "wrong"
-                );
-
-
-                playWrongSound();
-
-
-                allButtons.forEach(
-                    b => {
-
-                        const answerText =
-                            b.textContent;
-
-
-                        if (
-                            answerText ===
-                            currentQuestion.answers[
-                                currentQuestion.correct
-                            ]
-                        ) {
-
-                            b.classList.add(
-                                "correct"
-                            );
-
-                        }
-
-                    }
-                );
+                b.classList.add("correct");
 
             }
 
+        });
 
-            /* =================================================
-               ACTUALIZAR RÉCORD
-            ================================================= */
-
-            if (
-                score > record
-            ) {
-
-                record =
-                    score;
+    }
 
 
-                localStorage.setItem(
-                    "footballGamesRecord",
-                    record
-                );
+    if(score>record){
+
+        record=score;
+
+        localStorage.setItem(
+            "footballGamesRecord",
+            record
+        );
+
+        recordElement.textContent=record;
+    }
 
 
-                recordElement.textContent =
-                    record;
-            }
+    document
+        .getElementById("nextButton")
+        .classList.add("show");
+
+}
 
 
-            document.getElementById(
-                "nextButton"
-            ).classList.add(
-                "show"
-            );
+/* =========================================================
+   SIGUIENTE
+========================================================= */
 
-        }
+function nextQuestion(){
 
-
-        /* =====================================================
-           SIGUIENTE PREGUNTA
-        ===================================================== */
-
-        function nextQuestion() {
-
-            document.getElementById(
-                "nextButton"
-            ).classList.remove(
-                "show"
-            );
+    document
+        .getElementById("nextButton")
+        .classList.remove("show");
 
 
-            result.classList.remove(
-                "show"
-            );
+    result.classList.remove("show");
+
+    questionBox.classList.remove("show");
 
 
-            questionBox.classList.remove(
-                "show"
-            );
+    if(questionCount>=maxQuestions){
+
+        finishGame();
+
+        return;
+    }
 
 
-            if (
-                questionCount >= maxQuestions
-            ) {
+    spinButton.disabled=false;
 
-                finishGame();
+    isSpinning=false;
 
-                return;
-            }
+}
 
 
-            spinButton.disabled =
-                false;
+/* =========================================================
+   FINAL
+========================================================= */
+
+function finishGame(){
+
+    result.classList.add("show");
 
 
-            isSpinning =
-                false;
-
-        }
-
-
-        /* =====================================================
-           FINAL DE PARTIDA
-        ===================================================== */
-
-        function finishGame() {
-
-            result.classList.add(
-                "show"
-            );
+    document.getElementById(
+        "pointsResult"
+    ).textContent=
+        "PARTIDA TERMINADA";
 
 
-            document.getElementById(
-                "pointsResult"
-            ).textContent =
-                "PARTIDA TERMINADA";
+    document.getElementById(
+        "resultTitle"
+    ).textContent=
+        `${score} PUNTOS`;
 
 
-            document.getElementById(
-                "resultTitle"
-            ).textContent =
-                `${score} PUNTOS`;
+    document.getElementById(
+        "resultDescription"
+    ).textContent=
+        "¡Buen trabajo! Tu puntuación ha quedado guardada como récord si superaste tu marca anterior.";
 
 
-            document.getElementById(
-                "resultDescription"
-            ).textContent =
-                "¡Buen trabajo! Tu puntuación ha quedado guardada como récord si superaste tu marca anterior.";
+    questionBox.classList.remove("show");
 
+    spinButton.disabled=true;
 
-            questionBox.classList.remove(
-                "show"
-            );
+}
 
-
-            spinButton.disabled =
-                true;
-
-        }
-
-
-        /* =====================================================
-           IA — PREPARADA PARA FUTURA CONEXIÓN
-        ===================================================== */
-
-        async function generateAIQuestion(points) {
-
-            /*
-             * IMPORTANTE:
-             *
-             * NO pongas una API KEY directamente
-             * dentro de este HTML.
-             *
-             * GitHub Pages es público.
-             *
-             * Más adelante podemos conectar
-             * esta función a un backend seguro.
-             */
-
-            return null;
-        }
-
-
-    </script>
-
+</script>
 
 </body>
-
 </html>
