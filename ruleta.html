@@ -30,14 +30,9 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-
-            background:
-                #050708;
-
+            background: #050708;
             color: white;
-
             min-height: 100vh;
-
             overflow-x: hidden;
         }
 
@@ -146,16 +141,37 @@
         }
 
 
+        /* =====================================================
+           BOTÓN VOLVER
+        ===================================================== */
+
         .back-button {
+
+            display: inline-block;
+
+            padding:
+                9px 15px;
+
+            border-radius:
+                7px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.10);
 
             color:
                 #aaa;
 
             text-decoration: none;
 
-            font-size: 13px;
+            font-size:
+                13px;
 
-            font-weight: 700;
+            font-weight:
+                700;
 
             transition:
                 0.25s;
@@ -166,6 +182,15 @@
 
             color:
                 #42ff88;
+
+            background:
+                rgba(66,255,136,0.08);
+
+            border-color:
+                rgba(66,255,136,0.35);
+
+            transform:
+                translateY(-2px);
         }
 
 
@@ -448,7 +473,6 @@
             transition:
                 transform 4s
                 cubic-bezier(0.12,0.8,0.18,1);
-
         }
 
 
@@ -1227,6 +1251,21 @@
                     -2px;
             }
 
+            .logo {
+
+                font-size:
+                    16px;
+            }
+
+            .back-button {
+
+                font-size:
+                    11px;
+
+                padding:
+                    8px 11px;
+            }
+
         }
 
     </style>
@@ -1239,7 +1278,7 @@
 
     <!-- =====================================================
          NAVBAR
-    ===================================================== -->
+    ====================================================== -->
 
     <nav>
 
@@ -1261,10 +1300,9 @@
     </nav>
 
 
-
     <!-- =====================================================
          CONTENIDO
-    ===================================================== -->
+    ====================================================== -->
 
     <main class="container">
 
@@ -1291,10 +1329,9 @@
         </section>
 
 
-
         <!-- =================================================
              PANEL DEL JUEGO
-        ================================================= -->
+        ================================================== -->
 
         <section class="game-panel">
 
@@ -1302,7 +1339,6 @@
             <!-- MARCADOR -->
 
             <div class="scoreboard">
-
 
                 <div class="score-box">
 
@@ -1351,15 +1387,12 @@
 
                 </div>
 
-
             </div>
-
 
 
             <!-- RULETA -->
 
             <div class="roulette-area">
-
 
                 <div
                     class="roulette"
@@ -1404,9 +1437,7 @@
                     GIRAR RULETA
                 </button>
 
-
             </div>
-
 
 
             <!-- RESULTADO -->
@@ -1432,7 +1463,6 @@
                 </p>
 
             </div>
-
 
 
             <!-- PREGUNTA -->
@@ -1484,11 +1514,9 @@
             </div>
 
 
-
             <!-- INFORMACIÓN -->
 
             <div class="info-grid">
-
 
                 <div class="info-card">
 
@@ -1531,20 +1559,17 @@
 
                 </div>
 
-
             </div>
 
 
         </section>
 
-
     </main>
-
 
 
     <!-- =====================================================
          FOOTER
-    ===================================================== -->
+    ====================================================== -->
 
     <footer>
 
@@ -1581,12 +1606,314 @@
     </footer>
 
 
-
     <!-- =====================================================
          JAVASCRIPT
-    ===================================================== -->
+    ====================================================== -->
 
     <script>
+
+
+        /* =====================================================
+           SISTEMA DE SONIDO
+        ===================================================== */
+
+        let audioContext = null;
+        let rouletteSoundInterval = null;
+
+
+        function getAudioContext() {
+
+            if (!audioContext) {
+
+                audioContext =
+                    new (
+                        window.AudioContext ||
+                        window.webkitAudioContext
+                    )();
+
+            }
+
+            if (
+                audioContext.state === "suspended"
+            ) {
+
+                audioContext.resume();
+
+            }
+
+            return audioContext;
+        }
+
+
+        /* =====================================================
+           SONIDO DE LA RULETA
+        ===================================================== */
+
+        function rouletteTick() {
+
+            const ctx =
+                getAudioContext();
+
+            const oscillator =
+                ctx.createOscillator();
+
+            const gain =
+                ctx.createGain();
+
+
+            oscillator.type =
+                "square";
+
+            oscillator.frequency.setValueAtTime(
+                150,
+                ctx.currentTime
+            );
+
+
+            gain.gain.setValueAtTime(
+                0.0001,
+                ctx.currentTime
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.08,
+                ctx.currentTime + 0.005
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                ctx.currentTime + 0.045
+            );
+
+
+            oscillator.connect(gain);
+
+            gain.connect(
+                ctx.destination
+            );
+
+
+            oscillator.start();
+
+            oscillator.stop(
+                ctx.currentTime + 0.05
+            );
+
+        }
+
+
+        function startRouletteSound() {
+
+            stopRouletteSound();
+
+            rouletteTick();
+
+            rouletteSoundInterval =
+                setInterval(
+                    rouletteTick,
+                    115
+                );
+
+        }
+
+
+        function stopRouletteSound() {
+
+            if (
+                rouletteSoundInterval
+            ) {
+
+                clearInterval(
+                    rouletteSoundInterval
+                );
+
+                rouletteSoundInterval =
+                    null;
+            }
+
+        }
+
+
+        /* =====================================================
+           SONIDO CORRECTO
+        ===================================================== */
+
+        function correctSound() {
+
+            const ctx =
+                getAudioContext();
+
+
+            const oscillator =
+                ctx.createOscillator();
+
+            const gain =
+                ctx.createGain();
+
+
+            oscillator.type =
+                "sine";
+
+
+            oscillator.frequency.setValueAtTime(
+                520,
+                ctx.currentTime
+            );
+
+            oscillator.frequency.exponentialRampToValueAtTime(
+                780,
+                ctx.currentTime + 0.15
+            );
+
+
+            gain.gain.setValueAtTime(
+                0.0001,
+                ctx.currentTime
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.18,
+                ctx.currentTime + 0.02
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                ctx.currentTime + 0.35
+            );
+
+
+            oscillator.connect(gain);
+
+            gain.connect(
+                ctx.destination
+            );
+
+
+            oscillator.start();
+
+            oscillator.stop(
+                ctx.currentTime + 0.35
+            );
+
+
+            setTimeout(
+                () => {
+
+                    const second =
+                        ctx.createOscillator();
+
+                    const secondGain =
+                        ctx.createGain();
+
+
+                    second.type =
+                        "sine";
+
+                    second.frequency.value =
+                        920;
+
+
+                    secondGain.gain.setValueAtTime(
+                        0.0001,
+                        ctx.currentTime
+                    );
+
+                    secondGain.gain.exponentialRampToValueAtTime(
+                        0.12,
+                        ctx.currentTime + 0.02
+                    );
+
+                    secondGain.gain.exponentialRampToValueAtTime(
+                        0.0001,
+                        ctx.currentTime + 0.30
+                    );
+
+
+                    second.connect(
+                        secondGain
+                    );
+
+                    secondGain.connect(
+                        ctx.destination
+                    );
+
+
+                    second.start();
+
+                    second.stop(
+                        ctx.currentTime + 0.30
+                    );
+
+                },
+
+                120
+            );
+
+        }
+
+
+        /* =====================================================
+           SONIDO INCORRECTO
+        ===================================================== */
+
+        function wrongSound() {
+
+            const ctx =
+                getAudioContext();
+
+
+            const oscillator =
+                ctx.createOscillator();
+
+            const gain =
+                ctx.createGain();
+
+
+            oscillator.type =
+                "sawtooth";
+
+
+            oscillator.frequency.setValueAtTime(
+                230,
+                ctx.currentTime
+            );
+
+            oscillator.frequency.exponentialRampToValueAtTime(
+                90,
+                ctx.currentTime + 0.35
+            );
+
+
+            gain.gain.setValueAtTime(
+                0.0001,
+                ctx.currentTime
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.16,
+                ctx.currentTime + 0.02
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                ctx.currentTime + 0.38
+            );
+
+
+            oscillator.connect(gain);
+
+            gain.connect(
+                ctx.destination
+            );
+
+
+            oscillator.start();
+
+            oscillator.stop(
+                ctx.currentTime + 0.38
+            );
+
+        }
 
 
         /* =====================================================
@@ -1867,7 +2194,6 @@
                         1
                 }
 
-
             ],
 
 
@@ -1986,7 +2312,6 @@
                         1
                 }
 
-
             ]
 
         };
@@ -2092,6 +2417,13 @@
             }
 
 
+            /* Activar sonido */
+
+            getAudioContext();
+
+            startRouletteSound();
+
+
             spinButton.disabled =
                 true;
 
@@ -2141,6 +2473,8 @@
 
             setTimeout(
                 () => {
+
+                    stopRouletteSound();
 
                     showResult();
 
@@ -2365,6 +2699,11 @@
                 );
 
 
+                /* SONIDO CORRECTO */
+
+                correctSound();
+
+
                 score +=
                     currentPoints;
 
@@ -2379,6 +2718,11 @@
                 button.classList.add(
                     "wrong"
                 );
+
+
+                /* SONIDO INCORRECTO */
+
+                wrongSound();
 
 
                 allButtons.forEach(
@@ -2418,13 +2762,16 @@
                 record =
                     score;
 
+
                 localStorage.setItem(
                     "footballGamesRecord",
                     record
                 );
 
+
                 recordElement.textContent =
                     record;
+
             }
 
 
