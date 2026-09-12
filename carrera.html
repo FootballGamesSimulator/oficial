@@ -13,7 +13,7 @@
     --bg:#050708;
     --panel:rgba(7,11,13,.88);
     --line:rgba(255,255,255,.09);
-    --muted:#858b8d
+    --muted:#858b8d;
 }
 
 html{scroll-behavior:smooth}
@@ -23,7 +23,7 @@ body{
     background:#050708;
     color:#fff;
     min-height:100vh;
-    overflow-x:hidden
+    overflow-x:hidden;
 }
 
 body:before{
@@ -39,7 +39,7 @@ body:before{
             #030506
         ),
         url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2400&q=90")
-        center/cover no-repeat
+        center/cover no-repeat;
 }
 
 body:after{
@@ -52,7 +52,7 @@ body:after{
             circle at 50% 12%,
             rgba(66,255,136,.08),
             transparent 38%
-        )
+        );
 }
 
 nav{
@@ -68,14 +68,14 @@ nav{
     padding:0 6%;
     background:rgba(3,5,7,.86);
     backdrop-filter:blur(15px);
-    border-bottom:1px solid var(--line)
+    border-bottom:1px solid var(--line);
 }
 
 .logo{
     color:#fff;
     text-decoration:none;
     font-size:20px;
-    font-weight:900
+    font-weight:900;
 }
 
 .logo span{color:var(--green)}
@@ -84,7 +84,7 @@ nav{
     color:#aaa;
     text-decoration:none;
     font-size:13px;
-    font-weight:800
+    font-weight:800;
 }
 
 .back:hover{color:var(--green)}
@@ -92,12 +92,12 @@ nav{
 .container{
     width:min(1160px,calc(100% - 30px));
     margin:auto;
-    padding:120px 0 70px
+    padding:120px 0 70px;
 }
 
 .hero{
     text-align:center;
-    margin-bottom:35px
+    margin-bottom:35px;
 }
 
 .tag{
@@ -110,13 +110,13 @@ nav{
     font-size:10px;
     font-weight:900;
     letter-spacing:2px;
-    margin-bottom:15px
+    margin-bottom:15px;
 }
 
 h1{
     font-size:clamp(42px,7vw,76px);
     line-height:.95;
-    letter-spacing:-4px
+    letter-spacing:-4px;
 }
 
 .hero h1 span{color:var(--green)}
@@ -126,7 +126,7 @@ h1{
     margin:18px auto 0;
     color:#aaa;
     font-size:15px;
-    line-height:1.7
+    line-height:1.7;
 }
 
 .panel{
@@ -135,49 +135,49 @@ h1{
     border-radius:22px;
     padding:30px;
     backdrop-filter:blur(18px);
-    box-shadow:0 25px 80px rgba(0,0,0,.45)
+    box-shadow:0 25px 80px rgba(0,0,0,.45);
 }
 
 .progress{
     display:flex;
     gap:8px;
-    margin-bottom:25px
+    margin-bottom:25px;
 }
 
 .step{
     height:5px;
     flex:1;
     border-radius:20px;
-    background:#1b2022
+    background:#1b2022;
 }
 
 .step.active,
 .step.done{
-    background:var(--green)
+    background:var(--green);
 }
 
 .step-title{
     font-size:28px;
     font-weight:950;
-    margin-bottom:8px
+    margin-bottom:8px;
 }
 
 .step-sub{
     color:#777;
     font-size:13px;
-    margin-bottom:25px
+    margin-bottom:25px;
 }
 
 .form-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:15px
+    gap:15px;
 }
 
 .field{
     display:flex;
     flex-direction:column;
-    gap:8px
+    gap:8px;
 }
 
 .field.full{grid-column:1/-1}
@@ -186,7 +186,7 @@ label{
     font-size:10px;
     font-weight:900;
     letter-spacing:1.2px;
-    color:#777
+    color:#777;
 }
 
 input,
@@ -200,13 +200,13 @@ select{
     padding:0 14px;
     outline:none;
     font-size:14px;
-    font-weight:700
+    font-weight:700;
 }
 
 input:focus,
 select:focus{
     border-color:rgba(66,255,136,.55);
-    box-shadow:0 0 0 3px rgba(66,255,136,.06)
+    box-shadow:0 0 0 3px rgba(66,255,136,.06);
 }
 
 select option{background:#0d1214}
@@ -215,7 +215,7 @@ select option{background:#0d1214}
     display:flex;
     justify-content:space-between;
     gap:12px;
-    margin-top:25px
+    margin-top:25px;
 }
 
 .btn{
@@ -224,168 +224,68 @@ select option{background:#0d1214}
     padding:14px 22px;
     font-size:12px;
     font-weight:950;
-    cursor:pointer
+    cursor:pointer;
 }
 
 .btn.primary{
     background:var(--green);
-    color:#061009
+    color:#061009;
 }
 
 .btn.secondary{
     background:#fff;
-    color:#070909
+    color:#070909;
 }
 
 .btn.dark{
     background:#151a1c;
     color:#ddd;
-    border:1px solid var(--line)
+    border:1px solid var(--line);
 }
 
 .btn:disabled{
     opacity:.4;
-    cursor:not-allowed
+    cursor:not-allowed;
 }
 
 .hidden{display:none!important}
 
-.selection{
-    max-height:380px;
-    overflow:auto;
-    border:1px solid var(--line);
-    border-radius:12px;
-    background:rgba(255,255,255,.02)
-}
-
-.club{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    padding:15px 16px;
-    border-bottom:1px solid rgba(255,255,255,.06);
-    cursor:pointer
-}
-
-.club:last-child{border-bottom:0}
-
-.club:hover{
-    background:rgba(66,255,136,.06)
-}
-
-.club.selected{
-    background:rgba(66,255,136,.12);
-    border-left:3px solid var(--green)
-}
-
-.club-name{
-    font-size:14px;
-    font-weight:900
-}
-
-.club-meta{
-    color:#777;
-    font-size:11px;
-    margin-top:4px
-}
-
-.rating{
-    font-size:12px;
-    color:var(--green);
-    font-weight:900;
-    white-space:nowrap
-}
-
-.loading{
-    padding:25px;
-    text-align:center;
-    color:#777;
-    font-size:13px
-}
-
 .notice{
-    padding:15px 17px;
+    padding:12px 14px;
     border:1px solid rgba(66,255,136,.15);
     background:rgba(66,255,136,.04);
     border-radius:10px;
     color:#9ba19e;
     font-size:12px;
-    line-height:1.6;
-    margin-bottom:18px
-}
-
-.random-club{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
-    padding:22px;
-    margin-top:10px;
-    border-radius:15px;
-    border:1px solid rgba(66,255,136,.18);
-    background:
-        linear-gradient(
-            135deg,
-            rgba(66,255,136,.08),
-            rgba(255,255,255,.025)
-        )
-}
-
-.random-club-label{
-    color:#777;
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:1.5px;
-    margin-bottom:7px
-}
-
-.random-club-name{
-    font-size:24px;
-    font-weight:950
-}
-
-.random-club-meta{
-    color:#888;
-    font-size:12px;
-    margin-top:5px
-}
-
-.random-badge{
-    color:#061009;
-    background:var(--green);
-    padding:9px 12px;
-    border-radius:7px;
-    font-size:9px;
-    font-weight:950;
-    white-space:nowrap
+    line-height:1.55;
+    margin-bottom:15px;
 }
 
 .cards{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:12px;
-    margin-bottom:20px
+    margin-bottom:20px;
 }
 
 .mini{
     background:rgba(255,255,255,.035);
     border:1px solid var(--line);
     border-radius:12px;
-    padding:16px
+    padding:16px;
 }
 
 .mini .k{
     font-size:9px;
     color:#777;
     font-weight:900;
-    letter-spacing:1px
+    letter-spacing:1px;
 }
 
 .mini .v{
     font-size:23px;
     font-weight:950;
-    margin-top:6px
+    margin-top:6px;
 }
 
 .green{color:var(--green)}
@@ -395,12 +295,12 @@ select option{background:#0d1214}
     justify-content:space-between;
     align-items:center;
     gap:15px;
-    margin-bottom:20px
+    margin-bottom:20px;
 }
 
 .season-number{
     font-size:30px;
-    font-weight:950
+    font-weight:950;
 }
 
 .season-number span{color:var(--green)}
@@ -410,60 +310,81 @@ select option{background:#0d1214}
     background:rgba(255,255,255,.025);
     border-radius:14px;
     padding:20px;
-    margin-bottom:15px
+    margin-bottom:15px;
 }
 
 .event h3{
     font-size:17px;
-    margin-bottom:8px
+    margin-bottom:8px;
 }
 
 .event p{
     color:#999;
     font-size:13px;
-    line-height:1.6
+    line-height:1.6;
 }
 
 .offer-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:12px;
-    margin-top:15px
+    margin-top:15px;
 }
 
 .offer{
     border:1px solid rgba(255,255,255,.08);
     background:#0b1012;
     border-radius:12px;
-    padding:17px
+    padding:17px;
+    transition:.25s;
 }
 
 .offer:hover{
-    border-color:rgba(66,255,136,.35)
+    border-color:rgba(66,255,136,.35);
+    transform:translateY(-2px);
 }
 
 .offer h4{
-    font-size:15px
+    font-size:15px;
 }
 
 .offer .money{
     color:var(--green);
     font-size:12px;
     font-weight:900;
-    margin-top:8px
+    margin-top:8px;
 }
 
 .offer .why{
     color:#777;
     font-size:11px;
     margin-top:6px;
-    line-height:1.4
+    line-height:1.4;
+}
+
+.offer.miracle{
+    border-color:rgba(255,215,70,.35);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,215,70,.06),
+            rgba(255,255,255,.025)
+        );
+}
+
+.offer.miracle .special{
+    display:inline-block;
+    color:#ffd84a;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1px;
+    margin-bottom:7px;
 }
 
 .stats-table{
     width:100%;
     border-collapse:collapse;
-    margin-top:10px
+    margin-top:10px;
 }
 
 .stats-table th,
@@ -471,46 +392,46 @@ select option{background:#0d1214}
     text-align:left;
     padding:11px;
     border-bottom:1px solid rgba(255,255,255,.06);
-    font-size:12px
+    font-size:12px;
 }
 
 .stats-table th{
     color:#777;
     font-size:9px;
-    letter-spacing:1px
+    letter-spacing:1px;
 }
 
 .stats-table td:last-child,
 .stats-table th:last-child{
-    text-align:right
+    text-align:right;
 }
 
 .summary-hero{
     text-align:center;
-    padding:15px 0 25px
+    padding:15px 0 25px;
 }
 
 .summary-hero .final-rating{
     font-size:68px;
     line-height:1;
     font-weight:950;
-    color:var(--green)
+    color:var(--green);
 }
 
 .summary-hero h2{
     font-size:30px;
-    margin-top:8px
+    margin-top:8px;
 }
 
 .summary-hero p{
     color:#888;
-    margin-top:7px
+    margin-top:7px;
 }
 
 .timeline{
     display:flex;
     flex-direction:column;
-    gap:12px
+    gap:12px;
 }
 
 .career-item{
@@ -521,54 +442,54 @@ select option{background:#0d1214}
     padding:15px;
     border:1px solid var(--line);
     border-radius:12px;
-    background:rgba(255,255,255,.025)
+    background:rgba(255,255,255,.025);
 }
 
 .year{
     color:var(--green);
-    font-weight:950
+    font-weight:950;
 }
 
 .clubcareer{
-    font-weight:900
+    font-weight:900;
 }
 
 .clubcareer small{
     display:block;
     color:#777;
     font-weight:600;
-    margin-top:4px
+    margin-top:4px;
 }
 
 .seasonstat{
     text-align:right;
     color:#bbb;
-    font-size:11px
+    font-size:11px;
 }
 
 .trophy-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:12px
+    gap:12px;
 }
 
 .trophy{
     padding:18px;
     border-radius:12px;
     background:rgba(255,255,255,.03);
-    border:1px solid var(--line)
+    border:1px solid var(--line);
 }
 
 .trophy strong{
     display:block;
-    font-size:13px
+    font-size:13px;
 }
 
 .trophy span{
     display:block;
     color:#777;
     font-size:11px;
-    margin-top:6px
+    margin-top:6px;
 }
 
 footer{
@@ -577,7 +498,7 @@ footer{
     color:#777;
     background:rgba(0,0,0,.78);
     border-top:1px solid var(--line);
-    font-size:12px
+    font-size:12px;
 }
 
 footer strong{color:var(--green)}
@@ -588,41 +509,36 @@ footer strong{color:var(--green)}
 
     .form-grid,
     .offer-grid{
-        grid-template-columns:1fr
+        grid-template-columns:1fr;
     }
 
     .cards{
-        grid-template-columns:repeat(2,1fr)
+        grid-template-columns:repeat(2,1fr);
     }
 
     .career-item{
-        grid-template-columns:65px 1fr
+        grid-template-columns:65px 1fr;
     }
 
     .seasonstat{
         grid-column:2;
-        text-align:left
+        text-align:left;
     }
 
     .trophy-grid{
-        grid-template-columns:1fr
+        grid-template-columns:1fr;
     }
 
     .buttons{
-        flex-direction:column
+        flex-direction:column;
     }
 
     .btn{
-        width:100%
-    }
-
-    .random-club{
-        flex-direction:column;
-        align-items:flex-start
+        width:100%;
     }
 
     h1{
-        letter-spacing:-2px
+        letter-spacing:-2px;
     }
 }
 </style>
@@ -632,11 +548,11 @@ footer strong{color:var(--green)}
 
 <nav>
 <a href="index.html" class="logo">
-    ⚽ FOOTBALL <span>GAMES</span>
+⚽ FOOTBALL <span>GAMES</span>
 </a>
 
 <a href="index.html" class="back">
-    ← Volver al inicio
+← Volver al inicio
 </a>
 </nav>
 
@@ -645,17 +561,17 @@ footer strong{color:var(--green)}
 <section class="hero">
 
 <div class="tag">
-    FOOTBALL GAMES • MODO CARRERA
+FOOTBALL GAMES • MODO CARRERA
 </div>
 
 <h1>
-    SIMULA TU <span>CARRERA</span>
+SIMULA TU <span>CARRERA</span>
 </h1>
 
 <p>
-    Crea tu futbolista, comienza automáticamente en un club
-    aleatorio y construye una carrera completa con temporadas,
-    estadísticas, títulos, premios y ofertas de fichaje realistas.
+Crea tu futbolista, comienza tu carrera con un club aleatorio,
+juega temporada tras temporada y construye una carrera completa
+con estadísticas, títulos, premios y ofertas de clubes de todo el mundo.
 </p>
 
 </section>
@@ -664,10 +580,10 @@ footer strong{color:var(--green)}
 <section class="panel">
 
 <div class="progress" id="progress">
-    <div class="step active"></div>
-    <div class="step"></div>
-    <div class="step"></div>
-    <div class="step"></div>
+<div class="step active"></div>
+<div class="step"></div>
+<div class="step"></div>
+<div class="step"></div>
 </div>
 
 
@@ -678,35 +594,36 @@ footer strong{color:var(--green)}
 <section id="step1">
 
 <div class="step-title">
-    Crea a tu jugador
+Crea a tu jugador
 </div>
 
 <div class="step-sub">
-    Tu carrera comienza a los 16 años. No podrás modificar la edad inicial.
+Tu carrera comienza a los 16 años. El club de debut será elegido aleatoriamente.
 </div>
 
 <div class="form-grid">
 
 <div class="field">
 <label>NOMBRE DEL JUGADOR</label>
-
 <input
-    id="playerName"
-    placeholder="Ej. Anthony"
+id="playerName"
+placeholder="Ej. Anthony"
 >
 </div>
 
 
 <div class="field">
+
 <label>EDAD INICIAL</label>
 
 <input
-    id="playerAge"
-    type="number"
-    value="16"
-    readonly
-    disabled
+id="playerAge"
+type="number"
+value="16"
+readonly
+disabled
 >
+
 </div>
 
 
@@ -763,15 +680,18 @@ footer strong{color:var(--green)}
 <select id="startLevel">
 
 <option value="low">
-    Cantera / Amateur
+Cantera / Amateur
 </option>
 
-<option value="normal" selected>
-    Joven profesional
+<option
+value="normal"
+selected
+>
+Joven profesional
 </option>
 
 <option value="high">
-    Gran promesa
+Gran promesa
 </option>
 
 </select>
@@ -786,10 +706,10 @@ footer strong{color:var(--green)}
 <span></span>
 
 <button
-    class="btn primary"
-    onclick="goStep(2)"
+class="btn primary"
+onclick="goStep(2)"
 >
-    CONTINUAR →
+CONTINUAR →
 </button>
 
 </div>
@@ -799,68 +719,32 @@ footer strong{color:var(--green)}
 
 <!-- =====================================================
      PASO 2
-     AHORA EL CLUB ES AUTOMÁTICO
 ====================================================== -->
 
 <section id="step2" class="hidden">
 
 <div class="step-title">
-    Tu punto de partida
+Preparando tu debut
 </div>
 
 <div class="step-sub">
-    No eliges el club: tu debut será determinado automáticamente.
+Tu primer club será elegido aleatoriamente entre la base mundial de clubes.
 </div>
-
 
 <div class="notice">
-
-<strong style="color:#42ff88">
-    🎲 CLUB DE DEBUT ALEATORIO
-</strong>
-
-<br><br>
-
-Tu primer equipo será elegido automáticamente entre una
-gran cantidad de clubes disponibles. El nivel del club tendrá
-en cuenta tu nivel inicial para mantener la carrera lo más
-realista posible.
-
-<br><br>
-
-<strong style="color:#fff">
-    Después de cada temporada sí recibirás ofertas de otros
-    equipos dependiendo de tu rendimiento, edad, media,
-    reputación y nivel del club.
-</strong>
-
+No puedes elegir tu primer club. Tu carrera comienza de forma aleatoria.
+A partir de ahí, tu rendimiento determinará qué equipos pueden interesarse en ti.
 </div>
 
 
-<div id="randomClubPreview">
+<div
+class="selection"
+id="clubList"
+style="padding:25px;text-align:center"
+>
 
-<div class="random-club">
-
-<div>
-
-<div class="random-club-label">
-    CLUB DE DEBUT
-</div>
-
-<div class="random-club-name">
-    Se decidirá al comenzar
-</div>
-
-<div class="random-club-meta">
-    Club aleatorio · Inicio a los 16 años
-</div>
-
-</div>
-
-<div class="random-badge">
-    AUTOMÁTICO
-</div>
-
+<div class="loading">
+🎲 Preparando tu club de debut...
 </div>
 
 </div>
@@ -869,17 +753,19 @@ realista posible.
 <div class="buttons">
 
 <button
-    class="btn dark"
-    onclick="goStep(1)"
+class="btn dark"
+onclick="goStep(1)"
 >
-    ← ATRÁS
+← ATRÁS
 </button>
 
 <button
-    class="btn primary"
-    onclick="startCareer()"
+class="btn primary"
+id="startBtn"
+disabled
+onclick="startCareer()"
 >
-    🎲 COMENZAR CARRERA
+COMENZAR CARRERA →
 </button>
 
 </div>
@@ -896,23 +782,66 @@ realista posible.
 <div class="cards">
 
 <div class="mini">
-<div class="k">JUGADOR</div>
-<div class="v" id="dashName">—</div>
+
+<div class="k">
+JUGADOR
 </div>
 
-<div class="mini">
-<div class="k">MEDIA</div>
-<div class="v green" id="dashRating">—</div>
+<div
+class="v"
+id="dashName"
+>
+—
 </div>
 
-<div class="mini">
-<div class="k">EDAD</div>
-<div class="v" id="dashAge">—</div>
 </div>
 
+
 <div class="mini">
-<div class="k">VALOR</div>
-<div class="v" id="dashValue">—</div>
+
+<div class="k">
+MEDIA
+</div>
+
+<div
+class="v green"
+id="dashRating"
+>
+—
+</div>
+
+</div>
+
+
+<div class="mini">
+
+<div class="k">
+EDAD
+</div>
+
+<div
+class="v"
+id="dashAge"
+>
+—
+</div>
+
+</div>
+
+
+<div class="mini">
+
+<div class="k">
+VALOR
+</div>
+
+<div
+class="v"
+id="dashValue"
+>
+—
+</div>
+
 </div>
 
 </div>
@@ -923,24 +852,24 @@ realista posible.
 <div>
 
 <div class="season-number">
-    TEMPORADA <span id="seasonNum">1</span>
+TEMPORADA <span id="seasonNum">1</span>
 </div>
 
 <div
-    class="step-sub"
-    id="currentClubText"
+class="step-sub"
+id="currentClubText"
 >
-    —
+—
 </div>
 
 </div>
 
 
 <button
-    class="btn dark"
-    onclick="confirmRestart()"
+class="btn dark"
+onclick="confirmRestart()"
 >
-    REINICIAR
+REINICIAR
 </button>
 
 </div>
@@ -962,45 +891,45 @@ realista posible.
 <div class="summary-hero">
 
 <div class="tag">
-    FIN DE CARRERA
+FIN DE CARRERA
 </div>
 
 <div
-    class="final-rating"
-    id="finalRating"
+class="final-rating"
+id="finalRating"
 >
-    0
+0
 </div>
 
 <h2 id="finalName">
-    —
+—
 </h2>
 
 <p id="finalLine">
-    —
+—
 </p>
 
 </div>
 
 
 <div
-    class="cards"
-    id="summaryCards"
+class="cards"
+id="summaryCards"
 ></div>
 
 
 <h3 style="margin:25px 0 12px">
-    📋 Trayectoria
+📋 Trayectoria
 </h3>
 
 <div
-    class="timeline"
-    id="careerTimeline"
+class="timeline"
+id="careerTimeline"
 ></div>
 
 
 <h3 style="margin:30px 0 12px">
-    📊 Estadísticas totales
+📊 Estadísticas totales
 </h3>
 
 <table class="stats-table">
@@ -1008,8 +937,15 @@ realista posible.
 <thead>
 
 <tr>
-<th>ESTADÍSTICA</th>
-<th>TOTAL</th>
+
+<th>
+ESTADÍSTICA
+</th>
+
+<th>
+TOTAL
+</th>
+
 </tr>
 
 </thead>
@@ -1020,32 +956,32 @@ realista posible.
 
 
 <h3 style="margin:30px 0 12px">
-    🏆 Títulos colectivos
+🏆 Títulos colectivos
 </h3>
 
 <div
-    class="trophy-grid"
-    id="teamTrophies"
+class="trophy-grid"
+id="teamTrophies"
 ></div>
 
 
 <h3 style="margin:30px 0 12px">
-    ⭐ Premios individuales
+⭐ Premios individuales
 </h3>
 
 <div
-    class="trophy-grid"
-    id="individualTrophies"
+class="trophy-grid"
+id="individualTrophies"
 ></div>
 
 
 <div class="buttons">
 
 <button
-    class="btn primary"
-    onclick="location.reload()"
+class="btn primary"
+onclick="location.reload()"
 >
-    NUEVA CARRERA
+NUEVA CARRERA
 </button>
 
 </div>
@@ -1059,7 +995,11 @@ realista posible.
 
 <footer>
 
-⚽ <strong>FOOTBALL GAMES Simulator</strong>
+⚽
+
+<strong>
+FOOTBALL GAMES Simulator
+</strong>
 
 <br><br>
 
@@ -1067,7 +1007,8 @@ Una experiencia futbolística para los amantes del deporte.
 
 <div style="margin-top:15px;color:#999">
 
-© 2026 YoSoyAnthony. Todos los derechos reservados.
+© 2026 YoSoyAnthony.
+Todos los derechos reservados.
 
 </div>
 
@@ -1269,7 +1210,7 @@ const countries=[
 
 
 /* =========================================================
-   CLUBES
+   BASE MUNDIAL DE CLUBES
 ========================================================= */
 
 const fallback=[
@@ -1284,6 +1225,11 @@ const fallback=[
 ["España","Sevilla","LaLiga",80],
 ["España","Valencia","LaLiga",78],
 ["España","Celta de Vigo","LaLiga",76],
+["España","Girona","LaLiga",79],
+["España","Osasuna","LaLiga",73],
+["España","Getafe","LaLiga",72],
+["España","Mallorca","LaLiga",72],
+["España","Rayo Vallecano","LaLiga",71],
 
 ["Inglaterra","Manchester City","Premier League",94],
 ["Inglaterra","Liverpool","Premier League",92],
@@ -1295,6 +1241,10 @@ const fallback=[
 ["Inglaterra","Aston Villa","Premier League",82],
 ["Inglaterra","West Ham United","Premier League",78],
 ["Inglaterra","Everton","Premier League",75],
+["Inglaterra","Crystal Palace","Premier League",75],
+["Inglaterra","Brighton","Premier League",79],
+["Inglaterra","Wolverhampton","Premier League",74],
+["Inglaterra","Nottingham Forest","Premier League",73],
 
 ["Alemania","Bayern München","Bundesliga",94],
 ["Alemania","Borussia Dortmund","Bundesliga",86],
@@ -1303,6 +1253,9 @@ const fallback=[
 ["Alemania","Eintracht Frankfurt","Bundesliga",80],
 ["Alemania","Stuttgart","Bundesliga",78],
 ["Alemania","Schalke 04","2. Bundesliga",70],
+["Alemania","Borussia Mönchengladbach","Bundesliga",76],
+["Alemania","Wolfsburg","Bundesliga",76],
+["Alemania","Werder Bremen","Bundesliga",75],
 
 ["Italia","Inter","Serie A",91],
 ["Italia","AC Milan","Serie A",87],
@@ -1312,6 +1265,8 @@ const fallback=[
 ["Italia","Lazio","Serie A",82],
 ["Italia","Atalanta","Serie A",84],
 ["Italia","Fiorentina","Serie A",79],
+["Italia","Bologna","Serie A",78],
+["Italia","Torino","Serie A",74],
 
 ["Francia","Paris Saint-Germain","Ligue 1",92],
 ["Francia","Olympique de Marseille","Ligue 1",81],
@@ -1320,18 +1275,22 @@ const fallback=[
 ["Francia","Lille","Ligue 1",82],
 ["Francia","Rennes","Ligue 1",77],
 ["Francia","Nice","Ligue 1",78],
+["Francia","Lens","Ligue 1",77],
+["Francia","Nantes","Ligue 1",71],
 
 ["Portugal","Benfica","Liga Portugal",87],
 ["Portugal","FC Porto","Liga Portugal",86],
 ["Portugal","Sporting CP","Liga Portugal",86],
 ["Portugal","Braga","Liga Portugal",78],
 ["Portugal","Vitória SC","Liga Portugal",73],
+["Portugal","Boavista","Liga Portugal",69],
 
 ["Países Bajos","Ajax","Eredivisie",83],
 ["Países Bajos","PSV Eindhoven","Eredivisie",84],
 ["Países Bajos","Feyenoord","Eredivisie",82],
 ["Países Bajos","AZ Alkmaar","Eredivisie",76],
 ["Países Bajos","FC Utrecht","Eredivisie",70],
+["Países Bajos","Twente","Eredivisie",75],
 
 ["Brasil","Flamengo","Brasileirão",85],
 ["Brasil","Palmeiras","Brasileirão",85],
@@ -1341,56 +1300,120 @@ const fallback=[
 ["Brasil","Grêmio","Brasileirão",77],
 ["Brasil","Internacional","Brasileirão",77],
 ["Brasil","Botafogo","Brasileirão",79],
+["Brasil","Atlético Mineiro","Brasileirão",81],
+["Brasil","Cruzeiro","Brasileirão",75],
 
 ["Argentina","River Plate","Liga Argentina",84],
 ["Argentina","Boca Juniors","Liga Argentina",84],
 ["Argentina","Racing Club","Liga Argentina",77],
 ["Argentina","Independiente","Liga Argentina",75],
 ["Argentina","San Lorenzo","Liga Argentina",75],
+["Argentina","Estudiantes","Liga Argentina",74],
 
 ["México","Club América","Liga MX",82],
 ["México","Chivas","Liga MX",78],
 ["México","Monterrey","Liga MX",81],
 ["México","Tigres UANL","Liga MX",81],
 ["México","Cruz Azul","Liga MX",79],
+["México","Pachuca","Liga MX",76],
+["México","Toluca","Liga MX",75],
 
 ["Estados Unidos","Inter Miami","MLS",78],
 ["Estados Unidos","LAFC","MLS",77],
 ["Estados Unidos","Seattle Sounders","MLS",73],
 ["Estados Unidos","Atlanta United","MLS",72],
+["Estados Unidos","Columbus Crew","MLS",75],
+["Estados Unidos","New York City FC","MLS",72],
 
 ["Japón","Kashima Antlers","J1 League",73],
 ["Japón","Urawa Red Diamonds","J1 League",73],
+["Japón","Yokohama F. Marinos","J1 League",74],
+["Japón","Vissel Kobe","J1 League",76],
 
 ["Corea del Sur","Ulsan HD","K League 1",75],
+["Corea del Sur","Jeonbuk Hyundai Motors","K League 1",74],
+["Corea del Sur","FC Seoul","K League 1",70],
 
 ["Arabia Saudita","Al Hilal","Saudi Pro League",86],
 ["Arabia Saudita","Al Nassr","Saudi Pro League",84],
 ["Arabia Saudita","Al Ittihad","Saudi Pro League",82],
+["Arabia Saudita","Al Ahli","Saudi Pro League",79],
 
 ["Turquía","Galatasaray","Süper Lig",82],
 ["Turquía","Fenerbahçe","Süper Lig",81],
 ["Turquía","Beşiktaş","Süper Lig",77],
+["Turquía","Trabzonspor","Süper Lig",75],
 
 ["Bélgica","Club Brugge","Belgian Pro League",79],
 ["Bélgica","Anderlecht","Belgian Pro League",76],
+["Bélgica","Genk","Belgian Pro League",75],
+["Bélgica","Gent","Belgian Pro League",73],
 
 ["Escocia","Celtic","Scottish Premiership",79],
 ["Escocia","Rangers","Scottish Premiership",78],
 
 ["Colombia","Atlético Nacional","Liga BetPlay",75],
 ["Colombia","Millonarios","Liga BetPlay",74],
+["Colombia","Junior","Liga BetPlay",72],
+["Colombia","América de Cali","Liga BetPlay",71],
 
 ["Uruguay","Peñarol","Primera División",76],
 ["Uruguay","Nacional","Primera División",75],
 
 ["Chile","Colo-Colo","Primera División",74],
+["Chile","Universidad de Chile","Primera División",72],
+
 ["Ecuador","LDU Quito","LigaPro",74],
+["Ecuador","Barcelona SC","LigaPro",73],
+
 ["Perú","Alianza Lima","Liga 1",70],
-["Paraguay","Olimpia","Primera División",72]
+["Perú","Universitario","Liga 1",71],
+
+["Paraguay","Olimpia","Primera División",72],
+["Paraguay","Cerro Porteño","Primera División",71],
+
+["Suiza","Young Boys","Swiss Super League",74],
+["Suiza","FC Basel","Swiss Super League",73],
+
+["Austria","Red Bull Salzburg","Austrian Bundesliga",78],
+["Austria","Rapid Wien","Austrian Bundesliga",72],
+
+["Grecia","Olympiacos","Super League Greece",77],
+["Grecia","Panathinaikos","Super League Greece",75],
+["Grecia","PAOK","Super League Greece",75],
+
+["Croacia","Dinamo Zagreb","HNL",76],
+["Croacia","Hajduk Split","HNL",72],
+
+["Serbia","Red Star Belgrade","Serbian SuperLiga",76],
+["Serbia","Partizan","Serbian SuperLiga",73],
+
+["Noruega","Bodø/Glimt","Eliteserien",73],
+["Noruega","Molde","Eliteserien",71],
+
+["Dinamarca","FC Copenhagen","Superliga",74],
+["Dinamarca","Midtjylland","Superliga",72],
+
+["Polonia","Legia Warszawa","Ekstraklasa",72],
+["Polonia","Lech Poznań","Ekstraklasa",71],
+
+["Ucrania","Shakhtar Donetsk","Ukrainian Premier League",77],
+["Ucrania","Dynamo Kyiv","Ukrainian Premier League",75],
+
+["Rusia","Zenit","Russian Premier League",80],
+["Rusia","CSKA Moscow","Russian Premier League",74],
+["Rusia","Spartak Moscow","Russian Premier League",75],
+
+["Canadá","Toronto FC","MLS",68],
+["Canadá","Vancouver Whitecaps","MLS",71],
+["Canadá","CF Montréal","MLS",68]
 
 ];
 
+
+/* =========================================================
+   VARIABLES
+========================================================= */
 
 let clubs=fallback.map(x=>({
     country:x[0],
@@ -1398,7 +1421,6 @@ let clubs=fallback.map(x=>({
     league:x[2],
     rating:x[3]
 }));
-
 
 let selectedClub=null;
 
@@ -1420,8 +1442,6 @@ let teamTrophies=[];
 
 let individualTrophies=[];
 
-let publicLoaded=false;
-
 
 /* =========================================================
    UTILIDADES
@@ -1430,267 +1450,49 @@ let publicLoaded=false;
 const $=id=>document.getElementById(id);
 
 
+/* =========================================================
+   PAÍSES
+========================================================= */
+
 function fillCountries(){
 
-    const country=$("country");
+    const select=$("country");
 
-    country.innerHTML=
+    select.innerHTML=
         '<option value="">Selecciona un país</option>';
 
     countries.forEach(c=>{
 
-        const o=document.createElement("option");
+        const option=document.createElement("option");
 
-        o.value=c[0];
+        option.value=c[0];
 
-        o.textContent=c[0];
+        option.textContent=c[0];
 
-        country.appendChild(o);
+        select.appendChild(option);
 
     });
-
 }
 
 fillCountries();
 
 
 /* =========================================================
-   CARGAR MÁS CLUBES
+   ESCAPE HTML
 ========================================================= */
 
-async function loadPublicClubs(){
-
-    const urls=[
-
-        "https://raw.githubusercontent.com/openfootball/clubs/master/SUMMARY.md",
-
-        "https://raw.githubusercontent.com/openfootball/clubs/master/README.md"
-
-    ];
-
-    for(const url of urls){
-
-        try{
-
-            const r=await fetch(
-                url,
-                {cache:"no-store"}
-            );
-
-            if(!r.ok) continue;
-
-            const text=await r.text();
-
-            const parsed=parseClubText(text);
-
-            if(parsed.length>100){
-
-                clubs=mergeClubs(parsed);
-
-                publicLoaded=true;
-
-                return;
-
-            }
-
-        }catch(e){}
-
-    }
-
-}
-
-
-function parseClubText(text){
-
-    let current="";
-
-    let out=[];
-
-    for(const raw of text.split(/\r?\n/)){
-
-        const line=raw.trim();
-
-        if(!line) continue;
-
-        if(line.startsWith("=")){
-
-            current=
-                line
-                .replace(/^=+/,"")
-                .trim();
-
-            continue;
-
-        }
-
-        if(
-            !current ||
-            line.startsWith("#") ||
-            line.startsWith("|")
-        ) continue;
-
-        const clean=
-            line
-            .replace(/^\-\s*/,"")
-            .replace(/\s+$/,"");
-
-        if(
-            clean.length<3 ||
-            clean.length>100
-        ) continue;
-
-        const name=
-            clean
-            .split(",")[0]
-            .trim();
-
-        if(
-            /club|stadium|football data|world/i.test(name)
-        ) continue;
-
-        if(/[A-Za-zÁÉÍÓÚáéíóúÑñ].*/.test(name)){
-
-            out.push({
-
-                country:current,
-
-                name:name,
-
-                league:"Liga nacional",
-
-                rating:estimateRating(
-                    current,
-                    name
-                )
-
-            });
-
-        }
-
-    }
-
-    return out;
-
-}
-
-
-function mergeClubs(parsed){
-
-    const map=new Map();
-
-    [
-
-        ...fallback.map(x=>({
-
-            country:x[0],
-            name:x[1],
-            league:x[2],
-            rating:x[3]
-
-        })),
-
-        ...parsed
-
-    ].forEach(c=>{
-
-        const key=
-            (
-                c.country+
-                "|" +
-                c.name
-            ).toLowerCase();
-
-        if(!map.has(key)){
-            map.set(key,c);
-        }
-
-    });
-
-    return [...map.values()];
-
-}
-
-
-function estimateRating(country,name){
-
-    const n=name.toLowerCase();
-
-    const elite=[
-
-        "real madrid",
-        "barcelona",
-        "manchester city",
-        "liverpool",
-        "bayern",
-        "psg",
-        "paris saint",
-        "inter",
-        "juventus",
-        "milan",
-        "arsenal",
-        "chelsea",
-        "benfica",
-        "porto",
-        "sporting"
-
-    ];
-
-    const big=[
-
-        "united",
-        "dortmund",
-        "atlético",
-        "atletico",
-        "napoli",
-        "roma",
-        "lazio",
-        "ajax",
-        "psv",
-        "feyenoord",
-        "flamengo",
-        "palmeiras",
-        "river",
-        "boca"
-
-    ];
-
-    if(
-        elite.some(x=>n.includes(x))
-    ){
-
-        return 88+
-            Math.floor(Math.random()*7);
-
-    }
-
-    if(
-        big.some(x=>n.includes(x))
-    ){
-
-        return 78+
-            Math.floor(Math.random()*9);
-
-    }
-
-    const major=[
-
-        "España",
-        "Inglaterra",
-        "Alemania",
-        "Italia",
-        "Francia",
-        "Portugal",
-        "Países Bajos",
-        "Brasil",
-        "Argentina"
-
-    ];
-
-    return major.includes(country)
-
-        ? 66+Math.floor(Math.random()*12)
-
-        : 55+Math.floor(Math.random()*16);
+function esc(s){
+
+    return String(s).replace(
+        /[&<>"']/g,
+        m=>({
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+        }[m])
+    );
 
 }
 
@@ -1706,47 +1508,39 @@ function goStep(n){
         !$("playerName").value.trim()
     ){
 
-        alert(
-            "Escribe el nombre de tu jugador."
-        );
+        alert("Escribe el nombre de tu jugador.");
 
         return;
-
     }
 
 
-    [
-        1,
-        2,
-        3,
-        4
-    ].forEach(i=>{
+    [1,2,3,4].forEach(i=>{
 
         $("step"+i)
-            .classList
-            .toggle(
-                "hidden",
-                i!==n
-            );
+        .classList
+        .toggle(
+            "hidden",
+            i!==n
+        );
 
     });
 
 
     document
-        .querySelectorAll(".step")
-        .forEach((x,i)=>{
+    .querySelectorAll(".step")
+    .forEach((x,i)=>{
 
-            x.classList.toggle(
-                "active",
-                i===n-1
-            );
+        x.classList.toggle(
+            "active",
+            i===n-1
+        );
 
-            x.classList.toggle(
-                "done",
-                i<n-1
-            );
+        x.classList.toggle(
+            "done",
+            i<n-1
+        );
 
-        });
+    });
 
 
     window.scrollTo({
@@ -1754,157 +1548,87 @@ function goStep(n){
         behavior:"smooth"
     });
 
+
+    if(n===2){
+
+        prepareRandomClub();
+
+    }
+
 }
 
 
 /* =========================================================
-   CLUB DE DEBUT ALEATORIO
+   CLUB RANDOM
 ========================================================= */
 
-function chooseRandomStartingClub(){
+function prepareRandomClub(){
 
-    const level=
-        $("startLevel").value;
+    selectedClub=null;
 
+    $("startBtn").disabled=true;
 
-    let minRating=50;
-
-    let maxRating=75;
-
-
-    /*
-       CANDETERA / AMATEUR
-       Más posibilidades de clubes pequeños
-    */
-
-    if(level==="low"){
-
-        minRating=50;
-        maxRating=76;
-
-    }
+    $("clubList").innerHTML=`
+        <div class="loading">
+            🎲 Buscando tu club de debut...
+        </div>
+    `;
 
 
-    /*
-       JOVEN PROFESIONAL
-    */
+    setTimeout(()=>{
 
-    if(level==="normal"){
-
-        minRating=57;
-        maxRating=82;
-
-    }
-
-
-    /*
-       GRAN PROMESA
-       Puede comenzar en clubes mejores
-    */
-
-    if(level==="high"){
-
-        minRating=64;
-        maxRating=90;
-
-    }
-
-
-    let candidates=clubs.filter(c=>
-
-        c.rating>=minRating &&
-        c.rating<=maxRating
-
-    );
-
-
-    /*
-       Si por alguna razón no hay suficientes,
-       utilizamos todos los clubes.
-    */
-
-    if(candidates.length<5){
-
-        candidates=clubs;
-
-    }
-
-
-    /*
-       Pesos para evitar que un jugador de 16 años
-       aparezca constantemente en gigantes.
-
-       Los clubes pequeños tienen más probabilidad.
-    */
-
-    const weighted=[];
-
-
-    candidates.forEach(c=>{
-
-        let weight=1;
-
-
-        if(c.rating<=65){
-
-            weight=7;
-
-        }else if(c.rating<=70){
-
-            weight=6;
-
-        }else if(c.rating<=75){
-
-            weight=4;
-
-        }else if(c.rating<=80){
-
-            weight=2;
-
-        }else{
-
-            weight=0.8;
-
-        }
-
-
-        /*
-           Las grandes promesas tienen algo más
-           de posibilidades de comenzar arriba.
-        */
-
-        if(level==="high"){
-
-            if(c.rating>=75){
-                weight*=2;
-            }
-
-        }
-
-
-        for(
-            let i=0;
-            i<Math.max(1,Math.round(weight));
-            i++
-        ){
-
-            weighted.push(c);
-
-        }
-
-    });
-
-
-    const random=
-        weighted[
+        const randomIndex=
             Math.floor(
-                Math.random()*
-                weighted.length
-            )
-        ];
+                Math.random()*clubs.length
+            );
+
+        selectedClub=clubs[randomIndex];
 
 
-    return random;
+        $("clubList").innerHTML=`
+
+            <div style="
+                text-align:center;
+                padding:20px;
+            ">
+
+                <div style="
+                    color:#777;
+                    font-size:10px;
+                    font-weight:900;
+                    letter-spacing:2px;
+                    margin-bottom:10px;
+                ">
+                    TU CLUB DE DEBUT
+                </div>
+
+                <div style="
+                    font-size:28px;
+                    font-weight:950;
+                    margin-bottom:7px;
+                ">
+                    ${esc(selectedClub.name)}
+                </div>
+
+                <div style="
+                    color:#777;
+                    font-size:12px;
+                ">
+                    ${esc(selectedClub.country)}
+                    ·
+                    ${esc(selectedClub.league)}
+                    ·
+                    Nivel ${selectedClub.rating}
+                </div>
+
+            </div>
+
+        `;
+
+
+        $("startBtn").disabled=false;
+
+    },700);
 
 }
 
@@ -1915,48 +1639,41 @@ function chooseRandomStartingClub(){
 
 function startCareer(){
 
+    if(!selectedClub){
+
+        alert("No se ha elegido tu club de debut.");
+
+        return;
+    }
+
+
     /*
-       LA EDAD SIEMPRE ES 16.
-       No se toma ningún valor del input.
+       EDAD SIEMPRE 16
     */
 
     const age=16;
 
 
-    const level=
-        $("startLevel").value;
+    const level=$("startLevel").value;
 
 
     const base=
         level==="low"
-            ?54
-            :level==="high"
-                ?68
-                :61;
-
-
-    /*
-       EL CLUB SE ELIGE AUTOMÁTICAMENTE.
-    */
-
-    selectedClub=
-        chooseRandomStartingClub();
+        ?54
+        :level==="high"
+        ?68
+        :61;
 
 
     player={
 
-        name:
-            $("playerName")
-            .value
-            .trim(),
+        name:$("playerName").value.trim(),
 
         age:16,
 
-        position:
-            $("position").value,
+        position:$("position").value,
 
-        foot:
-            $("foot").value,
+        foot:$("foot").value,
 
         country:
             $("country").value ||
@@ -1964,26 +1681,23 @@ function startCareer(){
 
         rating:
             base+
-            Math.floor(
-                Math.random()*4
-            ),
+            Math.floor(Math.random()*4),
 
         potential:
             level==="high"
-                ?92
-                :level==="normal"
-                    ?88
-                    :82,
+            ?92
+            :level==="normal"
+            ?88
+            :82,
 
         value:
             base<58
-                ?350000
-                :base<66
-                    ?1200000
-                    :3000000,
+            ?350000
+            :base<66
+            ?1200000
+            :3000000,
 
-        club:
-            selectedClub
+        club:selectedClub
 
     };
 
@@ -2005,48 +1719,6 @@ function startCareer(){
     individualTrophies=[];
 
 
-    /*
-       Mostrar el club elegido antes de comenzar.
-    */
-
-    $("randomClubPreview").innerHTML=`
-
-        <div class="random-club">
-
-            <div>
-
-                <div class="random-club-label">
-                    TU CLUB DE DEBUT
-                </div>
-
-                <div class="random-club-name">
-                    ${esc(selectedClub.name)}
-                </div>
-
-                <div class="random-club-meta">
-                    ${esc(selectedClub.country)}
-                    ·
-                    ${esc(selectedClub.league)}
-                    ·
-                    Nivel ${selectedClub.rating}
-                </div>
-
-            </div>
-
-            <div class="random-badge">
-                CLUB ASIGNADO
-            </div>
-
-        </div>
-
-    `;
-
-
-    /*
-       El usuario no necesita pulsar otra vez.
-       Empezamos inmediatamente.
-    */
-
     goStep(3);
 
     renderDashboard();
@@ -2063,25 +1735,12 @@ function startCareer(){
 function money(v){
 
     if(v>=100000000)
-
-        return "€"+
-            (v/1000000)
-            .toFixed(1)+
-            "M";
-
+        return "€"+(v/1000000).toFixed(1)+"M";
 
     if(v>=1000000)
+        return "€"+(v/1000000).toFixed(2)+"M";
 
-        return "€"+
-            (v/1000000)
-            .toFixed(2)+
-            "M";
-
-
-    return "€"+
-        Math.round(v/1000)+
-        "K";
-
+    return "€"+Math.round(v/1000)+"K";
 }
 
 
@@ -2125,142 +1784,96 @@ function runSeason(){
     renderDashboard();
 
 
-    const minutes=Math.max(
-
-        700,
-
-        Math.round(
-
-            900+
-            (player.rating-player.club.rating)*32+
-            Math.random()*700
-
-        )
-
-    );
-
-
-    const matches=Math.max(
-
-        10,
-
-        Math.min(
-
-            42,
-
+    const minutes=
+        Math.max(
+            700,
             Math.round(
-                minutes/27
+                900+
+                (player.rating-player.club.rating)*32+
+                Math.random()*700
             )
+        );
 
-        )
 
-    );
+    const matches=
+        Math.max(
+            10,
+            Math.min(
+                42,
+                Math.round(minutes/27)
+            )
+        );
 
 
     const attack=[
-
         "Delantero",
         "Extremo derecho",
         "Extremo izquierdo",
         "Mediapunta",
         "Interior"
-
     ].includes(player.position);
 
 
     const goals=
-
         attack
-
-            ?Math.max(
-
-                0,
-
-                Math.round(
-
-                    matches*
-                    (player.rating/100)*
-                    (
-                        .12+
-                        Math.random()*.18
-                    )
-
-                )
-
-            )
-
-            :Math.round(
-
+        ?
+        Math.max(
+            0,
+            Math.round(
                 matches*
                 (player.rating/100)*
-                (
-                    .02+
-                    Math.random()*.08
-                )
-
-            );
+                (.12+Math.random()*.18)
+            )
+        )
+        :
+        Math.round(
+            matches*
+            (player.rating/100)*
+            (.02+Math.random()*.08)
+        );
 
 
     const assists=
-
         attack
-
-            ?Math.round(
-
-                matches*
-                (
-                    .08+
-                    Math.random()*.12
-                )
-
-            )
-
-            :Math.round(
-
-                matches*
-                (
-                    .03+
-                    Math.random()*.08
-                )
-
-            );
+        ?
+        Math.round(
+            matches*
+            (.08+Math.random()*.12)
+        )
+        :
+        Math.round(
+            matches*
+            (.03+Math.random()*.08)
+        );
 
 
     const clean=
-
         [
-
             "Portero",
             "Defensa central",
             "Lateral derecho",
             "Lateral izquierdo"
-
         ].includes(player.position)
-
-            ?Math.round(
-                matches*
-                .18*
-                Math.random()
-            )
-
-            :0;
-
-
-    const avg=Math.min(
-
-        9.1,
-
-        Math.max(
-
-            5.8,
-
-            6.2+
-            (player.rating-player.club.rating)/22+
-            Math.random()*1.2
-
+        ?
+        Math.round(
+            matches*
+            .18*
+            Math.random()
         )
+        :
+        0;
 
-    );
+
+    const avg=
+        Math.min(
+            9.1,
+            Math.max(
+                5.8,
+                6.2+
+                (player.rating-player.club.rating)/22+
+                Math.random()*1.2
+            )
+        );
 
 
     const trophyChance=
@@ -2271,24 +1884,15 @@ function runSeason(){
     let trophies=[];
 
 
-    /*
-       TÍTULOS NACIONALES
-    */
-
     if(
-
-        trophyChance>88 &&
+        trophyChance>80 &&
         Math.random()<.32
-
     ){
 
         const t=[
-
             "Liga nacional",
             "Copa nacional"
-
         ];
-
 
         const won=
             t[
@@ -2297,47 +1901,33 @@ function runSeason(){
                 )
             ];
 
-
         trophies.push(won);
 
-
         teamTrophies.push({
-
             name:won,
             club:player.club.name,
             year:season
-
         });
 
     }
 
 
-    /*
-       COMPETICIÓN CONTINENTAL
-    */
-
     if(
-
-        trophyChance>90 &&
-        Math.random()<.13
-
+        trophyChance>88 &&
+        Math.random()<.15
     ){
 
         trophies.push(
             "Competición continental"
         );
 
-
         teamTrophies.push({
 
-            name:
-                "Competición continental",
+            name:"Competición continental",
 
-            club:
-                player.club.name,
+            club:player.club.name,
 
-            year:
-                season
+            year:season
 
         });
 
@@ -2348,19 +1938,17 @@ function runSeason(){
 
 
     if(
-
         avg>=8.0 &&
         goals+assists>=15 &&
         Math.random()<.25
-
     ){
 
         award=
             goals>=assists
-
-                ? "Máximo goleador del equipo"
-
-                : "Jugador del año del club";
+            ?
+            "Máximo goleador del equipo"
+            :
+            "Jugador del año del club";
 
 
         individualTrophies.push({
@@ -2369,10 +1957,42 @@ function runSeason(){
 
             year:season,
 
-            club:
-                player.club.name
+            club:player.club.name
 
         });
+
+    }
+
+
+    /*
+       PREMIO EXTRA DE TEMPORADA
+    */
+
+    if(
+        avg>=8.5 &&
+        goals+assists>=25 &&
+        Math.random()<.12
+    ){
+
+        const eliteAward=
+            "Jugador del año de la liga";
+
+        individualTrophies.push({
+
+            name:eliteAward,
+
+            year:season,
+
+            club:player.club.name
+
+        });
+
+        award=
+            award
+            ?
+            award+" · "+eliteAward
+            :
+            eliteAward;
 
     }
 
@@ -2381,15 +2001,11 @@ function runSeason(){
 
         season,
 
-        club:{
-            ...player.club
-        },
+        club:{...player.club},
 
-        age:
-            player.age,
+        age:player.age,
 
-        rating:
-            player.rating,
+        rating:player.rating,
 
         matches,
 
@@ -2425,73 +2041,49 @@ function runSeason(){
 
 
     /*
-       CRECIMIENTO
+       DESARROLLO DEL JUGADOR
     */
 
-    const growth=Math.round(
-
-        (avg-6.6)*1.4+
-
-        (goals+assists>20
-            ?1.2
-            :0)+
-
-        (
-
-            player.rating<
-            player.potential
-
-                ?Math.random()*1.7
-
-                :-Math.random()*.4
-
-        )
-
-    );
-
-
-    player.rating=Math.max(
-
-        45,
-
-        Math.min(
-
-            player.potential,
-
-            player.rating+
-            growth
-
-        )
-
-    );
-
-
-    player.value=Math.round(
-
-        player.value*
-
-        (
-
-            1+
-
-            Math.max(
-
-                -.15,
-
-                Math.min(
-
-                    .45,
-
-                    growth*.055+
-                    (avg-7)*.03
-
-                )
-
+    const growth=
+        Math.round(
+            (avg-6.6)*1.4+
+            (goals+assists>20?1.2:0)+
+            (
+                player.rating<
+                player.potential
+                ?
+                Math.random()*1.7
+                :
+                -Math.random()*.4
             )
+        );
 
-        )
 
-    );
+    player.rating=
+        Math.max(
+            45,
+            Math.min(
+                player.potential,
+                player.rating+growth
+            )
+        );
+
+
+    player.value=
+        Math.round(
+            player.value*
+            (
+                1+
+                Math.max(
+                    -.15,
+                    Math.min(
+                        .45,
+                        growth*.055+
+                        (avg-7)*.03
+                    )
+                )
+            )
+        );
 
 
     renderSeasonEvent(row);
@@ -2528,16 +2120,20 @@ function renderSeasonEvent(row){
 
                 ${
                     row.trophies.length
-                        ?"<br>🏆 "+
-                        row.trophies.join(" · ")
-                        :""
+                    ?
+                    "<br>🏆 "+
+                    row.trophies.join(" · ")
+                    :
+                    ""
                 }
 
                 ${
                     row.award
-                        ?"<br>⭐ "+
-                        row.award
-                        :""
+                    ?
+                    "<br>⭐ "+
+                    row.award
+                    :
+                    ""
                 }
 
             </p>
@@ -2553,179 +2149,521 @@ function renderSeasonEvent(row){
 
 
 /* =========================================================
-   OFERTAS
+   SISTEMA DE OFERTAS REALISTAS + MILAGROSAS
 ========================================================= */
 
 function generateOffers(row){
 
-    const desired=[];
-
-    const current=
-        player.club.rating;
+    const currentClub=
+        player.club;
 
 
     /*
-       Reputación acumulada.
+       REPUTACIÓN DEL JUGADOR
+
+       Aumenta con:
+       - media
+       - temporadas
+       - rendimiento
+       - goles/asistencias
+       - títulos
     */
 
-    const rep=
-
+    const reputation=
         Math.max(
             0,
-            (player.rating-55)*1.8
-        )
-
-        +
-
-        career.length*1.5;
+            (player.rating-50)*1.6+
+            career.length*2+
+            row.avg*2+
+            (row.goals+row.assists)*.45+
+            teamTrophies.length*2.5+
+            individualTrophies.length*3
+        );
 
 
     /*
-       Nivel máximo de club razonable.
+       TEMPORADA EXCEPCIONAL
+
+       Esto abre muchísimo las posibilidades.
     */
 
-    const maxTier=Math.min(
-
-        96,
-
-        Math.round(
-            player.rating+
-            rep*.22
-        )
-
-    );
+    const exceptional=
+        row.avg>=8.2 ||
+        row.goals+row.assists>=25 ||
+        player.rating>=85;
 
 
-    clubs.forEach(c=>{
+    /*
+       LISTA DE POSIBLES OFERTAS
+    */
+
+    let candidates=[];
+
+
+    clubs.forEach(club=>{
 
         if(
-            c.name===
-            player.club.name
-        ) return;
+            club.name===
+            currentClub.name
+        )
+            return;
 
 
         const gap=
-            c.rating-
+            club.rating-
             player.rating;
 
 
         /*
-           Regla base de realismo.
+           DISTANCIA ENTRE CLUBES
+
+           Normal:
+           ofertas cercanas.
+
+           Buena reputación:
+           clubes bastante superiores.
+
+           Gran reputación:
+           incluso gigantes.
         */
 
-        const realistic=
-
-            c.rating<=maxTier+5 &&
-
-            c.rating>=
-            Math.max(
-                45,
-                player.rating-20
-            );
+        let probability=0;
 
 
-        if(realistic){
+        /*
+           CLUBES POR DEBAJO O SIMILARES
+        */
 
-            const distance=
+        if(gap<=8){
 
-                Math.abs(
-                    c.rating-
-                    (player.rating+8)
+            probability+=
+                30;
+
+        }
+
+
+        /*
+           CLUBES SUPERIORES
+        */
+
+        if(gap>8 && gap<=15){
+
+            probability+=
+                reputation>=25
+                ?25
+                :8;
+
+        }
+
+
+        /*
+           CLUBES MUY SUPERIORES
+        */
+
+        if(gap>15 && gap<=25){
+
+            probability+=
+                reputation>=45
+                ?12
+                :2;
+
+        }
+
+
+        /*
+           CLUBES GIGANTES
+        */
+
+        const giant=
+            club.rating>=90;
+
+
+        if(giant){
+
+            /*
+               Sin gran temporada:
+               muy difícil.
+
+               Gran temporada:
+               bastante más posible.
+            */
+
+            probability=
+                exceptional
+                ?
+                5+
+                Math.min(
+                    18,
+                    reputation*.16
+                )
+                :
+                0.35+
+                Math.min(
+                    2.5,
+                    reputation*.035
                 );
 
+        }
 
-            desired.push({
 
-                club:c,
+        /*
+           CLUBES GRANDES
+           84-89
+        */
 
-                score:
+        if(
+            club.rating>=84 &&
+            club.rating<90
+        ){
 
-                    100-
-                    distance*3+
-                    Math.random()*35
+            probability+=
+                exceptional
+                ?15
+                :5;
 
-            });
+        }
+
+
+        /*
+           JUGADORES MUY BUENOS
+        */
+
+        if(player.rating>=88){
+
+            if(club.rating>=88)
+                probability+=12;
+
+            if(club.rating>=82)
+                probability+=8;
+
+        }
+
+
+        /*
+           JUGADORES DE ÉLITE
+        */
+
+        if(player.rating>=92){
+
+            if(club.rating>=88)
+                probability+=18;
+
+            if(club.rating>=80)
+                probability+=8;
+
+        }
+
+
+        /*
+           EDAD
+
+           Los jóvenes prometedores son atractivos.
+        */
+
+        if(player.age<=22){
+
+            probability+=
+                Math.max(
+                    0,
+                    (player.potential-75)*.25
+                );
+
+        }
+
+
+        /*
+           PRIME
+        */
+
+        if(
+            player.age>=23 &&
+            player.age<=29
+        ){
+
+            probability+=5;
+
+        }
+
+
+        /*
+           VETERANOS
+
+           Menos ofertas, pero todavía posibles.
+        */
+
+        if(player.age>=32){
+
+            probability*=.72;
+
+        }
+
+
+        /*
+           PENALIZACIÓN SI EL CLUB ES DEMASIADO GRANDE
+           Y EL JUGADOR TODAVÍA ES MUY FLOJO.
+        */
+
+        if(
+            club.rating>=90 &&
+            player.rating<75
+        ){
+
+            probability*=.08;
+
+        }
+
+
+        /*
+           NO DEJAMOS QUE TODO SEA AUTOMÁTICO
+        */
+
+        if(probability>0){
+
+            const randomRoll=
+                Math.random()*100;
+
+            if(
+                randomRoll<
+                Math.min(
+                    85,
+                    probability
+                )
+            ){
+
+                const score=
+                    probability+
+                    Math.random()*35+
+                    (club.rating-player.rating)*.4;
+
+                candidates.push({
+
+                    club,
+
+                    score,
+
+                    giant
+
+                });
+
+            }
 
         }
 
     });
 
 
-    desired.sort(
+    /*
+       ====================================================
+       OFERTAS MILAGRO
+       ====================================================
+
+       Son raras.
+
+       Pero existen.
+
+       Ejemplo:
+
+       jugador de 76 de media
+       juega una temporada brutal
+       y recibe una oferta del Madrid.
+
+       NO pasa siempre.
+    */
+
+    if(exceptional){
+
+        const giants=
+            clubs.filter(c=>
+                c.rating>=90 &&
+                c.name!==currentClub.name
+            );
+
+
+        giants.forEach(club=>{
+
+            /*
+               Probabilidad especial.
+
+               Cuanto mejor sea el jugador,
+               más probable.
+
+               Pero sigue siendo rara.
+            */
+
+            const miracleChance=
+                Math.min(
+                    9,
+                    1.2+
+                    (
+                        player.rating>=88
+                        ?3
+                        :0
+                    )+
+                    (
+                        row.avg>=8.5
+                        ?2
+                        :0
+                    )+
+                    (
+                        row.goals+
+                        row.assists>=30
+                        ?2
+                        :0
+                    )
+                );
+
+
+            if(
+                Math.random()*100<
+                miracleChance
+            ){
+
+                candidates.push({
+
+                    club,
+
+                    score:
+                        500+
+                        Math.random()*100,
+
+                    giant:true,
+
+                    miracle:true
+
+                });
+
+            }
+
+        });
+
+    }
+
+
+    /*
+       ====================================================
+       ORDENAR
+       ====================================================
+    */
+
+    candidates.sort(
         (a,b)=>
             b.score-a.score
     );
 
 
     /*
-       AHORA PUEDEN LLEGAR MÁS OFERTAS.
-       La cantidad depende de reputación.
+       ELIMINAR DUPLICADOS
     */
 
-    let offerCount=3;
+    const unique=[];
+
+    const used=new Set();
 
 
-    if(player.rating>=70)
-        offerCount=4;
+    candidates.forEach(item=>{
 
-    if(player.rating>=78)
-        offerCount=5;
+        const key=
+            item.club.name+
+            "|"+
+            item.club.country;
 
-    if(player.rating>=84)
-        offerCount=6;
 
-    if(player.rating>=88)
-        offerCount=7;
+        if(!used.has(key)){
 
-    if(player.age>=30)
-        offerCount=Math.min(
-            5,
-            offerCount
+            used.add(key);
+
+            unique.push(item);
+
+        }
+
+    });
+
+
+    /*
+       ====================================================
+       CANTIDAD DE OFERTAS
+       ====================================================
+
+       Temporadas normales:
+       1-4.
+
+       Temporadas buenas:
+       2-5.
+
+       Temporadas brutales:
+       3-6.
+
+       Nunca mostramos una lista absurda.
+    */
+
+    let maxOffers=4;
+
+
+    if(exceptional)
+        maxOffers=6;
+
+
+    if(
+        player.rating>=88
+    )
+        maxOffers=6;
+
+
+    if(
+        player.age>=32
+    )
+        maxOffers=4;
+
+
+    const offers=
+        unique.slice(
+            0,
+            maxOffers
         );
 
 
     /*
-       Seleccionamos de una lista mucho más amplia.
-    */
-
-    let offers=desired.slice(
-        0,
-        offerCount
-    );
-
-
-    /*
-       Si hay pocas ofertas directas,
-       rellenamos con otras posibilidades.
+       Si no hubo ofertas:
+       existe una pequeña posibilidad
+       de que llegue una oferta normal.
     */
 
     if(
-        offers.length<offerCount
+        !offers.length &&
+        Math.random()<.45
     ){
 
-        offers.push(
-            ...desired.slice(
-                offers.length,
-                offerCount+4
+        const backup=
+            clubs
+            .filter(c=>
+                c.name!==currentClub.name
             )
-        );
+            .sort(()=>
+                Math.random()-.5
+            )
+            .find(c=>
+                Math.abs(
+                    c.rating-
+                    player.rating
+                )<=15
+            );
+
+
+        if(backup){
+
+            offers.push({
+
+                club:backup,
+
+                score:20,
+
+                giant:false
+
+            });
+
+        }
 
     }
-
-
-    /*
-       Mezcla ligera para evitar que
-       siempre aparezcan en el mismo orden.
-    */
-
-    offers=offers
-        .sort(
-            ()=>Math.random()-.5
-        )
-        .slice(
-            0,
-            offerCount
-        );
 
 
     let html=`
@@ -2737,13 +2675,12 @@ function generateOffers(row){
             </h3>
 
             <p>
-
-                Tu rendimiento, edad, reputación,
-                media y nivel del club determinan
-                qué equipos pueden interesarse.
-                Las ofertas no son iguales en cada
-                temporada.
-
+                Tu reputación, edad, media,
+                rendimiento, estadísticas y títulos
+                influyen en los clubes que pueden
+                interesarse por ti.
+                Algunas ofertas serán normales...
+                y otras pueden cambiar tu carrera.
             </p>
 
             <div class="offer-grid">
@@ -2751,66 +2688,87 @@ function generateOffers(row){
     `;
 
 
-    offers.forEach((o,i)=>{
+    offers.forEach(o=>{
 
-        const fee=Math.max(
-
-            250000,
-
-            Math.round(
-
-                player.value*
-
-                (
-
-                    .7+
-                    o.club.rating/100+
-                    Math.random()*.65
-
-                )
-
-            )
-
-        );
+        const club=
+            o.club;
 
 
-        const salary=Math.round(
-
+        const fee=
             Math.max(
+                250000,
+                Math.round(
+                    player.value*
+                    (
+                        .7+
+                        club.rating/100+
+                        Math.random()*.65
+                    )
+                )
+            );
 
-                1500,
 
-                player.value/9000
+        const salary=
+            Math.round(
+                Math.max(
+                    1500,
+                    player.value/9000
+                )*
+                (club.rating/70)*
+                (
+                    .85+
+                    Math.random()*.3
+                )
+            );
 
-            )*
 
-            (o.club.rating/70)*
+        /*
+           TEXTO ESPECIAL
+        */
 
-            (
+        let special="";
 
-                .85+
-                Math.random()*.3
 
-            )
+        if(o.miracle){
 
-        );
+            special=`
+                <div class="special">
+                    ⭐ OFERTA SORPRESA
+                </div>
+            `;
+
+        }
+        else if(o.giant){
+
+            special=`
+                <div class="special">
+                    🔥 INTERÉS DE UN GIGANTE
+                </div>
+            `;
+
+        }
 
 
         html+=`
 
-            <div class="offer">
+            <div class="
+                offer
+                ${o.giant?"miracle":""}
+            ">
+
+                ${special}
 
                 <h4>
-                    ${esc(o.club.name)}
+                    ${esc(club.name)}
                 </h4>
 
                 <div class="why">
 
-                    ${esc(o.club.country)}
+                    ${esc(club.country)}
                     ·
-                    ${esc(o.club.league)}
+                    ${esc(club.league)}
                     ·
-                    Nivel ${o.club.rating}
+                    Nivel ${club.rating}
 
                 </div>
 
@@ -2828,23 +2786,14 @@ function generateOffers(row){
 
 
                 <button
-
                     class="btn primary"
-
                     style="
                         margin-top:12px;
                         width:100%
                     "
-
-                    onclick='acceptOffer(
-                        ${JSON.stringify(o.club)
-                        .replace(/'/g,"&#39;")}
-                    )'
-
+                    onclick='acceptOffer(${JSON.stringify(club).replace(/'/g,"&#39;")})'
                 >
-
                     ACEPTAR
-
                 </button>
 
             </div>
@@ -2858,11 +2807,14 @@ function generateOffers(row){
 
         html+=`
 
-            <div class="loading">
+            <div class="loading"
+                 style="grid-column:1/-1">
 
-                No llegaron ofertas
-                suficientemente realistas
-                esta temporada.
+                No llegaron ofertas esta temporada.
+
+                <br>
+
+                Tu agente tendrá que seguir buscando.
 
             </div>
 
@@ -2884,12 +2836,10 @@ function generateOffers(row){
                 class="btn dark"
                 onclick="stayClub()"
             >
-
                 QUEDARME EN
                 ${esc(
-                    player.club.name
+                    currentClub.name
                 ).toUpperCase()}
-
             </button>
 
 
@@ -2897,9 +2847,7 @@ function generateOffers(row){
                 class="btn secondary"
                 onclick="finishCareer()"
             >
-
                 TERMINAR CARRERA
-
             </button>
 
         </div>
@@ -2943,17 +2891,37 @@ function stayClub(){
 
 function nextSeason(){
 
+    /*
+       MÁXIMO 20 TEMPORADAS
+    */
+
+    if(season>=20){
+
+        finishCareer();
+
+        return;
+
+    }
+
+
     season++;
 
     player.age++;
 
 
     /*
-       MÁXIMO 20 TEMPORADAS.
+       MÁXIMO 20 TEMPORADAS
+
+       Si empezó a los 16:
+
+       T1 = 16
+       T2 = 17
+       ...
+       T20 = 35
     */
 
+
     if(
-        season>20 ||
         player.age>45
     ){
 
@@ -2965,33 +2933,26 @@ function nextSeason(){
 
 
     /*
-       DECLIVE POR EDAD.
+       DECLIVE DE VETERANOS
     */
 
     if(
-
         player.age>30 &&
         player.rating>
         player.potential-2
-
     ){
 
         player.rating=
-
             Math.max(
-
                 45,
-
                 player.rating-
                 Math.random()*.8
-
             );
 
     }
 
 
     $("offersArea").innerHTML="";
-
 
     runSeason();
 
@@ -3012,15 +2973,13 @@ function finishCareer(){
 
 
 /* =========================================================
-   RESUMEN
+   RESUMEN FINAL
 ========================================================= */
 
 function renderSummary(){
 
     $("finalRating").textContent=
-        Math.round(
-            player.rating
-        );
+        Math.round(player.rating);
 
 
     $("finalName").textContent=
@@ -3028,44 +2987,22 @@ function renderSummary(){
 
 
     $("finalLine").textContent=
-
-        `${player.position} · `+
-        `${player.country} · `+
-        `${player.age} años · `+
-        `${career.length} temporadas`;
+        `${player.position} · ${player.country} · ${player.age} años · ${career.length} temporadas`;
 
 
     $("summaryCards").innerHTML=[
 
-        [
-            "PARTIDOS",
-            totals.matches
-        ],
+        ["PARTIDOS",totals.matches],
 
-        [
-            "GOLES",
-            totals.goals
-        ],
+        ["GOLES",totals.goals],
 
-        [
-            "ASISTENCIAS",
-            totals.assists
-        ],
+        ["ASISTENCIAS",totals.assists],
 
-        [
-            "MINUTOS",
-            totals.minutes
-        ],
+        ["MINUTOS",totals.minutes],
 
-        [
-            "TÍTULOS",
-            teamTrophies.length
-        ],
+        ["TÍTULOS",teamTrophies.length],
 
-        [
-            "PREMIOS",
-            individualTrophies.length
-        ]
+        ["PREMIOS",individualTrophies.length]
 
     ]
 
@@ -3098,15 +3035,11 @@ function renderSummary(){
 
                     T${r.season}
 
-                    <small
-                        style="
-                            display:block;
-                            color:#777
-                        "
-                    >
-
+                    <small style="
+                        display:block;
+                        color:#777
+                    ">
                         ${r.age} años
-
                     </small>
 
                 </div>
@@ -3114,29 +3047,28 @@ function renderSummary(){
 
                 <div class="clubcareer">
 
-                    ${esc(
-                        r.club.name
-                    )}
+                    ${esc(r.club.name)}
 
                     <small>
 
-                        ${esc(
-                            r.club.league
-                        )}
+                        ${esc(r.club.league)}
 
                         ·
 
                         ${
                             r.trophies.length
-                                ?r.trophies.join(" · ")
-                                :"Sin título"
+                            ?
+                            r.trophies.join(" · ")
+                            :
+                            "Sin título"
                         }
 
                         ${
                             r.award
-                                ?" · ⭐ "+
-                                r.award
-                                :""
+                            ?
+                            " · ⭐ "+r.award
+                            :
+                            ""
                         }
 
                     </small>
@@ -3169,55 +3101,33 @@ function renderSummary(){
 
 
     const average=
-
         career.length
-
-            ?(
-
-                career.reduce(
-                    (a,r)=>
-                        a+r.avg,
-                    0
-                )
-                /
-                career.length
-
-            ).toFixed(2)
-
-            :"0.00";
+        ?
+        (
+            career.reduce(
+                (a,r)=>a+r.avg,
+                0
+            )
+            /
+            career.length
+        ).toFixed(2)
+        :
+        "0.00";
 
 
     $("totalStats").innerHTML=[
 
-        [
-            "Partidos",
-            totals.matches
-        ],
+        ["Partidos",totals.matches],
 
-        [
-            "Goles",
-            totals.goals
-        ],
+        ["Goles",totals.goals],
 
-        [
-            "Asistencias",
-            totals.assists
-        ],
+        ["Asistencias",totals.assists],
 
-        [
-            "Minutos",
-            totals.minutes
-        ],
+        ["Minutos",totals.minutes],
 
-        [
-            "Porterías a cero",
-            totals.cleanSheets
-        ],
+        ["Porterías a cero",totals.cleanSheets],
 
-        [
-            "Valoración media",
-            average
-        ]
+        ["Valoración media",average]
 
     ]
 
@@ -3244,96 +3154,99 @@ function renderSummary(){
 
         teamTrophies.length
 
-            ?
+        ?
 
-            teamTrophies.map(t=>`
+        teamTrophies.map(t=>`
 
-                <div class="trophy">
+            <div class="trophy">
 
-                    <strong>
-                        🏆 ${esc(t.name)}
-                    </strong>
+                <strong>
+                    🏆 ${esc(t.name)}
+                </strong>
 
-                    <span>
+                <span>
 
-                        ${esc(t.club)}
-                        ·
-                        Temporada ${t.year}
+                    ${esc(t.club)}
 
-                    </span>
+                    ·
 
-                </div>
+                    Temporada ${t.year}
 
-            `).join("")
+                </span>
 
-            :
+            </div>
 
-            `
+        `)
 
-                <div class="trophy">
+        .join("")
 
-                    <strong>
-                        Sin títulos
-                    </strong>
+        :
 
-                    <span>
+        `
 
-                        Tu carrera no terminó
-                        con trofeos colectivos.
+        <div class="trophy">
 
-                    </span>
+            <strong>
+                Sin títulos
+            </strong>
 
-                </div>
+            <span>
+                Tu carrera no terminó
+                con trofeos colectivos.
+            </span>
 
-            `;
+        </div>
+
+        `;
 
 
     $("individualTrophies").innerHTML=
 
         individualTrophies.length
 
-            ?
+        ?
 
-            individualTrophies.map(t=>`
+        individualTrophies.map(t=>`
 
-                <div class="trophy">
+            <div class="trophy">
 
-                    <strong>
-                        ⭐ ${esc(t.name)}
-                    </strong>
+                <strong>
+                    ⭐ ${esc(t.name)}
+                </strong>
 
-                    <span>
+                <span>
 
-                        ${esc(t.club)}
-                        ·
-                        Temporada ${t.year}
+                    ${esc(t.club)}
 
-                    </span>
+                    ·
 
-                </div>
+                    Temporada ${t.year}
 
-            `).join("")
+                </span>
 
-            :
+            </div>
 
-            `
+        `)
 
-                <div class="trophy">
+        .join("")
 
-                    <strong>
-                        Sin premios
-                    </strong>
+        :
 
-                    <span>
+        `
 
-                        No obtuviste
-                        premios individuales.
+        <div class="trophy">
 
-                    </span>
+            <strong>
+                Sin premios
+            </strong>
 
-                </div>
+            <span>
+                No obtuviste premios individuales.
+            </span>
 
-            `;
+        </div>
+
+        `;
 
 }
 
@@ -3345,11 +3258,9 @@ function renderSummary(){
 function confirmRestart(){
 
     if(
-
         confirm(
             "¿Seguro que quieres reiniciar la carrera? Se perderá el progreso actual."
         )
-
     ){
 
         location.reload();
@@ -3357,38 +3268,6 @@ function confirmRestart(){
     }
 
 }
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function esc(s){
-
-    return String(s).replace(
-
-        /[&<>"']/g,
-
-        m=>({
-
-            "&":"&amp;",
-            "<":"&lt;",
-            ">":"&gt;",
-            '"':"&quot;",
-            "'":"&#039;"
-
-        }[m])
-
-    );
-
-}
-
-
-/* =========================================================
-   INICIO
-========================================================= */
-
-loadPublicClubs();
 
 </script>
 
