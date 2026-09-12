@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Predicciones de Fútbol</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 { color: var(--accent); margin-bottom: 5px; }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border-color: var(--accent);
+        }
+
+        .game-section { display: none; }
+        .game-section.active { display: block; }
+
+        /* Estilos Juego 1: Ligas */
+        .ligas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .liga-card, .bdo-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .liga-header, .bdo-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .liga-header img, .bdo-header img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .position-badge {
+            background: var(--border);
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .avatar-slot {
+            width: 35px;
+            height: 35px;
+            background: #0f172a;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .avatar-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-slot.circle { border-radius: 50%; }
+
+        input[type="text"] {
+            flex: 1;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        input[type="text"]:focus { border-color: var(--accent); }
+
+        .copas-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border);
+        }
+
+        .copas-section h4 { margin: 0 0 10px 0; color: var(--text-muted); }
+
+        /* Estilos Juego 2: Brackets Torneos */
+        .tournament-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .bracket-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+
+        .bracket-round {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 30px;
+            min-width: 220px;
+        }
+
+        .matchup {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .team-slot {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .team-slot:hover { background: #1e293b; }
+        
+        .team-slot.winner {
+            background: rgba(56, 189, 248, 0.15);
+            font-weight: bold;
+        }
+
+        .team-slot input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            width: 100%;
+            pointer-events: auto;
+        }
+
+        .team-slot input:focus { outline: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Simulador de Predicciones Pro</h1>
+        <p style="color: var(--text-muted);">Configura tus ligas, copas y torneos internacionales en tiempo real</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('juego1')">🏆 Ligas, Copas y Balón de Oro</button>
+        <button class="tab-btn" onclick="switchTab('juego2')">🌍 Copas de Europa (Brackets)</button>
+    </div>
+
+    <!-- JUEGO 1 -->
+    <div id="juego1" class="game-section active">
+        <div class="ligas-grid" id="ligas-container"></div>
+        
+        <!-- Balón de Oro -->
+        <div class="bdo-card" style="max-width: 500px; margin: 0 auto;">
+            <div class="bdo-header">
+                <img src="https://wikimedia.org" alt="BDO">
+                <h2>Predicción Balón de Oro (Top 10)</h2>
+            </div>
+            <div id="bdo-inputs"></div>
+        </div>
+    </div>
+
+    <!-- JUEGO 2 -->
+    <div id="juego2" class="game-section">
+        <div id="tournaments-container"></div>
+    </div>
+</div>
+
+<script>
+    // Configuración de Datos Base
+    const ligas = [
+        { name: "Premier League", logo: "https://wikimedia.org", copas: ["FA Cup", "Carabao Cup"] },
+        { name: "LaLiga", logo: "https://wikimedia.org", copas: ["Copa del Rey"] },
+        { name: "Serie A", logo: "https://wikimedia.org", copas: ["Coppa Italia", "Supercoppa Italiana"] },
+        { name: "Bundesliga", logo: "https://wikimedia.org", copas: ["DFB-Pokal"] },
+        { name: "Ligue 1", logo: "https://wikimedia.org", copas: ["Coupe de France"] }
+    ];
+
+    const torneos = [
+        { id: "champions", name: "UEFA Champions League", logo: "https://wikimedia.org" },
+        { id: "europa", name: "UEFA Europa League", logo: "https://wikimedia.org" },
+        { id: "conference", name: "UEFA Conference League", logo: "https://wikimedia.org" }
+    ];
+
+    // Cambiar de Pestaña
+    function switchTab(tabId) {
+        document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // Buscador automático de imágenes en Wikipedia API
+    async function fetchImage(query, isPlayer = false) {
+        if (!query || query.length < 3) return null;
+        try {
+            const url = `https://wikipedia.org{encodeURIComponent(query)}&prop=pageimages&format=json&pithumbsize=100&origin=*`;
+            const response = await fetch(url);
+            const data = await response.json();
+            const pages = data.query.pages;
+            const pageId = Object.keys(pages)[0];
+            if (pageId !== "-1" && pages[pageId].thumbnail) {
+                return pages[pageId].thumbnail.source;
+            }
+        } catch (e) { console.error("Error buscando imagen", e); }
+        return isPlayer ? "👤" : "🛡️"; 
+    }
+
+    // Manejador del buscador de imágenes al escribir
+    function setupImageAutofetch(inputElement, imgElement, isPlayer = false) {
+        let timeout = null;
+        inputElement.addEventListener('input', () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(async () => {
+                const src = await fetchImage(inputElement.value, isPlayer);
+                if (src && src.startsWith('http')) {
+                    imgElement.innerHTML = `<img src="${src}">`;
+                } else {
+                    imgElement.innerHTML = src || (isPlayer ? "👤" : "🛡️");
+                }
+            }, 800);
+        });
+    }
+
+    // Renderizar Juego 1
+    const ligasContainer = document.getElementById('ligas-container');
+    ligas.forEach((liga, lIdx) => {
+        let html = `
+            <div class="liga-card">
