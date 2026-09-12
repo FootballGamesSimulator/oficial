@@ -4,321 +4,3393 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>⚽ Football Games | Simular una Carrera</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--green:#42ff88;--bg:#050708;--panel:rgba(7,11,13,.88);--line:rgba(255,255,255,.09);--muted:#858b8d}
+
+:root{
+    --green:#42ff88;
+    --bg:#050708;
+    --panel:rgba(7,11,13,.88);
+    --line:rgba(255,255,255,.09);
+    --muted:#858b8d
+}
+
 html{scroll-behavior:smooth}
-body{font-family:Arial,Helvetica,sans-serif;background:#050708;color:#fff;min-height:100vh;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;z-index:-3;background:linear-gradient(to bottom,rgba(0,0,0,.32),rgba(0,0,0,.78),#030506),url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2400&q=90") center/cover no-repeat}
-body:after{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 50% 12%,rgba(66,255,136,.08),transparent 38%)}
-nav{height:72px;position:fixed;top:0;left:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(3,5,7,.86);backdrop-filter:blur(15px);border-bottom:1px solid var(--line)}
-.logo{color:#fff;text-decoration:none;font-size:20px;font-weight:900}.logo span{color:var(--green)}
-.back{color:#aaa;text-decoration:none;font-size:13px;font-weight:800}.back:hover{color:var(--green)}
-.container{width:min(1160px,calc(100% - 30px));margin:auto;padding:120px 0 70px}
-.hero{text-align:center;margin-bottom:35px}.tag{display:inline-block;color:var(--green);border:1px solid rgba(66,255,136,.3);background:rgba(66,255,136,.08);padding:7px 13px;border-radius:30px;font-size:10px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
-h1{font-size:clamp(42px,7vw,76px);line-height:.95;letter-spacing:-4px}.hero h1 span{color:var(--green)}.hero p{max-width:700px;margin:18px auto 0;color:#aaa;font-size:15px;line-height:1.7}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:30px;backdrop-filter:blur(18px);box-shadow:0 25px 80px rgba(0,0,0,.45)}
-.progress{display:flex;gap:8px;margin-bottom:25px}.step{height:5px;flex:1;border-radius:20px;background:#1b2022}.step.active,.step.done{background:var(--green)}
-.step-title{font-size:28px;font-weight:950;margin-bottom:8px}.step-sub{color:#777;font-size:13px;margin-bottom:25px}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.field{display:flex;flex-direction:column;gap:8px}.field.full{grid-column:1/-1}label{font-size:10px;font-weight:900;letter-spacing:1.2px;color:#777}
-input,select{width:100%;height:50px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:#0d1214;color:#fff;padding:0 14px;outline:none;font-size:14px;font-weight:700}
-input:focus,select:focus{border-color:rgba(66,255,136,.55);box-shadow:0 0 0 3px rgba(66,255,136,.06)}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#050708;
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.32),
+            rgba(0,0,0,.78),
+            #030506
+        ),
+        url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2400&q=90")
+        center/cover no-repeat
+}
+
+body:after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background:
+        radial-gradient(
+            circle at 50% 12%,
+            rgba(66,255,136,.08),
+            transparent 38%
+        )
+}
+
+nav{
+    height:72px;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    background:rgba(3,5,7,.86);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid var(--line)
+}
+
+.logo{
+    color:#fff;
+    text-decoration:none;
+    font-size:20px;
+    font-weight:900
+}
+
+.logo span{color:var(--green)}
+
+.back{
+    color:#aaa;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:800
+}
+
+.back:hover{color:var(--green)}
+
+.container{
+    width:min(1160px,calc(100% - 30px));
+    margin:auto;
+    padding:120px 0 70px
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:35px
+}
+
+.tag{
+    display:inline-block;
+    color:var(--green);
+    border:1px solid rgba(66,255,136,.3);
+    background:rgba(66,255,136,.08);
+    padding:7px 13px;
+    border-radius:30px;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:2px;
+    margin-bottom:15px
+}
+
+h1{
+    font-size:clamp(42px,7vw,76px);
+    line-height:.95;
+    letter-spacing:-4px
+}
+
+.hero h1 span{color:var(--green)}
+
+.hero p{
+    max-width:700px;
+    margin:18px auto 0;
+    color:#aaa;
+    font-size:15px;
+    line-height:1.7
+}
+
+.panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:30px;
+    backdrop-filter:blur(18px);
+    box-shadow:0 25px 80px rgba(0,0,0,.45)
+}
+
+.progress{
+    display:flex;
+    gap:8px;
+    margin-bottom:25px
+}
+
+.step{
+    height:5px;
+    flex:1;
+    border-radius:20px;
+    background:#1b2022
+}
+
+.step.active,
+.step.done{
+    background:var(--green)
+}
+
+.step-title{
+    font-size:28px;
+    font-weight:950;
+    margin-bottom:8px
+}
+
+.step-sub{
+    color:#777;
+    font-size:13px;
+    margin-bottom:25px
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:8px
+}
+
+.field.full{grid-column:1/-1}
+
+label{
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1.2px;
+    color:#777
+}
+
+input,
+select{
+    width:100%;
+    height:50px;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:10px;
+    background:#0d1214;
+    color:#fff;
+    padding:0 14px;
+    outline:none;
+    font-size:14px;
+    font-weight:700
+}
+
+input:focus,
+select:focus{
+    border-color:rgba(66,255,136,.55);
+    box-shadow:0 0 0 3px rgba(66,255,136,.06)
+}
+
 select option{background:#0d1214}
-.buttons{display:flex;justify-content:space-between;gap:12px;margin-top:25px}.btn{border:0;border-radius:9px;padding:14px 22px;font-size:12px;font-weight:950;cursor:pointer}.btn.primary{background:var(--green);color:#061009}.btn.secondary{background:#fff;color:#070909}.btn.dark{background:#151a1c;color:#ddd;border:1px solid var(--line)}.btn:disabled{opacity:.4;cursor:not-allowed}
+
+.buttons{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:25px
+}
+
+.btn{
+    border:0;
+    border-radius:9px;
+    padding:14px 22px;
+    font-size:12px;
+    font-weight:950;
+    cursor:pointer
+}
+
+.btn.primary{
+    background:var(--green);
+    color:#061009
+}
+
+.btn.secondary{
+    background:#fff;
+    color:#070909
+}
+
+.btn.dark{
+    background:#151a1c;
+    color:#ddd;
+    border:1px solid var(--line)
+}
+
+.btn:disabled{
+    opacity:.4;
+    cursor:not-allowed
+}
+
 .hidden{display:none!important}
-.search{margin-bottom:12px}
-.selection{max-height:380px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02)}
-.club{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px 16px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer}.club:last-child{border-bottom:0}.club:hover{background:rgba(66,255,136,.06)}.club.selected{background:rgba(66,255,136,.12);border-left:3px solid var(--green)}
-.club-name{font-size:14px;font-weight:900}.club-meta{color:#777;font-size:11px;margin-top:4px}.rating{font-size:12px;color:var(--green);font-weight:900;white-space:nowrap}
-.loading{padding:25px;text-align:center;color:#777;font-size:13px}
-.notice{padding:12px 14px;border:1px solid rgba(66,255,136,.15);background:rgba(66,255,136,.04);border-radius:10px;color:#9ba19e;font-size:12px;line-height:1.55;margin-bottom:15px}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.mini{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:12px;padding:16px}.mini .k{font-size:9px;color:#777;font-weight:900;letter-spacing:1px}.mini .v{font-size:23px;font-weight:950;margin-top:6px}.green{color:var(--green)}
-.season-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}.season-number{font-size:30px;font-weight:950}.season-number span{color:var(--green)}
-.event{border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:14px;padding:20px;margin-bottom:15px}.event h3{font-size:17px;margin-bottom:8px}.event p{color:#999;font-size:13px;line-height:1.6}
-.offer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}.offer{border:1px solid rgba(255,255,255,.08);background:#0b1012;border-radius:12px;padding:17px}.offer:hover{border-color:rgba(66,255,136,.35)}.offer h4{font-size:15px}.offer .money{color:var(--green);font-size:12px;font-weight:900;margin-top:8px}.offer .why{color:#777;font-size:11px;margin-top:6px;line-height:1.4}
-.stats-table{width:100%;border-collapse:collapse;margin-top:10px}.stats-table th,.stats-table td{text-align:left;padding:11px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px}.stats-table th{color:#777;font-size:9px;letter-spacing:1px}.stats-table td:last-child,.stats-table th:last-child{text-align:right}
-.summary-hero{text-align:center;padding:15px 0 25px}.summary-hero .final-rating{font-size:68px;line-height:1;font-weight:950;color:var(--green)}.summary-hero h2{font-size:30px;margin-top:8px}.summary-hero p{color:#888;margin-top:7px}
-.timeline{display:flex;flex-direction:column;gap:12px}.career-item{display:grid;grid-template-columns:90px 1fr auto;gap:15px;align-items:center;padding:15px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}.year{color:var(--green);font-weight:950}.clubcareer{font-weight:900}.clubcareer small{display:block;color:#777;font-weight:600;margin-top:4px}.seasonstat{text-align:right;color:#bbb;font-size:11px}.trophy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.trophy{padding:18px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}.trophy strong{display:block;font-size:13px}.trophy span{display:block;color:#777;font-size:11px;margin-top:6px}
-footer{text-align:center;padding:40px 20px 30px;color:#777;background:rgba(0,0,0,.78);border-top:1px solid var(--line);font-size:12px}footer strong{color:var(--green)}
-@media(max-width:760px){.panel{padding:20px}.form-grid,.offer-grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.career-item{grid-template-columns:65px 1fr}.seasonstat{grid-column:2;text-align:left}.trophy-grid{grid-template-columns:1fr}.buttons{flex-direction:column}.btn{width:100%}h1{letter-spacing:-2px}}
+
+.selection{
+    max-height:380px;
+    overflow:auto;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(255,255,255,.02)
+}
+
+.club{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:15px 16px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    cursor:pointer
+}
+
+.club:last-child{border-bottom:0}
+
+.club:hover{
+    background:rgba(66,255,136,.06)
+}
+
+.club.selected{
+    background:rgba(66,255,136,.12);
+    border-left:3px solid var(--green)
+}
+
+.club-name{
+    font-size:14px;
+    font-weight:900
+}
+
+.club-meta{
+    color:#777;
+    font-size:11px;
+    margin-top:4px
+}
+
+.rating{
+    font-size:12px;
+    color:var(--green);
+    font-weight:900;
+    white-space:nowrap
+}
+
+.loading{
+    padding:25px;
+    text-align:center;
+    color:#777;
+    font-size:13px
+}
+
+.notice{
+    padding:15px 17px;
+    border:1px solid rgba(66,255,136,.15);
+    background:rgba(66,255,136,.04);
+    border-radius:10px;
+    color:#9ba19e;
+    font-size:12px;
+    line-height:1.6;
+    margin-bottom:18px
+}
+
+.random-club{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:22px;
+    margin-top:10px;
+    border-radius:15px;
+    border:1px solid rgba(66,255,136,.18);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(66,255,136,.08),
+            rgba(255,255,255,.025)
+        )
+}
+
+.random-club-label{
+    color:#777;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1.5px;
+    margin-bottom:7px
+}
+
+.random-club-name{
+    font-size:24px;
+    font-weight:950
+}
+
+.random-club-meta{
+    color:#888;
+    font-size:12px;
+    margin-top:5px
+}
+
+.random-badge{
+    color:#061009;
+    background:var(--green);
+    padding:9px 12px;
+    border-radius:7px;
+    font-size:9px;
+    font-weight:950;
+    white-space:nowrap
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:20px
+}
+
+.mini{
+    background:rgba(255,255,255,.035);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px
+}
+
+.mini .k{
+    font-size:9px;
+    color:#777;
+    font-weight:900;
+    letter-spacing:1px
+}
+
+.mini .v{
+    font-size:23px;
+    font-weight:950;
+    margin-top:6px
+}
+
+.green{color:var(--green)}
+
+.season-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px
+}
+
+.season-number{
+    font-size:30px;
+    font-weight:950
+}
+
+.season-number span{color:var(--green)}
+
+.event{
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.025);
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:15px
+}
+
+.event h3{
+    font-size:17px;
+    margin-bottom:8px
+}
+
+.event p{
+    color:#999;
+    font-size:13px;
+    line-height:1.6
+}
+
+.offer-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:15px
+}
+
+.offer{
+    border:1px solid rgba(255,255,255,.08);
+    background:#0b1012;
+    border-radius:12px;
+    padding:17px
+}
+
+.offer:hover{
+    border-color:rgba(66,255,136,.35)
+}
+
+.offer h4{
+    font-size:15px
+}
+
+.offer .money{
+    color:var(--green);
+    font-size:12px;
+    font-weight:900;
+    margin-top:8px
+}
+
+.offer .why{
+    color:#777;
+    font-size:11px;
+    margin-top:6px;
+    line-height:1.4
+}
+
+.stats-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px
+}
+
+.stats-table th,
+.stats-table td{
+    text-align:left;
+    padding:11px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+    font-size:12px
+}
+
+.stats-table th{
+    color:#777;
+    font-size:9px;
+    letter-spacing:1px
+}
+
+.stats-table td:last-child,
+.stats-table th:last-child{
+    text-align:right
+}
+
+.summary-hero{
+    text-align:center;
+    padding:15px 0 25px
+}
+
+.summary-hero .final-rating{
+    font-size:68px;
+    line-height:1;
+    font-weight:950;
+    color:var(--green)
+}
+
+.summary-hero h2{
+    font-size:30px;
+    margin-top:8px
+}
+
+.summary-hero p{
+    color:#888;
+    margin-top:7px
+}
+
+.timeline{
+    display:flex;
+    flex-direction:column;
+    gap:12px
+}
+
+.career-item{
+    display:grid;
+    grid-template-columns:90px 1fr auto;
+    gap:15px;
+    align-items:center;
+    padding:15px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(255,255,255,.025)
+}
+
+.year{
+    color:var(--green);
+    font-weight:950
+}
+
+.clubcareer{
+    font-weight:900
+}
+
+.clubcareer small{
+    display:block;
+    color:#777;
+    font-weight:600;
+    margin-top:4px
+}
+
+.seasonstat{
+    text-align:right;
+    color:#bbb;
+    font-size:11px
+}
+
+.trophy-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px
+}
+
+.trophy{
+    padding:18px;
+    border-radius:12px;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--line)
+}
+
+.trophy strong{
+    display:block;
+    font-size:13px
+}
+
+.trophy span{
+    display:block;
+    color:#777;
+    font-size:11px;
+    margin-top:6px
+}
+
+footer{
+    text-align:center;
+    padding:40px 20px 30px;
+    color:#777;
+    background:rgba(0,0,0,.78);
+    border-top:1px solid var(--line);
+    font-size:12px
+}
+
+footer strong{color:var(--green)}
+
+@media(max-width:760px){
+
+    .panel{padding:20px}
+
+    .form-grid,
+    .offer-grid{
+        grid-template-columns:1fr
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr)
+    }
+
+    .career-item{
+        grid-template-columns:65px 1fr
+    }
+
+    .seasonstat{
+        grid-column:2;
+        text-align:left
+    }
+
+    .trophy-grid{
+        grid-template-columns:1fr
+    }
+
+    .buttons{
+        flex-direction:column
+    }
+
+    .btn{
+        width:100%
+    }
+
+    .random-club{
+        flex-direction:column;
+        align-items:flex-start
+    }
+
+    h1{
+        letter-spacing:-2px
+    }
+}
 </style>
 </head>
+
 <body>
+
 <nav>
-<a href="index.html" class="logo">⚽ FOOTBALL <span>GAMES</span></a>
-<a href="index.html" class="back">← Volver al inicio</a>
+<a href="index.html" class="logo">
+    ⚽ FOOTBALL <span>GAMES</span>
+</a>
+
+<a href="index.html" class="back">
+    ← Volver al inicio
+</a>
 </nav>
 
 <main class="container">
+
 <section class="hero">
-<div class="tag">FOOTBALL GAMES • MODO CARRERA</div>
-<h1>SIMULA TU <span>CARRERA</span></h1>
-<p>Crea tu futbolista, empieza desde donde quieras, juega temporada tras temporada y construye una carrera completa con transferencias, estadísticas, títulos y ofertas condicionadas por tu rendimiento.</p>
+
+<div class="tag">
+    FOOTBALL GAMES • MODO CARRERA
+</div>
+
+<h1>
+    SIMULA TU <span>CARRERA</span>
+</h1>
+
+<p>
+    Crea tu futbolista, comienza automáticamente en un club
+    aleatorio y construye una carrera completa con temporadas,
+    estadísticas, títulos, premios y ofertas de fichaje realistas.
+</p>
+
 </section>
+
 
 <section class="panel">
+
 <div class="progress" id="progress">
-<div class="step active"></div><div class="step"></div><div class="step"></div><div class="step"></div>
+    <div class="step active"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
 </div>
+
+
+<!-- =====================================================
+     PASO 1
+====================================================== -->
 
 <section id="step1">
-<div class="step-title">Crea a tu jugador</div>
-<div class="step-sub">Tu carrera comienza con las decisiones que tomes aquí.</div>
-<div class="form-grid">
-<div class="field"><label>NOMBRE DEL JUGADOR</label><input id="playerName" placeholder="Ej. Anthony"></div>
-<div class="field"><label>EDAD INICIAL</label><input id="playerAge" type="number" min="16" max="35" value="17"></div>
-<div class="field"><label>NACIONALIDAD</label><select id="country"></select></div>
-<div class="field"><label>POSICIÓN</label><select id="position"><option>Portero</option><option>Defensa central</option><option>Lateral derecho</option><option>Lateral izquierdo</option><option>Mediocentro</option><option>Interior</option><option>Mediapunta</option><option>Extremo derecho</option><option>Extremo izquierdo</option><option>Delantero</option></select></div>
-<div class="field"><label>PIERNA DOMINANTE</label><select id="foot"><option>Derecha</option><option>Izquierda</option><option>Ambas</option></select></div>
-<div class="field"><label>NIVEL INICIAL</label><select id="startLevel"><option value="low">Cantera / Amateur</option><option value="normal" selected>Joven profesional</option><option value="high">Gran promesa</option></select></div>
+
+<div class="step-title">
+    Crea a tu jugador
 </div>
-<div class="buttons"><span></span><button class="btn primary" onclick="goStep(2)">CONTINUAR →</button></div>
+
+<div class="step-sub">
+    Tu carrera comienza a los 16 años. No podrás modificar la edad inicial.
+</div>
+
+<div class="form-grid">
+
+<div class="field">
+<label>NOMBRE DEL JUGADOR</label>
+
+<input
+    id="playerName"
+    placeholder="Ej. Anthony"
+>
+</div>
+
+
+<div class="field">
+<label>EDAD INICIAL</label>
+
+<input
+    id="playerAge"
+    type="number"
+    value="16"
+    readonly
+    disabled
+>
+</div>
+
+
+<div class="field">
+
+<label>NACIONALIDAD</label>
+
+<select id="country"></select>
+
+</div>
+
+
+<div class="field">
+
+<label>POSICIÓN</label>
+
+<select id="position">
+
+<option>Portero</option>
+<option>Defensa central</option>
+<option>Lateral derecho</option>
+<option>Lateral izquierdo</option>
+<option>Mediocentro</option>
+<option>Interior</option>
+<option>Mediapunta</option>
+<option>Extremo derecho</option>
+<option>Extremo izquierdo</option>
+<option>Delantero</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>PIERNA DOMINANTE</label>
+
+<select id="foot">
+
+<option>Derecha</option>
+<option>Izquierda</option>
+<option>Ambas</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>NIVEL INICIAL</label>
+
+<select id="startLevel">
+
+<option value="low">
+    Cantera / Amateur
+</option>
+
+<option value="normal" selected>
+    Joven profesional
+</option>
+
+<option value="high">
+    Gran promesa
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="buttons">
+
+<span></span>
+
+<button
+    class="btn primary"
+    onclick="goStep(2)"
+>
+    CONTINUAR →
+</button>
+
+</div>
+
 </section>
+
+
+<!-- =====================================================
+     PASO 2
+     AHORA EL CLUB ES AUTOMÁTICO
+====================================================== -->
 
 <section id="step2" class="hidden">
-<div class="step-title">Elige dónde comenzar</div>
-<div class="step-sub">Puedes buscar por país o directamente por club.</div>
-<div class="notice">La base de clubes se carga desde datos públicos de fútbol. El juego también incluye una base de respaldo para que puedas empezar aunque estés sin conexión.</div>
-<div class="form-grid">
-<div class="field"><label>PAÍS DEL CLUB</label><select id="clubCountry" onchange="filterClubs()"></select></div>
-<div class="field"><label>BUSCAR CLUB</label><input id="clubSearch" placeholder="Escribe el nombre..." oninput="filterClubs()"></div>
+
+<div class="step-title">
+    Tu punto de partida
 </div>
-<div class="selection" id="clubList"><div class="loading">Cargando clubes...</div></div>
-<div class="buttons"><button class="btn dark" onclick="goStep(1)">← ATRÁS</button><button class="btn primary" id="startBtn" disabled onclick="startCareer()">COMENZAR CARRERA →</button></div>
+
+<div class="step-sub">
+    No eliges el club: tu debut será determinado automáticamente.
+</div>
+
+
+<div class="notice">
+
+<strong style="color:#42ff88">
+    🎲 CLUB DE DEBUT ALEATORIO
+</strong>
+
+<br><br>
+
+Tu primer equipo será elegido automáticamente entre una
+gran cantidad de clubes disponibles. El nivel del club tendrá
+en cuenta tu nivel inicial para mantener la carrera lo más
+realista posible.
+
+<br><br>
+
+<strong style="color:#fff">
+    Después de cada temporada sí recibirás ofertas de otros
+    equipos dependiendo de tu rendimiento, edad, media,
+    reputación y nivel del club.
+</strong>
+
+</div>
+
+
+<div id="randomClubPreview">
+
+<div class="random-club">
+
+<div>
+
+<div class="random-club-label">
+    CLUB DE DEBUT
+</div>
+
+<div class="random-club-name">
+    Se decidirá al comenzar
+</div>
+
+<div class="random-club-meta">
+    Club aleatorio · Inicio a los 16 años
+</div>
+
+</div>
+
+<div class="random-badge">
+    AUTOMÁTICO
+</div>
+
+</div>
+
+</div>
+
+
+<div class="buttons">
+
+<button
+    class="btn dark"
+    onclick="goStep(1)"
+>
+    ← ATRÁS
+</button>
+
+<button
+    class="btn primary"
+    onclick="startCareer()"
+>
+    🎲 COMENZAR CARRERA
+</button>
+
+</div>
+
 </section>
+
+
+<!-- =====================================================
+     PASO 3
+====================================================== -->
 
 <section id="step3" class="hidden">
+
 <div class="cards">
-<div class="mini"><div class="k">JUGADOR</div><div class="v" id="dashName">—</div></div>
-<div class="mini"><div class="k">MEDIA</div><div class="v green" id="dashRating">—</div></div>
-<div class="mini"><div class="k">EDAD</div><div class="v" id="dashAge">—</div></div>
-<div class="mini"><div class="k">VALOR</div><div class="v" id="dashValue">—</div></div>
+
+<div class="mini">
+<div class="k">JUGADOR</div>
+<div class="v" id="dashName">—</div>
 </div>
-<div class="season-head"><div><div class="season-number">TEMPORADA <span id="seasonNum">1</span></div><div class="step-sub" id="currentClubText">—</div></div><button class="btn dark" onclick="confirmRestart()">REINICIAR</button></div>
+
+<div class="mini">
+<div class="k">MEDIA</div>
+<div class="v green" id="dashRating">—</div>
+</div>
+
+<div class="mini">
+<div class="k">EDAD</div>
+<div class="v" id="dashAge">—</div>
+</div>
+
+<div class="mini">
+<div class="k">VALOR</div>
+<div class="v" id="dashValue">—</div>
+</div>
+
+</div>
+
+
+<div class="season-head">
+
+<div>
+
+<div class="season-number">
+    TEMPORADA <span id="seasonNum">1</span>
+</div>
+
+<div
+    class="step-sub"
+    id="currentClubText"
+>
+    —
+</div>
+
+</div>
+
+
+<button
+    class="btn dark"
+    onclick="confirmRestart()"
+>
+    REINICIAR
+</button>
+
+</div>
+
+
 <div id="seasonEvent"></div>
+
 <div id="offersArea"></div>
+
 </section>
+
+
+<!-- =====================================================
+     PASO 4
+====================================================== -->
 
 <section id="step4" class="hidden">
+
 <div class="summary-hero">
-<div class="tag">FIN DE CARRERA</div>
-<div class="final-rating" id="finalRating">0</div>
-<h2 id="finalName">—</h2><p id="finalLine">—</p>
+
+<div class="tag">
+    FIN DE CARRERA
 </div>
-<div class="cards" id="summaryCards"></div>
-<h3 style="margin:25px 0 12px">📋 Trayectoria</h3>
-<div class="timeline" id="careerTimeline"></div>
-<h3 style="margin:30px 0 12px">📊 Estadísticas totales</h3>
-<table class="stats-table"><thead><tr><th>ESTADÍSTICA</th><th>TOTAL</th></tr></thead><tbody id="totalStats"></tbody></table>
-<h3 style="margin:30px 0 12px">🏆 Títulos colectivos</h3>
-<div class="trophy-grid" id="teamTrophies"></div>
-<h3 style="margin:30px 0 12px">⭐ Premios individuales</h3>
-<div class="trophy-grid" id="individualTrophies"></div>
-<div class="buttons"><button class="btn primary" onclick="location.reload()">NUEVA CARRERA</button></div>
+
+<div
+    class="final-rating"
+    id="finalRating"
+>
+    0
+</div>
+
+<h2 id="finalName">
+    —
+</h2>
+
+<p id="finalLine">
+    —
+</p>
+
+</div>
+
+
+<div
+    class="cards"
+    id="summaryCards"
+></div>
+
+
+<h3 style="margin:25px 0 12px">
+    📋 Trayectoria
+</h3>
+
+<div
+    class="timeline"
+    id="careerTimeline"
+></div>
+
+
+<h3 style="margin:30px 0 12px">
+    📊 Estadísticas totales
+</h3>
+
+<table class="stats-table">
+
+<thead>
+
+<tr>
+<th>ESTADÍSTICA</th>
+<th>TOTAL</th>
+</tr>
+
+</thead>
+
+<tbody id="totalStats"></tbody>
+
+</table>
+
+
+<h3 style="margin:30px 0 12px">
+    🏆 Títulos colectivos
+</h3>
+
+<div
+    class="trophy-grid"
+    id="teamTrophies"
+></div>
+
+
+<h3 style="margin:30px 0 12px">
+    ⭐ Premios individuales
+</h3>
+
+<div
+    class="trophy-grid"
+    id="individualTrophies"
+></div>
+
+
+<div class="buttons">
+
+<button
+    class="btn primary"
+    onclick="location.reload()"
+>
+    NUEVA CARRERA
+</button>
+
+</div>
+
 </section>
+
 </section>
+
 </main>
 
-<footer>⚽ <strong>FOOTBALL GAMES Simulator</strong><br><br>Una experiencia futbolística para los amantes del deporte.<div style="margin-top:15px;color:#999">© 2026 YoSoyAnthony. Todos los derechos reservados.</div></footer>
+
+<footer>
+
+⚽ <strong>FOOTBALL GAMES Simulator</strong>
+
+<br><br>
+
+Una experiencia futbolística para los amantes del deporte.
+
+<div style="margin-top:15px;color:#999">
+
+© 2026 YoSoyAnthony. Todos los derechos reservados.
+
+</div>
+
+</footer>
+
 
 <script>
+
 /* =========================================================
    PAÍSES
-   ========================================================= */
+========================================================= */
+
 const countries=[
-["Afganistán","AF"],["Albania","AL"],["Alemania","DE"],["Andorra","AD"],["Angola","AO"],["Antigua y Barbuda","AG"],["Arabia Saudita","SA"],["Argelia","DZ"],["Argentina","AR"],["Armenia","AM"],["Australia","AU"],["Austria","AT"],["Azerbaiyán","AZ"],["Bahamas","BS"],["Baréin","BH"],["Bangladés","BD"],["Barbados","BB"],["Bélgica","BE"],["Belice","BZ"],["Benín","BJ"],["Bielorrusia","BY"],["Bolivia","BO"],["Bosnia y Herzegovina","BA"],["Botsuana","BW"],["Brasil","BR"],["Brunéi","BN"],["Bulgaria","BG"],["Burkina Faso","BF"],["Burundi","BI"],["Bután","BT"],["Cabo Verde","CV"],["Camboya","KH"],["Camerún","CM"],["Canadá","CA"],["Catar","QA"],["Chile","CL"],["China","CN"],["Chipre","CY"],["Colombia","CO"],["Comoras","KM"],["Congo","CG"],["Corea del Norte","KP"],["Corea del Sur","KR"],["Costa Rica","CR"],["Croacia","HR"],["Cuba","CU"],["Dinamarca","DK"],["Dominica","DM"],["Ecuador","EC"],["Egipto","EG"],["El Salvador","SV"],["Emiratos Árabes Unidos","AE"],["Eritrea","ER"],["Eslovaquia","SK"],["Eslovenia","SI"],["España","ES"],["Estados Unidos","US"],["Estonia","EE"],["Esuatini","SZ"],["Etiopía","ET"],["Filipinas","PH"],["Finlandia","FI"],["Fiyi","FJ"],["Francia","FR"],["Gabón","GA"],["Gambia","GM"],["Georgia","GE"],["Ghana","GH"],["Granada","GD"],["Grecia","GR"],["Guatemala","GT"],["Guinea","GN"],["Guinea-Bisáu","GW"],["Guinea Ecuatorial","GQ"],["Guyana","GY"],["Haití","HT"],["Honduras","HN"],["Hungría","HU"],["India","IN"],["Indonesia","ID"],["Irak","IQ"],["Irán","IR"],["Irlanda","IE"],["Islandia","IS"],["Israel","IL"],["Italia","IT"],["Jamaica","JM"],["Japón","JP"],["Jordania","JO"],["Kazajistán","KZ"],["Kenia","KE"],["Kirguistán","KG"],["Kuwait","KW"],["Laos","LA"],["Letonia","LV"],["Líbano","LB"],["Lesoto","LS"],["Liberia","LR"],["Libia","LY"],["Liechtenstein","LI"],["Lituania","LT"],["Luxemburgo","LU"],["Macedonia del Norte","MK"],["Madagascar","MG"],["Malasia","MY"],["Malaui","MW"],["Maldivas","MV"],["Malí","ML"],["Malta","MT"],["Marruecos","MA"],["Mauritania","MR"],["Mauricio","MU"],["México","MX"],["Moldavia","MD"],["Mónaco","MC"],["Mongolia","MN"],["Montenegro","ME"],["Mozambique","MZ"],["Myanmar","MM"],["Namibia","NA"],["Nepal","NP"],["Nicaragua","NI"],["Níger","NE"],["Nigeria","NG"],["Noruega","NO"],["Nueva Zelanda","NZ"],["Omán","OM"],["Países Bajos","NL"],["Pakistán","PK"],["Palestina","PS"],["Panamá","PA"],["Papúa Nueva Guinea","PG"],["Paraguay","PY"],["Perú","PE"],["Polonia","PL"],["Portugal","PT"],["Puerto Rico","PR"],["Reino Unido","GB"],["República Checa","CZ"],["República Democrática del Congo","CD"],["República Dominicana","DO"],["Rumanía","RO"],["Rusia","RU"],["Ruanda","RW"],["San Cristóbal y Nieves","KN"],["San Marino","SM"],["San Vicente y las Granadinas","VC"],["Santa Lucía","LC"],["Senegal","SN"],["Serbia","RS"],["Seychelles","SC"],["Sierra Leona","SL"],["Singapur","SG"],["Siria","SY"],["Somalia","SO"],["Sri Lanka","LK"],["Sudáfrica","ZA"],["Sudán","SD"],["Sudán del Sur","SS"],["Suecia","SE"],["Suiza","CH"],["Surinam","SR"],["Tailandia","TH"],["Taiwán","TW"],["Tanzania","TZ"],["Tayikistán","TJ"],["Togo","TG"],["Tonga","TO"],["Trinidad y Tobago","TT"],["Túnez","TN"],["Turkmenistán","TM"],["Turquía","TR"],["Ucrania","UA"],["Uganda","UG"],["Uruguay","UY"],["Uzbekistán","UZ"],["Vanuatu","VU"],["Venezuela","VE"],["Vietnam","VN"],["Yemen","YE"],["Zambia","ZM"],["Zimbabue","ZW"]
+
+["Afganistán","AF"],
+["Albania","AL"],
+["Alemania","DE"],
+["Andorra","AD"],
+["Angola","AO"],
+["Antigua y Barbuda","AG"],
+["Arabia Saudita","SA"],
+["Argelia","DZ"],
+["Argentina","AR"],
+["Armenia","AM"],
+["Australia","AU"],
+["Austria","AT"],
+["Azerbaiyán","AZ"],
+["Bahamas","BS"],
+["Baréin","BH"],
+["Bangladés","BD"],
+["Barbados","BB"],
+["Bélgica","BE"],
+["Belice","BZ"],
+["Benín","BJ"],
+["Bielorrusia","BY"],
+["Bolivia","BO"],
+["Bosnia y Herzegovina","BA"],
+["Botsuana","BW"],
+["Brasil","BR"],
+["Brunéi","BN"],
+["Bulgaria","BG"],
+["Burkina Faso","BF"],
+["Burundi","BI"],
+["Bután","BT"],
+["Cabo Verde","CV"],
+["Camboya","KH"],
+["Camerún","CM"],
+["Canadá","CA"],
+["Catar","QA"],
+["Chile","CL"],
+["China","CN"],
+["Chipre","CY"],
+["Colombia","CO"],
+["Comoras","KM"],
+["Congo","CG"],
+["Corea del Norte","KP"],
+["Corea del Sur","KR"],
+["Costa Rica","CR"],
+["Croacia","HR"],
+["Cuba","CU"],
+["Dinamarca","DK"],
+["Dominica","DM"],
+["Ecuador","EC"],
+["Egipto","EG"],
+["El Salvador","SV"],
+["Emiratos Árabes Unidos","AE"],
+["Eritrea","ER"],
+["Eslovaquia","SK"],
+["Eslovenia","SI"],
+["España","ES"],
+["Estados Unidos","US"],
+["Estonia","EE"],
+["Esuatini","SZ"],
+["Etiopía","ET"],
+["Filipinas","PH"],
+["Finlandia","FI"],
+["Fiyi","FJ"],
+["Francia","FR"],
+["Gabón","GA"],
+["Gambia","GM"],
+["Georgia","GE"],
+["Ghana","GH"],
+["Granada","GD"],
+["Grecia","GR"],
+["Guatemala","GT"],
+["Guinea","GN"],
+["Guinea-Bisáu","GW"],
+["Guinea Ecuatorial","GQ"],
+["Guyana","GY"],
+["Haití","HT"],
+["Honduras","HN"],
+["Hungría","HU"],
+["India","IN"],
+["Indonesia","ID"],
+["Irak","IQ"],
+["Irán","IR"],
+["Irlanda","IE"],
+["Islandia","IS"],
+["Israel","IL"],
+["Italia","IT"],
+["Jamaica","JM"],
+["Japón","JP"],
+["Jordania","JO"],
+["Kazajistán","KZ"],
+["Kenia","KE"],
+["Kirguistán","KG"],
+["Kuwait","KW"],
+["Laos","LA"],
+["Letonia","LV"],
+["Líbano","LB"],
+["Lesoto","LS"],
+["Liberia","LR"],
+["Libia","LY"],
+["Liechtenstein","LI"],
+["Lituania","LT"],
+["Luxemburgo","LU"],
+["Macedonia del Norte","MK"],
+["Madagascar","MG"],
+["Malasia","MY"],
+["Malaui","MW"],
+["Maldivas","MV"],
+["Malí","ML"],
+["Malta","MT"],
+["Marruecos","MA"],
+["Mauritania","MR"],
+["Mauricio","MU"],
+["México","MX"],
+["Moldavia","MD"],
+["Mónaco","MC"],
+["Mongolia","MN"],
+["Montenegro","ME"],
+["Mozambique","MZ"],
+["Myanmar","MM"],
+["Namibia","NA"],
+["Nepal","NP"],
+["Nicaragua","NI"],
+["Níger","NE"],
+["Nigeria","NG"],
+["Noruega","NO"],
+["Nueva Zelanda","NZ"],
+["Omán","OM"],
+["Países Bajos","NL"],
+["Pakistán","PK"],
+["Palestina","PS"],
+["Panamá","PA"],
+["Papúa Nueva Guinea","PG"],
+["Paraguay","PY"],
+["Perú","PE"],
+["Polonia","PL"],
+["Portugal","PT"],
+["Puerto Rico","PR"],
+["Reino Unido","GB"],
+["República Checa","CZ"],
+["República Democrática del Congo","CD"],
+["República Dominicana","DO"],
+["Rumanía","RO"],
+["Rusia","RU"],
+["Ruanda","RW"],
+["San Cristóbal y Nieves","KN"],
+["San Marino","SM"],
+["San Vicente y las Granadinas","VC"],
+["Santa Lucía","LC"],
+["Senegal","SN"],
+["Serbia","RS"],
+["Seychelles","SC"],
+["Sierra Leona","SL"],
+["Singapur","SG"],
+["Siria","SY"],
+["Somalia","SO"],
+["Sri Lanka","LK"],
+["Sudáfrica","ZA"],
+["Sudán","SD"],
+["Sudán del Sur","SS"],
+["Suecia","SE"],
+["Suiza","CH"],
+["Surinam","SR"],
+["Tailandia","TH"],
+["Taiwán","TW"],
+["Tanzania","TZ"],
+["Tayikistán","TJ"],
+["Togo","TG"],
+["Tonga","TO"],
+["Trinidad y Tobago","TT"],
+["Túnez","TN"],
+["Turkmenistán","TM"],
+["Turquía","TR"],
+["Ucrania","UA"],
+["Uganda","UG"],
+["Uruguay","UY"],
+["Uzbekistán","UZ"],
+["Vanuatu","VU"],
+["Venezuela","VE"],
+["Vietnam","VN"],
+["Yemen","YE"],
+["Zambia","ZM"],
+["Zimbabue","ZW"]
+
 ];
+
 
 /* =========================================================
-   CLUBES DE RESPALDO + ESCALAS REALISTAS
-   El sistema intenta cargar una base pública mundial al abrir.
-   ========================================================= */
+   CLUBES
+========================================================= */
+
 const fallback=[
-["España","Real Madrid","LaLiga",95],["España","FC Barcelona","LaLiga",93],["España","Atlético de Madrid","LaLiga",88],["España","Athletic Club","LaLiga",82],["España","Real Sociedad","LaLiga",82],["España","Real Betis","LaLiga",82],["España","Villarreal","LaLiga",83],["España","Sevilla","LaLiga",80],["España","Valencia","LaLiga",78],["España","Celta de Vigo","LaLiga",76],
-["Inglaterra","Manchester City","Premier League",94],["Inglaterra","Liverpool","Premier League",92],["Inglaterra","Arsenal","Premier League",89],["Inglaterra","Manchester United","Premier League",86],["Inglaterra","Chelsea","Premier League",86],["Inglaterra","Tottenham Hotspur","Premier League",84],["Inglaterra","Newcastle United","Premier League",82],["Inglaterra","Aston Villa","Premier League",82],["Inglaterra","West Ham United","Premier League",78],["Inglaterra","Everton","Premier League",75],
-["Alemania","Bayern München","Bundesliga",94],["Alemania","Borussia Dortmund","Bundesliga",86],["Alemania","RB Leipzig","Bundesliga",84],["Alemania","Bayer Leverkusen","Bundesliga",88],["Alemania","Eintracht Frankfurt","Bundesliga",80],["Alemania","Stuttgart","Bundesliga",78],["Alemania","Schalke 04","2. Bundesliga",70],
-["Italia","Inter","Serie A",91],["Italia","AC Milan","Serie A",87],["Italia","Juventus","Serie A",88],["Italia","Napoli","Serie A",87],["Italia","AS Roma","Serie A",83],["Italia","Lazio","Serie A",82],["Italia","Atalanta","Serie A",84],["Italia","Fiorentina","Serie A",79],
-["Francia","Paris Saint-Germain","Ligue 1",92],["Francia","Olympique de Marseille","Ligue 1",81],["Francia","Olympique Lyonnais","Ligue 1",80],["Francia","Monaco","Ligue 1",84],["Francia","Lille","Ligue 1",82],["Francia","Rennes","Ligue 1",77],["Francia","Nice","Ligue 1",78],
-["Portugal","Benfica","Liga Portugal",87],["Portugal","FC Porto","Liga Portugal",86],["Portugal","Sporting CP","Liga Portugal",86],["Portugal","Braga","Liga Portugal",78],["Portugal","Vitória SC","Liga Portugal",73],
-["Países Bajos","Ajax","Eredivisie",83],["Países Bajos","PSV Eindhoven","Eredivisie",84],["Países Bajos","Feyenoord","Eredivisie",82],["Países Bajos","AZ Alkmaar","Eredivisie",76],["Países Bajos","FC Utrecht","Eredivisie",70],
-["Brasil","Flamengo","Brasileirão",85],["Brasil","Palmeiras","Brasileirão",85],["Brasil","Fluminense","Brasileirão",80],["Brasil","Corinthians","Brasileirão",78],["Brasil","São Paulo","Brasileirão",80],["Brasil","Grêmio","Brasileirão",77],["Brasil","Internacional","Brasileirão",77],["Brasil","Botafogo","Brasileirão",79],
-["Argentina","River Plate","Liga Argentina",84],["Argentina","Boca Juniors","Liga Argentina",84],["Argentina","Racing Club","Liga Argentina",77],["Argentina","Independiente","Liga Argentina",75],["Argentina","San Lorenzo","Liga Argentina",75],
-["México","Club América","Liga MX",82],["México","Chivas","Liga MX",78],["México","Monterrey","Liga MX",81],["México","Tigres UANL","Liga MX",81],["México","Cruz Azul","Liga MX",79],
-["Estados Unidos","Inter Miami","MLS",78],["Estados Unidos","LAFC","MLS",77],["Estados Unidos","Seattle Sounders","MLS",73],["Estados Unidos","Atlanta United","MLS",72],
-["Japón","Kashima Antlers","J1 League",73],["Japón","Urawa Red Diamonds","J1 League",73],["Corea del Sur","Ulsan HD","K League 1",75],["Arabia Saudita","Al Hilal","Saudi Pro League",86],["Arabia Saudita","Al Nassr","Saudi Pro League",84],["Arabia Saudita","Al Ittihad","Saudi Pro League",82],
-["Turquía","Galatasaray","Süper Lig",82],["Turquía","Fenerbahçe","Süper Lig",81],["Turquía","Beşiktaş","Süper Lig",77],["Bélgica","Club Brugge","Belgian Pro League",79],["Bélgica","Anderlecht","Belgian Pro League",76],["Escocia","Celtic","Scottish Premiership",79],["Escocia","Rangers","Scottish Premiership",78],
-["Colombia","Atlético Nacional","Liga BetPlay",75],["Colombia","Millonarios","Liga BetPlay",74],["Uruguay","Peñarol","Primera División",76],["Uruguay","Nacional","Primera División",75],["Chile","Colo-Colo","Primera División",74],["Ecuador","LDU Quito","LigaPro",74],["Perú","Alianza Lima","Liga 1",70],["Paraguay","Olimpia","Primera División",72]
+
+["España","Real Madrid","LaLiga",95],
+["España","FC Barcelona","LaLiga",93],
+["España","Atlético de Madrid","LaLiga",88],
+["España","Athletic Club","LaLiga",82],
+["España","Real Sociedad","LaLiga",82],
+["España","Real Betis","LaLiga",82],
+["España","Villarreal","LaLiga",83],
+["España","Sevilla","LaLiga",80],
+["España","Valencia","LaLiga",78],
+["España","Celta de Vigo","LaLiga",76],
+
+["Inglaterra","Manchester City","Premier League",94],
+["Inglaterra","Liverpool","Premier League",92],
+["Inglaterra","Arsenal","Premier League",89],
+["Inglaterra","Manchester United","Premier League",86],
+["Inglaterra","Chelsea","Premier League",86],
+["Inglaterra","Tottenham Hotspur","Premier League",84],
+["Inglaterra","Newcastle United","Premier League",82],
+["Inglaterra","Aston Villa","Premier League",82],
+["Inglaterra","West Ham United","Premier League",78],
+["Inglaterra","Everton","Premier League",75],
+
+["Alemania","Bayern München","Bundesliga",94],
+["Alemania","Borussia Dortmund","Bundesliga",86],
+["Alemania","RB Leipzig","Bundesliga",84],
+["Alemania","Bayer Leverkusen","Bundesliga",88],
+["Alemania","Eintracht Frankfurt","Bundesliga",80],
+["Alemania","Stuttgart","Bundesliga",78],
+["Alemania","Schalke 04","2. Bundesliga",70],
+
+["Italia","Inter","Serie A",91],
+["Italia","AC Milan","Serie A",87],
+["Italia","Juventus","Serie A",88],
+["Italia","Napoli","Serie A",87],
+["Italia","AS Roma","Serie A",83],
+["Italia","Lazio","Serie A",82],
+["Italia","Atalanta","Serie A",84],
+["Italia","Fiorentina","Serie A",79],
+
+["Francia","Paris Saint-Germain","Ligue 1",92],
+["Francia","Olympique de Marseille","Ligue 1",81],
+["Francia","Olympique Lyonnais","Ligue 1",80],
+["Francia","Monaco","Ligue 1",84],
+["Francia","Lille","Ligue 1",82],
+["Francia","Rennes","Ligue 1",77],
+["Francia","Nice","Ligue 1",78],
+
+["Portugal","Benfica","Liga Portugal",87],
+["Portugal","FC Porto","Liga Portugal",86],
+["Portugal","Sporting CP","Liga Portugal",86],
+["Portugal","Braga","Liga Portugal",78],
+["Portugal","Vitória SC","Liga Portugal",73],
+
+["Países Bajos","Ajax","Eredivisie",83],
+["Países Bajos","PSV Eindhoven","Eredivisie",84],
+["Países Bajos","Feyenoord","Eredivisie",82],
+["Países Bajos","AZ Alkmaar","Eredivisie",76],
+["Países Bajos","FC Utrecht","Eredivisie",70],
+
+["Brasil","Flamengo","Brasileirão",85],
+["Brasil","Palmeiras","Brasileirão",85],
+["Brasil","Fluminense","Brasileirão",80],
+["Brasil","Corinthians","Brasileirão",78],
+["Brasil","São Paulo","Brasileirão",80],
+["Brasil","Grêmio","Brasileirão",77],
+["Brasil","Internacional","Brasileirão",77],
+["Brasil","Botafogo","Brasileirão",79],
+
+["Argentina","River Plate","Liga Argentina",84],
+["Argentina","Boca Juniors","Liga Argentina",84],
+["Argentina","Racing Club","Liga Argentina",77],
+["Argentina","Independiente","Liga Argentina",75],
+["Argentina","San Lorenzo","Liga Argentina",75],
+
+["México","Club América","Liga MX",82],
+["México","Chivas","Liga MX",78],
+["México","Monterrey","Liga MX",81],
+["México","Tigres UANL","Liga MX",81],
+["México","Cruz Azul","Liga MX",79],
+
+["Estados Unidos","Inter Miami","MLS",78],
+["Estados Unidos","LAFC","MLS",77],
+["Estados Unidos","Seattle Sounders","MLS",73],
+["Estados Unidos","Atlanta United","MLS",72],
+
+["Japón","Kashima Antlers","J1 League",73],
+["Japón","Urawa Red Diamonds","J1 League",73],
+
+["Corea del Sur","Ulsan HD","K League 1",75],
+
+["Arabia Saudita","Al Hilal","Saudi Pro League",86],
+["Arabia Saudita","Al Nassr","Saudi Pro League",84],
+["Arabia Saudita","Al Ittihad","Saudi Pro League",82],
+
+["Turquía","Galatasaray","Süper Lig",82],
+["Turquía","Fenerbahçe","Süper Lig",81],
+["Turquía","Beşiktaş","Süper Lig",77],
+
+["Bélgica","Club Brugge","Belgian Pro League",79],
+["Bélgica","Anderlecht","Belgian Pro League",76],
+
+["Escocia","Celtic","Scottish Premiership",79],
+["Escocia","Rangers","Scottish Premiership",78],
+
+["Colombia","Atlético Nacional","Liga BetPlay",75],
+["Colombia","Millonarios","Liga BetPlay",74],
+
+["Uruguay","Peñarol","Primera División",76],
+["Uruguay","Nacional","Primera División",75],
+
+["Chile","Colo-Colo","Primera División",74],
+["Ecuador","LDU Quito","LigaPro",74],
+["Perú","Alianza Lima","Liga 1",70],
+["Paraguay","Olimpia","Primera División",72]
+
 ];
 
-let clubs=fallback.map(x=>({country:x[0],name:x[1],league:x[2],rating:x[3]}));
-let selectedClub=null, player=null, season=1, career=[], totals={matches:0,goals:0,assists:0,minutes:0,cleanSheets:0}, teamTrophies=[], individualTrophies=[];
+
+let clubs=fallback.map(x=>({
+    country:x[0],
+    name:x[1],
+    league:x[2],
+    rating:x[3]
+}));
+
+
+let selectedClub=null;
+
+let player=null;
+
+let season=1;
+
+let career=[];
+
+let totals={
+    matches:0,
+    goals:0,
+    assists:0,
+    minutes:0,
+    cleanSheets:0
+};
+
+let teamTrophies=[];
+
+let individualTrophies=[];
+
 let publicLoaded=false;
 
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+
 const $=id=>document.getElementById(id);
+
+
 function fillCountries(){
-  [$("country"),$("clubCountry")].forEach((sel,idx)=>{
-    sel.innerHTML=idx===1?'<option value="">Todos los países</option>':'<option value="">Selecciona un país</option>';
-    countries.forEach(c=>{const o=document.createElement("option");o.value=c[0];o.textContent=c[0];sel.appendChild(o)});
-  });
+
+    const country=$("country");
+
+    country.innerHTML=
+        '<option value="">Selecciona un país</option>';
+
+    countries.forEach(c=>{
+
+        const o=document.createElement("option");
+
+        o.value=c[0];
+
+        o.textContent=c[0];
+
+        country.appendChild(o);
+
+    });
+
 }
+
 fillCountries();
 
+
+/* =========================================================
+   CARGAR MÁS CLUBES
+========================================================= */
+
 async function loadPublicClubs(){
-  const urls=[
-    "https://raw.githubusercontent.com/openfootball/clubs/master/SUMMARY.md",
-    "https://raw.githubusercontent.com/openfootball/clubs/master/README.md"
-  ];
-  for(const url of urls){
-    try{
-      const r=await fetch(url,{cache:"no-store"});
-      if(!r.ok) continue;
-      const text=await r.text();
-      const parsed=parseClubText(text);
-      if(parsed.length>100){clubs=mergeClubs(parsed);publicLoaded=true;filterClubs();return}
-    }catch(e){}
-  }
-  filterClubs();
-}
-function parseClubText(text){
-  let current="",out=[];
-  for(const raw of text.split(/\r?\n/)){
-    const line=raw.trim();
-    if(!line) continue;
-    if(line.startsWith("=")){current=line.replace(/^=+/,"").trim();continue}
-    if(!current||line.startsWith("#")||line.startsWith("|")) continue;
-    const clean=line.replace(/^\-\s*/,"").replace(/\s+$/,"");
-    if(clean.length<3||clean.length>100) continue;
-    const name=clean.split(",")[0].trim();
-    if(/club|stadium|football data|world/i.test(name)) continue;
-    if(/[A-Za-zÁÉÍÓÚáéíóúÑñ].*/.test(name)) out.push({country:current,name,league:"Liga nacional",rating:estimateRating(current,name)});
-  }
-  return out;
-}
-function mergeClubs(parsed){
-  const map=new Map();
-  [...fallback.map(x=>({country:x[0],name:x[1],league:x[2],rating:x[3]})),...parsed].forEach(c=>{
-    const key=(c.country+"|"+c.name).toLowerCase();
-    if(!map.has(key)) map.set(key,c);
-  });
-  return [...map.values()];
-}
-function estimateRating(country,name){
-  const n=name.toLowerCase();
-  const elite=["real madrid","barcelona","manchester city","liverpool","bayern","psg","paris saint","inter","juventus","milan","arsenal","chelsea","benfica","porto","sporting"];
-  const big=["united","dortmund","atlético","atletico","napoli","roma","lazio","ajax","psv","feyenoord","flamengo","palmeiras","river","boca"];
-  if(elite.some(x=>n.includes(x))) return 88+Math.floor(Math.random()*7);
-  if(big.some(x=>n.includes(x))) return 78+Math.floor(Math.random()*9);
-  const major=["España","Inglaterra","Alemania","Italia","Francia","Portugal","Países Bajos","Brasil","Argentina"];
-  return major.includes(country)?66+Math.floor(Math.random()*12):55+Math.floor(Math.random()*16);
-}
-function filterClubs(){
-  const country=$("clubCountry").value.toLowerCase(), q=$("clubSearch").value.toLowerCase().trim();
-  let list=clubs.filter(c=>(!country||c.country.toLowerCase()===country)&&(!q||c.name.toLowerCase().includes(q))).slice(0,250);
-  const box=$("clubList");
-  if(!list.length){box.innerHTML='<div class="loading">No se encontraron clubes con ese filtro.</div>';return}
-  box.innerHTML=list.map((c,i)=>`<div class="club ${selectedClub&&selectedClub.name===c.name&&selectedClub.country===c.country?"selected":""}" onclick="chooseClub(${clubs.indexOf(c)})"><div><div class="club-name">${esc(c.name)}</div><div class="club-meta">${esc(c.country)} · ${esc(c.league)}</div></div><div class="rating">NIVEL ${c.rating}</div></div>`).join("");
-}
-function chooseClub(i){
-  selectedClub=clubs[i]; $("startBtn").disabled=false; filterClubs();
-}
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function goStep(n){
-  if(n===2&&!$("playerName").value.trim()){alert("Escribe el nombre de tu jugador.");return}
-  [1,2,3,4].forEach(i=>$("step"+i).classList.toggle("hidden",i!==n));
-  document.querySelectorAll(".step").forEach((x,i)=>{x.classList.toggle("active",i===n-1);x.classList.toggle("done",i<n-1)});
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-function startCareer(){
-  const age=Math.max(16,Math.min(35,Number($("playerAge").value)||17));
-  const level=$("startLevel").value;
-  const base=level==="low"?54:level==="high"?68:61;
-  player={name:$("playerName").value.trim(),age,position:$("position").value,foot:$("foot").value,country:$("country").value||"Internacional",rating:base+Math.floor(Math.random()*4),potential:level==="high"?92:level==="normal"?88:82,value:base<58?350000:base<66?1200000:3000000,club:selectedClub};
-  season=1;career=[];totals={matches:0,goals:0,assists:0,minutes:0,cleanSheets:0};teamTrophies=[];individualTrophies=[];
-  goStep(3);renderDashboard();runSeason();
-}
-function money(v){if(v>=100000000)return"€"+(v/1000000).toFixed(1)+"M";if(v>=1000000)return"€"+(v/1000000).toFixed(2)+"M";return"€"+Math.round(v/1000)+"K"}
-function renderDashboard(){
-  $("dashName").textContent=player.name;$("dashRating").textContent=player.rating;$("dashAge").textContent=player.age;$("dashValue").textContent=money(player.value);
-  $("seasonNum").textContent=season;$("currentClubText").textContent=player.club.name+" · "+player.club.league+" · "+player.club.country;
-}
-function runSeason(){
-  renderDashboard();
-  const minutes=Math.max(700,Math.round(900+(player.rating-player.club.rating)*32+Math.random()*700));
-  const matches=Math.max(10,Math.min(42,Math.round(minutes/27)));
-  const attack=["Delantero","Extremo derecho","Extremo izquierdo","Mediapunta","Interior"].includes(player.position);
-  const goals=attack?Math.max(0,Math.round(matches*(player.rating/100)*(.12+Math.random()*.18))):Math.round(matches*(player.rating/100)*(.02+Math.random()*.08));
-  const assists=attack?Math.round(matches*(.08+Math.random()*.12)):Math.round(matches*(.03+Math.random()*.08));
-  const clean=["Portero","Defensa central","Lateral derecho","Lateral izquierdo"].includes(player.position)?Math.round(matches*.18*Math.random()):0;
-  const avg=Math.min(9.1,Math.max(5.8,6.2+(player.rating-player.club.rating)/22+Math.random()*1.2));
-  const trophyChance=(player.rating+player.club.rating)/2;
-  let trophies=[];
-  if(trophyChance>88&&Math.random()<.32){const t=["Liga nacional","Copa nacional"];const won=t[Math.floor(Math.random()*t.length)];trophies.push(won);teamTrophies.push({name:won,club:player.club.name,year:season})}
-  if(trophyChance>90&&Math.random()<.13){trophies.push("Competición continental");teamTrophies.push({name:"Competición continental",club:player.club.name,year:season})}
-  let award=null;
-  if(avg>=8.0&&goals+assists>=15&&Math.random()<.25){award=goals>=assists?"Máximo goleador del equipo":"Jugador del año del club";individualTrophies.push({name:award,year:season,club:player.club.name})}
-  const row={season,club:{...player.club},age:player.age,rating:player.rating,matches,goals,assists,minutes,clean,avg,trophies,award};
-  career.push(row);totals.matches+=matches;totals.goals+=goals;totals.assists+=assists;totals.minutes+=minutes;totals.cleanSheets+=clean;
-  const growth=Math.round((avg-6.6)*1.4+(goals+assists>20?1.2:0)+(player.rating<player.potential?Math.random()*1.7:-Math.random()*.4));
-  player.rating=Math.max(45,Math.min(player.potential,player.rating+growth));
-  player.value=Math.round(player.value*(1+Math.max(-.15,Math.min(.45,growth*.055+(avg-7)*.03))));
-  if(trophies.length||award) renderSeasonEvent(row); else renderSeasonEvent(row);
-}
-function renderSeasonEvent(row){
-  $("seasonEvent").innerHTML=`<div class="event"><h3>Temporada ${row.season} completada</h3><p><b>${row.matches}</b> partidos · <b>${row.goals}</b> goles · <b>${row.assists}</b> asistencias · <b>${row.minutes}</b> minutos · valoración <b>${row.avg.toFixed(1)}</b>${row.trophies.length?"<br>🏆 "+row.trophies.join(" · "):""}${row.award?"<br>⭐ "+row.award:""}</p></div>`;
-  generateOffers(row);
-}
-function generateOffers(row){
-  const desired=[];
-  const current=player.club.rating;
-  const rep=Math.max(0,(player.rating-55)*1.8)+career.length*1.5;
-  const maxTier=Math.min(96,Math.round(player.rating+rep*.22));
-  clubs.forEach(c=>{
-    if(c.name===player.club.name) return;
-    const gap=c.rating-player.rating;
-    const realistic=c.rating<=maxTier+5 && c.rating>=Math.max(45,player.rating-20);
-    if(realistic){
-      const distance=Math.abs(c.rating-(player.rating+8));
-      desired.push({club:c,score:100-distance*3+Math.random()*35});
+
+    const urls=[
+
+        "https://raw.githubusercontent.com/openfootball/clubs/master/SUMMARY.md",
+
+        "https://raw.githubusercontent.com/openfootball/clubs/master/README.md"
+
+    ];
+
+    for(const url of urls){
+
+        try{
+
+            const r=await fetch(
+                url,
+                {cache:"no-store"}
+            );
+
+            if(!r.ok) continue;
+
+            const text=await r.text();
+
+            const parsed=parseClubText(text);
+
+            if(parsed.length>100){
+
+                clubs=mergeClubs(parsed);
+
+                publicLoaded=true;
+
+                return;
+
+            }
+
+        }catch(e){}
+
     }
-  });
-  desired.sort((a,b)=>b.score-a.score);
-  const offers=desired.slice(0,4);
-  if(player.age>=31&&offers.length<2) offers.push(...desired.slice(4,6));
-  let html=`<div class="event"><h3>📨 Mercado de fichajes</h3><p>Tu rendimiento, edad, reputación y nivel actual determinan qué clubes se interesan. No todas las ofertas serán aceptables ni todas serán gigantes.</p><div class="offer-grid">`;
-  offers.forEach((o,i)=>{
-    const fee=Math.max(250000,Math.round(player.value*(.7+o.club.rating/100+Math.random()*.65)));
-    const salary=Math.round(Math.max(1500,player.value/9000)*(o.club.rating/70)*(0.85+Math.random()*.3));
-    html+=`<div class="offer"><h4>${esc(o.club.name)}</h4><div class="why">${esc(o.club.country)} · ${esc(o.club.league)} · Nivel ${o.club.rating}</div><div class="money">TRASPASO ${money(fee)} · SALARIO €${salary.toLocaleString("es-ES")}/mes</div><button class="btn primary" style="margin-top:12px;width:100%" onclick='acceptOffer(${JSON.stringify(o.club).replace(/'/g,"&#39;")})'>ACEPTAR</button></div>`;
-  });
-  if(!offers.length) html+=`<div class="loading">No llegaron ofertas suficientemente realistas esta temporada.</div>`;
-  html+=`</div></div><div class="buttons"><button class="btn dark" onclick="stayClub()">QUEDARME EN ${esc(player.club.name).toUpperCase()}</button><button class="btn secondary" onclick="finishCareer()">TERMINAR CARRERA</button></div>`;
-  $("offersArea").innerHTML=html;
+
 }
+
+
+function parseClubText(text){
+
+    let current="";
+
+    let out=[];
+
+    for(const raw of text.split(/\r?\n/)){
+
+        const line=raw.trim();
+
+        if(!line) continue;
+
+        if(line.startsWith("=")){
+
+            current=
+                line
+                .replace(/^=+/,"")
+                .trim();
+
+            continue;
+
+        }
+
+        if(
+            !current ||
+            line.startsWith("#") ||
+            line.startsWith("|")
+        ) continue;
+
+        const clean=
+            line
+            .replace(/^\-\s*/,"")
+            .replace(/\s+$/,"");
+
+        if(
+            clean.length<3 ||
+            clean.length>100
+        ) continue;
+
+        const name=
+            clean
+            .split(",")[0]
+            .trim();
+
+        if(
+            /club|stadium|football data|world/i.test(name)
+        ) continue;
+
+        if(/[A-Za-zÁÉÍÓÚáéíóúÑñ].*/.test(name)){
+
+            out.push({
+
+                country:current,
+
+                name:name,
+
+                league:"Liga nacional",
+
+                rating:estimateRating(
+                    current,
+                    name
+                )
+
+            });
+
+        }
+
+    }
+
+    return out;
+
+}
+
+
+function mergeClubs(parsed){
+
+    const map=new Map();
+
+    [
+
+        ...fallback.map(x=>({
+
+            country:x[0],
+            name:x[1],
+            league:x[2],
+            rating:x[3]
+
+        })),
+
+        ...parsed
+
+    ].forEach(c=>{
+
+        const key=
+            (
+                c.country+
+                "|" +
+                c.name
+            ).toLowerCase();
+
+        if(!map.has(key)){
+            map.set(key,c);
+        }
+
+    });
+
+    return [...map.values()];
+
+}
+
+
+function estimateRating(country,name){
+
+    const n=name.toLowerCase();
+
+    const elite=[
+
+        "real madrid",
+        "barcelona",
+        "manchester city",
+        "liverpool",
+        "bayern",
+        "psg",
+        "paris saint",
+        "inter",
+        "juventus",
+        "milan",
+        "arsenal",
+        "chelsea",
+        "benfica",
+        "porto",
+        "sporting"
+
+    ];
+
+    const big=[
+
+        "united",
+        "dortmund",
+        "atlético",
+        "atletico",
+        "napoli",
+        "roma",
+        "lazio",
+        "ajax",
+        "psv",
+        "feyenoord",
+        "flamengo",
+        "palmeiras",
+        "river",
+        "boca"
+
+    ];
+
+    if(
+        elite.some(x=>n.includes(x))
+    ){
+
+        return 88+
+            Math.floor(Math.random()*7);
+
+    }
+
+    if(
+        big.some(x=>n.includes(x))
+    ){
+
+        return 78+
+            Math.floor(Math.random()*9);
+
+    }
+
+    const major=[
+
+        "España",
+        "Inglaterra",
+        "Alemania",
+        "Italia",
+        "Francia",
+        "Portugal",
+        "Países Bajos",
+        "Brasil",
+        "Argentina"
+
+    ];
+
+    return major.includes(country)
+
+        ? 66+Math.floor(Math.random()*12)
+
+        : 55+Math.floor(Math.random()*16);
+
+}
+
+
+/* =========================================================
+   CAMBIO DE PASOS
+========================================================= */
+
+function goStep(n){
+
+    if(
+        n===2 &&
+        !$("playerName").value.trim()
+    ){
+
+        alert(
+            "Escribe el nombre de tu jugador."
+        );
+
+        return;
+
+    }
+
+
+    [
+        1,
+        2,
+        3,
+        4
+    ].forEach(i=>{
+
+        $("step"+i)
+            .classList
+            .toggle(
+                "hidden",
+                i!==n
+            );
+
+    });
+
+
+    document
+        .querySelectorAll(".step")
+        .forEach((x,i)=>{
+
+            x.classList.toggle(
+                "active",
+                i===n-1
+            );
+
+            x.classList.toggle(
+                "done",
+                i<n-1
+            );
+
+        });
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   CLUB DE DEBUT ALEATORIO
+========================================================= */
+
+function chooseRandomStartingClub(){
+
+    const level=
+        $("startLevel").value;
+
+
+    let minRating=50;
+
+    let maxRating=75;
+
+
+    /*
+       CANDETERA / AMATEUR
+       Más posibilidades de clubes pequeños
+    */
+
+    if(level==="low"){
+
+        minRating=50;
+        maxRating=76;
+
+    }
+
+
+    /*
+       JOVEN PROFESIONAL
+    */
+
+    if(level==="normal"){
+
+        minRating=57;
+        maxRating=82;
+
+    }
+
+
+    /*
+       GRAN PROMESA
+       Puede comenzar en clubes mejores
+    */
+
+    if(level==="high"){
+
+        minRating=64;
+        maxRating=90;
+
+    }
+
+
+    let candidates=clubs.filter(c=>
+
+        c.rating>=minRating &&
+        c.rating<=maxRating
+
+    );
+
+
+    /*
+       Si por alguna razón no hay suficientes,
+       utilizamos todos los clubes.
+    */
+
+    if(candidates.length<5){
+
+        candidates=clubs;
+
+    }
+
+
+    /*
+       Pesos para evitar que un jugador de 16 años
+       aparezca constantemente en gigantes.
+
+       Los clubes pequeños tienen más probabilidad.
+    */
+
+    const weighted=[];
+
+
+    candidates.forEach(c=>{
+
+        let weight=1;
+
+
+        if(c.rating<=65){
+
+            weight=7;
+
+        }else if(c.rating<=70){
+
+            weight=6;
+
+        }else if(c.rating<=75){
+
+            weight=4;
+
+        }else if(c.rating<=80){
+
+            weight=2;
+
+        }else{
+
+            weight=0.8;
+
+        }
+
+
+        /*
+           Las grandes promesas tienen algo más
+           de posibilidades de comenzar arriba.
+        */
+
+        if(level==="high"){
+
+            if(c.rating>=75){
+                weight*=2;
+            }
+
+        }
+
+
+        for(
+            let i=0;
+            i<Math.max(1,Math.round(weight));
+            i++
+        ){
+
+            weighted.push(c);
+
+        }
+
+    });
+
+
+    const random=
+        weighted[
+            Math.floor(
+                Math.random()*
+                weighted.length
+            )
+        ];
+
+
+    return random;
+
+}
+
+
+/* =========================================================
+   COMENZAR CARRERA
+========================================================= */
+
+function startCareer(){
+
+    /*
+       LA EDAD SIEMPRE ES 16.
+       No se toma ningún valor del input.
+    */
+
+    const age=16;
+
+
+    const level=
+        $("startLevel").value;
+
+
+    const base=
+        level==="low"
+            ?54
+            :level==="high"
+                ?68
+                :61;
+
+
+    /*
+       EL CLUB SE ELIGE AUTOMÁTICAMENTE.
+    */
+
+    selectedClub=
+        chooseRandomStartingClub();
+
+
+    player={
+
+        name:
+            $("playerName")
+            .value
+            .trim(),
+
+        age:16,
+
+        position:
+            $("position").value,
+
+        foot:
+            $("foot").value,
+
+        country:
+            $("country").value ||
+            "Internacional",
+
+        rating:
+            base+
+            Math.floor(
+                Math.random()*4
+            ),
+
+        potential:
+            level==="high"
+                ?92
+                :level==="normal"
+                    ?88
+                    :82,
+
+        value:
+            base<58
+                ?350000
+                :base<66
+                    ?1200000
+                    :3000000,
+
+        club:
+            selectedClub
+
+    };
+
+
+    season=1;
+
+    career=[];
+
+    totals={
+        matches:0,
+        goals:0,
+        assists:0,
+        minutes:0,
+        cleanSheets:0
+    };
+
+    teamTrophies=[];
+
+    individualTrophies=[];
+
+
+    /*
+       Mostrar el club elegido antes de comenzar.
+    */
+
+    $("randomClubPreview").innerHTML=`
+
+        <div class="random-club">
+
+            <div>
+
+                <div class="random-club-label">
+                    TU CLUB DE DEBUT
+                </div>
+
+                <div class="random-club-name">
+                    ${esc(selectedClub.name)}
+                </div>
+
+                <div class="random-club-meta">
+                    ${esc(selectedClub.country)}
+                    ·
+                    ${esc(selectedClub.league)}
+                    ·
+                    Nivel ${selectedClub.rating}
+                </div>
+
+            </div>
+
+            <div class="random-badge">
+                CLUB ASIGNADO
+            </div>
+
+        </div>
+
+    `;
+
+
+    /*
+       El usuario no necesita pulsar otra vez.
+       Empezamos inmediatamente.
+    */
+
+    goStep(3);
+
+    renderDashboard();
+
+    runSeason();
+
+}
+
+
+/* =========================================================
+   DINERO
+========================================================= */
+
+function money(v){
+
+    if(v>=100000000)
+
+        return "€"+
+            (v/1000000)
+            .toFixed(1)+
+            "M";
+
+
+    if(v>=1000000)
+
+        return "€"+
+            (v/1000000)
+            .toFixed(2)+
+            "M";
+
+
+    return "€"+
+        Math.round(v/1000)+
+        "K";
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function renderDashboard(){
+
+    $("dashName").textContent=
+        player.name;
+
+    $("dashRating").textContent=
+        Math.round(player.rating);
+
+    $("dashAge").textContent=
+        player.age;
+
+    $("dashValue").textContent=
+        money(player.value);
+
+    $("seasonNum").textContent=
+        season;
+
+    $("currentClubText").textContent=
+        player.club.name+
+        " · "+
+        player.club.league+
+        " · "+
+        player.club.country;
+
+}
+
+
+/* =========================================================
+   TEMPORADA
+========================================================= */
+
+function runSeason(){
+
+    renderDashboard();
+
+
+    const minutes=Math.max(
+
+        700,
+
+        Math.round(
+
+            900+
+            (player.rating-player.club.rating)*32+
+            Math.random()*700
+
+        )
+
+    );
+
+
+    const matches=Math.max(
+
+        10,
+
+        Math.min(
+
+            42,
+
+            Math.round(
+                minutes/27
+            )
+
+        )
+
+    );
+
+
+    const attack=[
+
+        "Delantero",
+        "Extremo derecho",
+        "Extremo izquierdo",
+        "Mediapunta",
+        "Interior"
+
+    ].includes(player.position);
+
+
+    const goals=
+
+        attack
+
+            ?Math.max(
+
+                0,
+
+                Math.round(
+
+                    matches*
+                    (player.rating/100)*
+                    (
+                        .12+
+                        Math.random()*.18
+                    )
+
+                )
+
+            )
+
+            :Math.round(
+
+                matches*
+                (player.rating/100)*
+                (
+                    .02+
+                    Math.random()*.08
+                )
+
+            );
+
+
+    const assists=
+
+        attack
+
+            ?Math.round(
+
+                matches*
+                (
+                    .08+
+                    Math.random()*.12
+                )
+
+            )
+
+            :Math.round(
+
+                matches*
+                (
+                    .03+
+                    Math.random()*.08
+                )
+
+            );
+
+
+    const clean=
+
+        [
+
+            "Portero",
+            "Defensa central",
+            "Lateral derecho",
+            "Lateral izquierdo"
+
+        ].includes(player.position)
+
+            ?Math.round(
+                matches*
+                .18*
+                Math.random()
+            )
+
+            :0;
+
+
+    const avg=Math.min(
+
+        9.1,
+
+        Math.max(
+
+            5.8,
+
+            6.2+
+            (player.rating-player.club.rating)/22+
+            Math.random()*1.2
+
+        )
+
+    );
+
+
+    const trophyChance=
+        (player.rating+
+        player.club.rating)/2;
+
+
+    let trophies=[];
+
+
+    /*
+       TÍTULOS NACIONALES
+    */
+
+    if(
+
+        trophyChance>88 &&
+        Math.random()<.32
+
+    ){
+
+        const t=[
+
+            "Liga nacional",
+            "Copa nacional"
+
+        ];
+
+
+        const won=
+            t[
+                Math.floor(
+                    Math.random()*t.length
+                )
+            ];
+
+
+        trophies.push(won);
+
+
+        teamTrophies.push({
+
+            name:won,
+            club:player.club.name,
+            year:season
+
+        });
+
+    }
+
+
+    /*
+       COMPETICIÓN CONTINENTAL
+    */
+
+    if(
+
+        trophyChance>90 &&
+        Math.random()<.13
+
+    ){
+
+        trophies.push(
+            "Competición continental"
+        );
+
+
+        teamTrophies.push({
+
+            name:
+                "Competición continental",
+
+            club:
+                player.club.name,
+
+            year:
+                season
+
+        });
+
+    }
+
+
+    let award=null;
+
+
+    if(
+
+        avg>=8.0 &&
+        goals+assists>=15 &&
+        Math.random()<.25
+
+    ){
+
+        award=
+            goals>=assists
+
+                ? "Máximo goleador del equipo"
+
+                : "Jugador del año del club";
+
+
+        individualTrophies.push({
+
+            name:award,
+
+            year:season,
+
+            club:
+                player.club.name
+
+        });
+
+    }
+
+
+    const row={
+
+        season,
+
+        club:{
+            ...player.club
+        },
+
+        age:
+            player.age,
+
+        rating:
+            player.rating,
+
+        matches,
+
+        goals,
+
+        assists,
+
+        minutes,
+
+        clean,
+
+        avg,
+
+        trophies,
+
+        award
+
+    };
+
+
+    career.push(row);
+
+
+    totals.matches+=matches;
+
+    totals.goals+=goals;
+
+    totals.assists+=assists;
+
+    totals.minutes+=minutes;
+
+    totals.cleanSheets+=clean;
+
+
+    /*
+       CRECIMIENTO
+    */
+
+    const growth=Math.round(
+
+        (avg-6.6)*1.4+
+
+        (goals+assists>20
+            ?1.2
+            :0)+
+
+        (
+
+            player.rating<
+            player.potential
+
+                ?Math.random()*1.7
+
+                :-Math.random()*.4
+
+        )
+
+    );
+
+
+    player.rating=Math.max(
+
+        45,
+
+        Math.min(
+
+            player.potential,
+
+            player.rating+
+            growth
+
+        )
+
+    );
+
+
+    player.value=Math.round(
+
+        player.value*
+
+        (
+
+            1+
+
+            Math.max(
+
+                -.15,
+
+                Math.min(
+
+                    .45,
+
+                    growth*.055+
+                    (avg-7)*.03
+
+                )
+
+            )
+
+        )
+
+    );
+
+
+    renderSeasonEvent(row);
+
+}
+
+
+/* =========================================================
+   EVENTO DE TEMPORADA
+========================================================= */
+
+function renderSeasonEvent(row){
+
+    $("seasonEvent").innerHTML=`
+
+        <div class="event">
+
+            <h3>
+                Temporada ${row.season} completada
+            </h3>
+
+            <p>
+
+                <b>${row.matches}</b> partidos
+                ·
+                <b>${row.goals}</b> goles
+                ·
+                <b>${row.assists}</b> asistencias
+                ·
+                <b>${row.minutes}</b> minutos
+                ·
+                valoración
+                <b>${row.avg.toFixed(1)}</b>
+
+                ${
+                    row.trophies.length
+                        ?"<br>🏆 "+
+                        row.trophies.join(" · ")
+                        :""
+                }
+
+                ${
+                    row.award
+                        ?"<br>⭐ "+
+                        row.award
+                        :""
+                }
+
+            </p>
+
+        </div>
+
+    `;
+
+
+    generateOffers(row);
+
+}
+
+
+/* =========================================================
+   OFERTAS
+========================================================= */
+
+function generateOffers(row){
+
+    const desired=[];
+
+    const current=
+        player.club.rating;
+
+
+    /*
+       Reputación acumulada.
+    */
+
+    const rep=
+
+        Math.max(
+            0,
+            (player.rating-55)*1.8
+        )
+
+        +
+
+        career.length*1.5;
+
+
+    /*
+       Nivel máximo de club razonable.
+    */
+
+    const maxTier=Math.min(
+
+        96,
+
+        Math.round(
+            player.rating+
+            rep*.22
+        )
+
+    );
+
+
+    clubs.forEach(c=>{
+
+        if(
+            c.name===
+            player.club.name
+        ) return;
+
+
+        const gap=
+            c.rating-
+            player.rating;
+
+
+        /*
+           Regla base de realismo.
+        */
+
+        const realistic=
+
+            c.rating<=maxTier+5 &&
+
+            c.rating>=
+            Math.max(
+                45,
+                player.rating-20
+            );
+
+
+        if(realistic){
+
+            const distance=
+
+                Math.abs(
+                    c.rating-
+                    (player.rating+8)
+                );
+
+
+            desired.push({
+
+                club:c,
+
+                score:
+
+                    100-
+                    distance*3+
+                    Math.random()*35
+
+            });
+
+        }
+
+    });
+
+
+    desired.sort(
+        (a,b)=>
+            b.score-a.score
+    );
+
+
+    /*
+       AHORA PUEDEN LLEGAR MÁS OFERTAS.
+       La cantidad depende de reputación.
+    */
+
+    let offerCount=3;
+
+
+    if(player.rating>=70)
+        offerCount=4;
+
+    if(player.rating>=78)
+        offerCount=5;
+
+    if(player.rating>=84)
+        offerCount=6;
+
+    if(player.rating>=88)
+        offerCount=7;
+
+    if(player.age>=30)
+        offerCount=Math.min(
+            5,
+            offerCount
+        );
+
+
+    /*
+       Seleccionamos de una lista mucho más amplia.
+    */
+
+    let offers=desired.slice(
+        0,
+        offerCount
+    );
+
+
+    /*
+       Si hay pocas ofertas directas,
+       rellenamos con otras posibilidades.
+    */
+
+    if(
+        offers.length<offerCount
+    ){
+
+        offers.push(
+            ...desired.slice(
+                offers.length,
+                offerCount+4
+            )
+        );
+
+    }
+
+
+    /*
+       Mezcla ligera para evitar que
+       siempre aparezcan en el mismo orden.
+    */
+
+    offers=offers
+        .sort(
+            ()=>Math.random()-.5
+        )
+        .slice(
+            0,
+            offerCount
+        );
+
+
+    let html=`
+
+        <div class="event">
+
+            <h3>
+                📨 Mercado de fichajes
+            </h3>
+
+            <p>
+
+                Tu rendimiento, edad, reputación,
+                media y nivel del club determinan
+                qué equipos pueden interesarse.
+                Las ofertas no son iguales en cada
+                temporada.
+
+            </p>
+
+            <div class="offer-grid">
+
+    `;
+
+
+    offers.forEach((o,i)=>{
+
+        const fee=Math.max(
+
+            250000,
+
+            Math.round(
+
+                player.value*
+
+                (
+
+                    .7+
+                    o.club.rating/100+
+                    Math.random()*.65
+
+                )
+
+            )
+
+        );
+
+
+        const salary=Math.round(
+
+            Math.max(
+
+                1500,
+
+                player.value/9000
+
+            )*
+
+            (o.club.rating/70)*
+
+            (
+
+                .85+
+                Math.random()*.3
+
+            )
+
+        );
+
+
+        html+=`
+
+            <div class="offer">
+
+                <h4>
+                    ${esc(o.club.name)}
+                </h4>
+
+                <div class="why">
+
+                    ${esc(o.club.country)}
+                    ·
+                    ${esc(o.club.league)}
+                    ·
+                    Nivel ${o.club.rating}
+
+                </div>
+
+                <div class="money">
+
+                    TRASPASO
+                    ${money(fee)}
+
+                    ·
+
+                    SALARIO
+                    €${salary.toLocaleString("es-ES")}/mes
+
+                </div>
+
+
+                <button
+
+                    class="btn primary"
+
+                    style="
+                        margin-top:12px;
+                        width:100%
+                    "
+
+                    onclick='acceptOffer(
+                        ${JSON.stringify(o.club)
+                        .replace(/'/g,"&#39;")}
+                    )'
+
+                >
+
+                    ACEPTAR
+
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+
+    if(!offers.length){
+
+        html+=`
+
+            <div class="loading">
+
+                No llegaron ofertas
+                suficientemente realistas
+                esta temporada.
+
+            </div>
+
+        `;
+
+    }
+
+
+    html+=`
+
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button
+                class="btn dark"
+                onclick="stayClub()"
+            >
+
+                QUEDARME EN
+                ${esc(
+                    player.club.name
+                ).toUpperCase()}
+
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="finishCareer()"
+            >
+
+                TERMINAR CARRERA
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    $("offersArea").innerHTML=
+        html;
+
+}
+
+
+/* =========================================================
+   ACEPTAR OFERTA
+========================================================= */
+
 function acceptOffer(club){
-  player.club=club;nextSeason(); 
+
+    player.club=club;
+
+    nextSeason();
+
 }
-function stayClub(){nextSeason()}
+
+
+/* =========================================================
+   QUEDARSE
+========================================================= */
+
+function stayClub(){
+
+    nextSeason();
+
+}
+
+
+/* =========================================================
+   SIGUIENTE TEMPORADA
+========================================================= */
+
 function nextSeason(){
-  season++;player.age++;if(player.age>45){finishCareer();return}
-  if(player.age>30&&player.rating>player.potential-2) player.rating=Math.max(45,player.rating-Math.random()*.8);
-  $("offersArea").innerHTML="";runSeason();
+
+    season++;
+
+    player.age++;
+
+
+    /*
+       MÁXIMO 20 TEMPORADAS.
+    */
+
+    if(
+        season>20 ||
+        player.age>45
+    ){
+
+        finishCareer();
+
+        return;
+
+    }
+
+
+    /*
+       DECLIVE POR EDAD.
+    */
+
+    if(
+
+        player.age>30 &&
+        player.rating>
+        player.potential-2
+
+    ){
+
+        player.rating=
+
+            Math.max(
+
+                45,
+
+                player.rating-
+                Math.random()*.8
+
+            );
+
+    }
+
+
+    $("offersArea").innerHTML="";
+
+
+    runSeason();
+
 }
+
+
+/* =========================================================
+   TERMINAR CARRERA
+========================================================= */
+
 function finishCareer(){
-  renderSummary();goStep(4);
+
+    renderSummary();
+
+    goStep(4);
+
 }
+
+
+/* =========================================================
+   RESUMEN
+========================================================= */
+
 function renderSummary(){
-  $("finalRating").textContent=Math.round(player.rating);$("finalName").textContent=player.name;
-  $("finalLine").textContent=`${player.position} · ${player.country} · ${player.age} años · ${career.length} temporadas`;
-  $("summaryCards").innerHTML=[
-    ["PARTIDOS",totals.matches],["GOLES",totals.goals],["ASISTENCIAS",totals.assists],["MINUTOS",totals.minutes],["TÍTULOS",teamTrophies.length],["PREMIOS",individualTrophies.length]
-  ].map(x=>`<div class="mini"><div class="k">${x[0]}</div><div class="v">${x[1]}</div></div>`).join("");
-  $("careerTimeline").innerHTML=career.map(r=>`<div class="career-item"><div class="year">T${r.season}<small style="display:block;color:#777">${r.age} años</small></div><div class="clubcareer">${esc(r.club.name)}<small>${esc(r.club.league)} · ${r.trophies.length?r.trophies.join(" · "):"Sin título"}${r.award?" · ⭐ "+r.award:""}</small></div><div class="seasonstat">${r.matches} PJ<br>${r.goals} G · ${r.assists} A<br>${r.avg.toFixed(1)} VAL.</div></div>`).join("");
-  $("totalStats").innerHTML=[["Partidos",totals.matches],["Goles",totals.goals],["Asistencias",totals.assists],["Minutos",totals.minutes],["Porterías a cero",totals.cleanSheets],["Valoración media", (career.reduce((a,r)=>a+r.avg,0)/career.length).toFixed(2)]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
-  $("teamTrophies").innerHTML=teamTrophies.length?teamTrophies.map(t=>`<div class="trophy"><strong>🏆 ${esc(t.name)}</strong><span>${esc(t.club)} · Temporada ${t.year}</span></div>`).join(""):`<div class="trophy"><strong>Sin títulos</strong><span>Tu carrera no terminó con trofeos colectivos.</span></div>`;
-  $("individualTrophies").innerHTML=individualTrophies.length?individualTrophies.map(t=>`<div class="trophy"><strong>⭐ ${esc(t.name)}</strong><span>${esc(t.club)} · Temporada ${t.year}</span></div>`).join(""):`<div class="trophy"><strong>Sin premios</strong><span>No obtuviste premios individuales.</span></div>`;
+
+    $("finalRating").textContent=
+        Math.round(
+            player.rating
+        );
+
+
+    $("finalName").textContent=
+        player.name;
+
+
+    $("finalLine").textContent=
+
+        `${player.position} · `+
+        `${player.country} · `+
+        `${player.age} años · `+
+        `${career.length} temporadas`;
+
+
+    $("summaryCards").innerHTML=[
+
+        [
+            "PARTIDOS",
+            totals.matches
+        ],
+
+        [
+            "GOLES",
+            totals.goals
+        ],
+
+        [
+            "ASISTENCIAS",
+            totals.assists
+        ],
+
+        [
+            "MINUTOS",
+            totals.minutes
+        ],
+
+        [
+            "TÍTULOS",
+            teamTrophies.length
+        ],
+
+        [
+            "PREMIOS",
+            individualTrophies.length
+        ]
+
+    ]
+
+    .map(x=>`
+
+        <div class="mini">
+
+            <div class="k">
+                ${x[0]}
+            </div>
+
+            <div class="v">
+                ${x[1]}
+            </div>
+
+        </div>
+
+    `)
+
+    .join("");
+
+
+    $("careerTimeline").innerHTML=
+
+        career.map(r=>`
+
+            <div class="career-item">
+
+                <div class="year">
+
+                    T${r.season}
+
+                    <small
+                        style="
+                            display:block;
+                            color:#777
+                        "
+                    >
+
+                        ${r.age} años
+
+                    </small>
+
+                </div>
+
+
+                <div class="clubcareer">
+
+                    ${esc(
+                        r.club.name
+                    )}
+
+                    <small>
+
+                        ${esc(
+                            r.club.league
+                        )}
+
+                        ·
+
+                        ${
+                            r.trophies.length
+                                ?r.trophies.join(" · ")
+                                :"Sin título"
+                        }
+
+                        ${
+                            r.award
+                                ?" · ⭐ "+
+                                r.award
+                                :""
+                        }
+
+                    </small>
+
+                </div>
+
+
+                <div class="seasonstat">
+
+                    ${r.matches} PJ
+
+                    <br>
+
+                    ${r.goals} G
+                    ·
+                    ${r.assists} A
+
+                    <br>
+
+                    ${r.avg.toFixed(1)}
+                    VAL.
+
+                </div>
+
+            </div>
+
+        `)
+
+        .join("");
+
+
+    const average=
+
+        career.length
+
+            ?(
+
+                career.reduce(
+                    (a,r)=>
+                        a+r.avg,
+                    0
+                )
+                /
+                career.length
+
+            ).toFixed(2)
+
+            :"0.00";
+
+
+    $("totalStats").innerHTML=[
+
+        [
+            "Partidos",
+            totals.matches
+        ],
+
+        [
+            "Goles",
+            totals.goals
+        ],
+
+        [
+            "Asistencias",
+            totals.assists
+        ],
+
+        [
+            "Minutos",
+            totals.minutes
+        ],
+
+        [
+            "Porterías a cero",
+            totals.cleanSheets
+        ],
+
+        [
+            "Valoración media",
+            average
+        ]
+
+    ]
+
+    .map(r=>`
+
+        <tr>
+
+            <td>
+                ${r[0]}
+            </td>
+
+            <td>
+                ${r[1]}
+            </td>
+
+        </tr>
+
+    `)
+
+    .join("");
+
+
+    $("teamTrophies").innerHTML=
+
+        teamTrophies.length
+
+            ?
+
+            teamTrophies.map(t=>`
+
+                <div class="trophy">
+
+                    <strong>
+                        🏆 ${esc(t.name)}
+                    </strong>
+
+                    <span>
+
+                        ${esc(t.club)}
+                        ·
+                        Temporada ${t.year}
+
+                    </span>
+
+                </div>
+
+            `).join("")
+
+            :
+
+            `
+
+                <div class="trophy">
+
+                    <strong>
+                        Sin títulos
+                    </strong>
+
+                    <span>
+
+                        Tu carrera no terminó
+                        con trofeos colectivos.
+
+                    </span>
+
+                </div>
+
+            `;
+
+
+    $("individualTrophies").innerHTML=
+
+        individualTrophies.length
+
+            ?
+
+            individualTrophies.map(t=>`
+
+                <div class="trophy">
+
+                    <strong>
+                        ⭐ ${esc(t.name)}
+                    </strong>
+
+                    <span>
+
+                        ${esc(t.club)}
+                        ·
+                        Temporada ${t.year}
+
+                    </span>
+
+                </div>
+
+            `).join("")
+
+            :
+
+            `
+
+                <div class="trophy">
+
+                    <strong>
+                        Sin premios
+                    </strong>
+
+                    <span>
+
+                        No obtuviste
+                        premios individuales.
+
+                    </span>
+
+                </div>
+
+            `;
+
 }
-function confirmRestart(){if(confirm("¿Seguro que quieres reiniciar la carrera? Se perderá el progreso actual."))location.reload()}
+
+
+/* =========================================================
+   REINICIAR
+========================================================= */
+
+function confirmRestart(){
+
+    if(
+
+        confirm(
+            "¿Seguro que quieres reiniciar la carrera? Se perderá el progreso actual."
+        )
+
+    ){
+
+        location.reload();
+
+    }
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function esc(s){
+
+    return String(s).replace(
+
+        /[&<>"']/g,
+
+        m=>({
+
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+
+        }[m])
+
+    );
+
+}
+
+
+/* =========================================================
+   INICIO
+========================================================= */
+
 loadPublicClubs();
+
 </script>
+
 </body>
 </html>
