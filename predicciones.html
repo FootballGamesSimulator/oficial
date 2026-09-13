@@ -1,0 +1,3315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Football Games Simulator</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#070b10;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.container{
+    width:min(1200px,94%);
+    margin:auto;
+}
+
+header{
+    padding:18px 0;
+    background:#090e13;
+    border-bottom:1px solid #27333d;
+}
+
+.logo{
+    font-size:18px;
+    font-weight:900;
+}
+
+.logo span{
+    color:#36ef8b;
+}
+
+.hero{
+    text-align:center;
+    padding:40px 0 25px;
+}
+
+.badge{
+    display:inline-block;
+    border:1px solid #236f49;
+    color:#36ef8b;
+    padding:7px 13px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:900;
+}
+
+.hero h1{
+    font-size:clamp(38px,6vw,64px);
+    margin:15px 0 8px;
+}
+
+.hero h1 span{
+    color:#36ef8b;
+}
+
+.hero p{
+    max-width:720px;
+    margin:auto;
+    color:#8d99a5;
+    line-height:1.6;
+}
+
+.tabs{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:25px 0;
+}
+
+.tab,
+.btn{
+    background:#10171d;
+    color:#fff;
+    border:1px solid #293740;
+    border-radius:9px;
+    padding:10px 14px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.tab:hover,
+.tab.active,
+.btn:hover{
+    border-color:#36ef8b;
+}
+
+.primary{
+    background:#36ef8b;
+    color:#06100a;
+    border-color:#36ef8b;
+}
+
+.danger{
+    background:#321318;
+    color:#ffb1b7;
+    border-color:#6b2932;
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+.panel{
+    background:#10161d;
+    border:1px solid #29343d;
+    border-radius:15px;
+    padding:20px;
+    margin:16px 0;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.section-title h2{
+    margin:6px 0;
+}
+
+.sub{
+    color:#8b98a3;
+    font-size:12px;
+}
+
+.competition-logo{
+    width:58px;
+    height:58px;
+    object-fit:contain;
+    display:block;
+}
+
+.league-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-top:18px;
+}
+
+.club-slot{
+    background:#0b1117;
+    border:1px solid #29343d;
+    border-radius:10px;
+    padding:10px;
+    min-height:170px;
+}
+
+.slot-number{
+    color:#8d99a5;
+    font-size:10px;
+    font-weight:900;
+}
+
+.club-select,
+.team-select{
+    width:100%;
+    margin-top:8px;
+    padding:10px;
+    background:#080d12;
+    color:#fff;
+    border:1px solid #3a4650;
+    border-radius:7px;
+    outline:none;
+}
+
+.club-select:focus,
+.team-select:focus{
+    border-color:#36ef8b;
+}
+
+.crest{
+    width:58px;
+    height:58px;
+    object-fit:contain;
+    display:block;
+    margin:8px auto;
+}
+
+.club-name-preview{
+    text-align:center;
+    min-height:15px;
+    font-size:11px;
+    font-weight:900;
+}
+
+.cups-title{
+    margin:22px 0 10px;
+    font-size:14px;
+}
+
+.cups{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.cup{
+    background:#0b1117;
+    border:1px solid #29343d;
+    border-radius:10px;
+    padding:12px;
+}
+
+.cup-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-height:40px;
+    font-weight:900;
+}
+
+.bracket{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.round{
+    background:#0b1117;
+    border:1px solid #29343d;
+    border-radius:12px;
+    padding:13px;
+}
+
+.round h3{
+    color:#8d99a5;
+    font-size:12px;
+}
+
+.match{
+    background:#10171d;
+    border:1px solid #29343d;
+    border-radius:9px;
+    padding:9px;
+    margin:9px 0;
+}
+
+.team-row{
+    display:grid;
+    grid-template-columns:38px 1fr;
+    gap:7px;
+    align-items:center;
+    margin:5px 0;
+}
+
+.team-row img{
+    width:32px;
+    height:32px;
+    object-fit:contain;
+    display:none;
+}
+
+.final{
+    grid-column:1/-1;
+    background:#171308;
+    border:1px solid #67541e;
+    border-radius:12px;
+    padding:16px;
+}
+
+.final h3{
+    text-align:center;
+    color:#f2c94c;
+}
+
+
+/* =========================================================
+   BALÓN DE ORO
+========================================================= */
+
+.balloon-intro{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:18px;
+}
+
+.balloon-logo{
+    width:70px;
+    height:85px;
+    object-fit:contain;
+    flex-shrink:0;
+}
+
+.balloon-title{
+    color:#f2c94c;
+    margin:0 0 5px;
+}
+
+.notice{
+    background:#0b1711;
+    border:1px solid #1c5939;
+    color:#a7edc2;
+    border-radius:9px;
+    padding:12px;
+    font-size:12px;
+    margin-bottom:15px;
+}
+
+.balloon-grid{
+    display:grid;
+    gap:11px;
+}
+
+.balloon-slot{
+    background:#0b1117;
+    border:1px solid #29343d;
+    border-radius:13px;
+    padding:14px;
+}
+
+.balloon-slot.selected{
+    border-color:#36ef8b;
+}
+
+.balloon-slot-head{
+    display:flex;
+    gap:11px;
+    align-items:center;
+}
+
+.position{
+    width:40px;
+    height:40px;
+    min-width:40px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#171e25;
+    color:#f2c94c;
+    font-weight:900;
+}
+
+.balloon-search{
+    flex:1;
+    position:relative;
+}
+
+.player-search{
+    width:100%;
+    padding:13px;
+    background:#080d12;
+    color:#fff;
+    border:1px solid #394650;
+    border-radius:8px;
+    outline:none;
+    font-size:14px;
+}
+
+.player-search:focus{
+    border-color:#36ef8b;
+}
+
+.player-suggestions{
+    position:absolute;
+    top:calc(100% + 5px);
+    left:0;
+    right:0;
+    z-index:9999;
+    background:#111820;
+    border:1px solid #394650;
+    border-radius:9px;
+    max-height:350px;
+    overflow-y:auto;
+    box-shadow:0 15px 40px rgba(0,0,0,.8);
+}
+
+.player-suggestion{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px;
+    cursor:pointer;
+    border-bottom:1px solid #202a32;
+}
+
+.player-suggestion:hover{
+    background:#1b252d;
+}
+
+.player-suggestion img{
+    width:48px;
+    height:48px;
+    object-fit:cover;
+    border-radius:50%;
+    background:#202930;
+    flex-shrink:0;
+}
+
+.suggestion-info{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.suggestion-name{
+    font-weight:900;
+}
+
+.suggestion-team{
+    color:#7f8c96;
+    font-size:11px;
+}
+
+.loading{
+    padding:14px;
+    color:#8d99a5;
+}
+
+.error-search{
+    padding:14px;
+    color:#ff9da5;
+}
+
+.selected-player{
+    display:none;
+    margin-top:14px;
+    padding:14px;
+    background:#10171d;
+    border:1px solid #29343d;
+    border-radius:11px;
+}
+
+.selected-player.visible{
+    display:block;
+}
+
+.player-main{
+    display:grid;
+    grid-template-columns:105px 1fr;
+    gap:16px;
+    align-items:center;
+}
+
+.player-big-photo{
+    width:100px;
+    height:100px;
+    object-fit:cover;
+    border-radius:50%;
+    background:#202930;
+}
+
+.player-big-name{
+    font-size:21px;
+    font-weight:900;
+}
+
+.player-big-team{
+    color:#8d99a5;
+    margin-top:5px;
+    font-size:12px;
+}
+
+.player-status{
+    color:#8d99a5;
+    font-size:11px;
+    margin-top:10px;
+}
+
+.remove-player{
+    margin-top:10px;
+    font-size:10px;
+    padding:7px 10px;
+}
+
+.result{
+    display:none;
+    margin-top:18px;
+    padding:16px;
+    background:#121008;
+    border:1px solid #79651f;
+    border-radius:11px;
+}
+
+.result.show{
+    display:block;
+}
+
+.result-row{
+    border-bottom:1px solid #2a2414;
+    padding:9px 0;
+}
+
+.gold{
+    color:#f2c94c;
+}
+
+.actions{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:9px;
+    margin:24px 0;
+}
+
+footer{
+    text-align:center;
+    color:#68747c;
+    padding:35px 0;
+    font-size:11px;
+}
+
+@media(max-width:950px){
+
+    .league-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .bracket{
+        grid-template-columns:1fr;
+    }
+
+    .final{
+        grid-column:auto;
+    }
+}
+
+@media(max-width:600px){
+
+    .league-grid,
+    .cups{
+        grid-template-columns:1fr;
+    }
+
+    .balloon-intro{
+        align-items:flex-start;
+    }
+
+    .player-main{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .player-big-photo{
+        margin:auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container">
+
+<div class="logo">
+⚽ <span>Football Games</span> Simulator
+</div>
+
+</div>
+</header>
+
+
+<main class="container">
+
+<section class="hero">
+
+<div class="badge">
+SIMULACIÓN · PREDICCIONES
+</div>
+
+<h1>
+CREA TU <span>TEMPORADA</span>
+</h1>
+
+<p>
+Crea tus predicciones de las cinco grandes ligas,
+sus copas, competiciones europeas y Balón de Oro.
+</p>
+
+</section>
+
+
+<nav class="tabs">
+
+<button class="tab active" data-tab="ligas">
+🏆 Ligas y copas
+</button>
+
+<button class="tab" data-tab="champions">
+🌎 Champions
+</button>
+
+<button class="tab" data-tab="conference">
+🟢 Conference League
+</button>
+
+<button class="tab" data-tab="balon">
+🥇 Balón de Oro
+</button>
+
+</nav>
+
+
+<!-- =====================================================
+     LIGAS
+===================================================== -->
+
+<section id="ligas" class="section active"></section>
+
+
+<!-- =====================================================
+     CHAMPIONS
+===================================================== -->
+
+<section id="champions" class="section">
+
+<div class="panel">
+
+<div class="section-title">
+
+<div>
+
+<img
+class="competition-logo"
+src="https://images.fotmob.com/image_resources/logo/leaguelogo/42.png"
+alt="Champions League">
+
+<h2>UEFA Champions League</h2>
+
+<div class="sub">
+Selecciona los equipos.
+</div>
+
+</div>
+
+<button class="btn" onclick="clearBracket('champions')">
+Limpiar
+</button>
+
+</div>
+
+<div id="championsBox"></div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CONFERENCE
+===================================================== -->
+
+<section id="conference" class="section">
+
+<div class="panel">
+
+<div class="section-title">
+
+<div>
+
+<img
+class="competition-logo"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/UEFA_Conference_League_logo_(2024_version).svg"
+alt="UEFA Conference League">
+
+<h2>UEFA Conference League</h2>
+
+<div class="sub">
+Selecciona los equipos.
+</div>
+
+</div>
+
+<button class="btn" onclick="clearBracket('conference')">
+Limpiar
+</button>
+
+</div>
+
+<div id="conferenceBox"></div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     BALÓN DE ORO
+===================================================== -->
+
+<section id="balon" class="section">
+
+<div class="panel">
+
+<div class="balloon-intro">
+
+<img
+class="balloon-logo"
+src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Ballon_d_Or_logo.png"
+alt="Balón de Oro">
+
+<div>
+
+<h2 class="balloon-title">
+Balón de Oro
+</h2>
+
+<div class="sub">
+Selecciona los 10 jugadores de tu predicción.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="notice">
+
+Escribe cualquier parte del nombre del jugador.
+Solo aparecerán jugadores que estén actualmente
+en clubes de las cinco grandes ligas incluidas
+en este juego.
+
+</div>
+
+
+<div id="balloonGrid" class="balloon-grid"></div>
+
+
+<div class="actions">
+
+<button class="btn primary" onclick="revealBallon()">
+🥇 Revelar ranking
+</button>
+
+<button class="btn" onclick="clearPlayers()">
+Limpiar
+</button>
+
+</div>
+
+
+<div id="ballonResult" class="result"></div>
+
+</div>
+
+</section>
+
+
+<div class="actions">
+
+<button class="btn primary" onclick="saveAll()">
+💾 GUARDAR TEMPORADA
+</button>
+
+<button class="btn danger" onclick="newSeason()">
+↻ NUEVA TEMPORADA
+</button>
+
+</div>
+
+</main>
+
+
+<footer>
+© 2026 Football Games Simulator
+</footer>
+
+
+<script>
+
+/* =========================================================
+   DATOS
+   IMPORTANTE:
+   Ya NO usamos IDs de equipos para los escudos.
+   El sistema los busca por nombre en FotMob.
+========================================================= */
+
+const DATA = {
+
+"Premier League":{
+logo:"https://images.fotmob.com/image_resources/logo/leaguelogo/47.png",
+
+clubs:[
+"Arsenal",
+"Aston Villa",
+"Bournemouth",
+"Brentford",
+"Brighton",
+"Burnley",
+"Chelsea",
+"Crystal Palace",
+"Everton",
+"Fulham",
+"Leeds United",
+"Liverpool",
+"Manchester City",
+"Manchester United",
+"Newcastle United",
+"Nottingham Forest",
+"Sunderland",
+"Tottenham Hotspur",
+"West Ham United",
+"Wolverhampton"
+],
+
+cups:[
+[
+"FA Cup"
+],
+[
+"Carabao Cup"
+]
+]
+},
+
+
+"LaLiga":{
+logo:"https://images.fotmob.com/image_resources/logo/leaguelogo/87.png",
+
+clubs:[
+"Alavés",
+"Athletic Club",
+"Atlético de Madrid",
+"Barcelona",
+"Celta Vigo",
+"Elche",
+"Espanyol",
+"Getafe",
+"Girona",
+"Levante",
+"Mallorca",
+"Osasuna",
+"Rayo Vallecano",
+"Real Betis",
+"Real Madrid",
+"Real Oviedo",
+"Real Sociedad",
+"Sevilla",
+"Valencia",
+"Villarreal"
+],
+
+cups:[
+[
+"Copa del Rey"
+],
+[
+"Supercopa de España"
+]
+]
+},
+
+
+"Serie A":{
+logo:"https://images.fotmob.com/image_resources/logo/leaguelogo/55.png",
+
+clubs:[
+"Atalanta",
+"Bologna",
+"Cagliari",
+"Como",
+"Cremonese",
+"Fiorentina",
+"Genoa",
+"Hellas Verona",
+"Inter",
+"Juventus",
+"Lazio",
+"Lecce",
+"Milan",
+"Napoli",
+"Parma",
+"Pisa",
+"Roma",
+"Sassuolo",
+"Torino",
+"Udinese"
+],
+
+cups:[
+[
+"Coppa Italia"
+],
+[
+"Supercoppa Italiana"
+]
+]
+},
+
+
+"Bundesliga":{
+logo:"https://images.fotmob.com/image_resources/logo/leaguelogo/54.png",
+
+clubs:[
+"Augsburg",
+"Bayer Leverkusen",
+"Bayern München",
+"Borussia Dortmund",
+"Borussia Mönchengladbach",
+"Eintracht Frankfurt",
+"Freiburg",
+"Hamburger SV",
+"Heidenheim",
+"Hoffenheim",
+"Köln",
+"Mainz 05",
+"RB Leipzig",
+"St. Pauli",
+"Stuttgart",
+"Union Berlin",
+"Werder Bremen",
+"Wolfsburg",
+"Hannover 96",
+"Hertha Berlin"
+],
+
+cups:[
+[
+"DFB-Pokal"
+],
+[
+"DFL-Supercup"
+]
+]
+},
+
+
+"Ligue 1":{
+logo:"https://images.fotmob.com/image_resources/logo/leaguelogo/53.png",
+
+clubs:[
+"Angers",
+"Auxerre",
+"Brest",
+"Le Havre",
+"Lens",
+"Lille",
+"Lorient",
+"Lyon",
+"Marseille",
+"Metz",
+"Monaco",
+"Montpellier",
+"Nantes",
+"Nice",
+"Paris FC",
+"PSG",
+"Rennes",
+"Strasbourg",
+"Toulouse",
+"Saint-Étienne"
+],
+
+cups:[
+[
+"Coupe de France"
+],
+[
+"Trophée des Champions"
+]
+]
+}
+
+};
+
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+
+function esc(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function normalize(text){
+
+    return String(text || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[^a-z0-9]/g,"");
+
+}
+
+
+function playerPhoto(id){
+
+    return "https://images.fotmob.com/image_resources/playerimages/"+id+".png";
+
+}
+
+
+/* =========================================================
+   CLUBES VÁLIDOS
+========================================================= */
+
+const ALL_CURRENT_CLUBS = [];
+
+Object.values(DATA).forEach(league=>{
+
+    league.clubs.forEach(club=>{
+
+        ALL_CURRENT_CLUBS.push(club);
+
+    });
+
+});
+
+
+const CLUB_ALIASES = {
+
+    "parissaintgermain":"PSG",
+    "psg":"PSG",
+
+    "atleticomadrid":"Atlético de Madrid",
+    "atleticodemadrid":"Atlético de Madrid",
+
+    "athleticbilbao":"Athletic Club",
+    "athleticclub":"Athletic Club",
+
+    "bayernmunich":"Bayern München",
+    "bayernmunchen":"Bayern München",
+
+    "intermilan":"Inter",
+    "internazionale":"Inter",
+
+    "acmilan":"Milan",
+
+    "parissaintgermainfc":"PSG",
+
+    "olympiquelyonnais":"Lyon",
+
+    "olympiquedemarseille":"Marseille",
+
+    "borussiamonchengladbach":"Borussia Mönchengladbach"
+
+};
+
+
+function canonicalClubName(name){
+
+    const n=normalize(name);
+
+    return CLUB_ALIASES[n] || name;
+
+}
+
+
+function isAllowedClub(name){
+
+    if(!name)return false;
+
+    const canonical=
+        canonicalClubName(name);
+
+    const n=
+        normalize(canonical);
+
+    return ALL_CURRENT_CLUBS.some(
+        club=>normalize(club)===n
+    );
+
+}
+
+
+/* =========================================================
+   FOTMOB FETCH
+========================================================= */
+
+async function fetchJSON(url){
+
+    const response=
+        await fetch(
+            url,
+            {
+                method:"GET",
+                cache:"no-store",
+                headers:{
+                    "Accept":"application/json"
+                }
+            }
+        );
+
+
+    if(!response.ok){
+
+        throw new Error(
+            "HTTP "+response.status
+        );
+
+    }
+
+
+    const text=
+        await response.text();
+
+
+    if(
+        !text ||
+        text.trim().startsWith("<")
+    ){
+
+        throw new Error(
+            "FotMob no devolvió JSON"
+        );
+
+    }
+
+
+    return JSON.parse(text);
+
+}
+
+
+/* =========================================================
+   BUSCAR CLUB EN FOTMOB
+========================================================= */
+
+const teamCache=new Map();
+
+
+async function findFotMobTeam(clubName){
+
+    const canonical=
+        canonicalClubName(clubName);
+
+
+    const cacheKey=
+        normalize(canonical);
+
+
+    if(teamCache.has(cacheKey)){
+
+        return teamCache.get(cacheKey);
+
+    }
+
+
+    const urls=[
+
+        "https://www.fotmob.com/api/data/search/suggest"+
+        "?term="+encodeURIComponent(canonical)+
+        "&hits=20"+
+        "&lang=en",
+
+        "https://apigw.fotmob.com/searchapi/suggest"+
+        "?term="+encodeURIComponent(canonical)+
+        "&hits=20"+
+        "&lang=en"
+
+    ];
+
+
+    for(const url of urls){
+
+        try{
+
+            const data=
+                await fetchJSON(url);
+
+
+            const teams=
+                extractTeams(data);
+
+
+            const exact=
+                teams.find(team=>
+                    normalize(team.name)===
+                    normalize(canonical)
+                );
+
+
+            if(exact){
+
+                teamCache.set(
+                    cacheKey,
+                    exact
+                );
+
+                return exact;
+
+            }
+
+
+            const close=
+                teams.find(team=>
+                    normalize(team.name).includes(
+                        normalize(canonical)
+                    ) ||
+                    normalize(canonical).includes(
+                        normalize(team.name)
+                    )
+                );
+
+
+            if(close){
+
+                teamCache.set(
+                    cacheKey,
+                    close
+                );
+
+                return close;
+
+            }
+
+        }catch(error){
+
+            console.warn(
+                "No se pudo resolver club:",
+                canonical,
+                error
+            );
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   EXTRAER EQUIPOS
+========================================================= */
+
+function extractTeams(data){
+
+    const result=[];
+    const seen=new Set();
+
+
+    function add(payload){
+
+        if(
+            !payload ||
+            typeof payload!=="object"
+        ){
+            return;
+        }
+
+
+        const id=
+            payload.id ??
+            payload.teamId;
+
+
+        const name=
+            payload.name ??
+            payload.teamName ??
+            payload.title;
+
+
+        if(!id || !name)return;
+
+
+        const key=
+            String(id);
+
+
+        if(seen.has(key))return;
+
+        seen.add(key);
+
+
+        result.push({
+
+            id:key,
+
+            name:String(name)
+
+        });
+
+    }
+
+
+    function scan(value,depth=0){
+
+        if(depth>10)return;
+
+
+        if(Array.isArray(value)){
+
+            value.forEach(
+                item=>scan(item,depth+1)
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !value ||
+            typeof value!=="object"
+        ){
+            return;
+
+        }
+
+
+        const type=
+            String(
+                value.type ??
+                value.entityType ??
+                ""
+            ).toLowerCase();
+
+
+        if(
+            type==="team" ||
+            type==="club"
+        ){
+
+            add(value);
+
+        }
+
+
+        if(
+            value.teamId &&
+            (
+                value.name ||
+                value.teamName
+            )
+        ){
+
+            add(value);
+
+        }
+
+
+        Object.values(value).forEach(
+            child=>scan(child,depth+1)
+        );
+
+    }
+
+
+    scan(data);
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   ESCUDO CORRECTO
+========================================================= */
+
+async function getCorrectTeamLogo(clubName){
+
+    const team=
+        await findFotMobTeam(
+            clubName
+        );
+
+
+    if(!team){
+
+        return null;
+
+    }
+
+
+    return {
+        id:team.id,
+
+        url:
+            "https://images.fotmob.com/image_resources/logo/teamlogo/"+
+            team.id+
+            ".png"
+
+    };
+
+}
+
+
+/* =========================================================
+   ACTUALIZAR ESCUDO
+========================================================= */
+
+async function updateClubLogo(
+    select,
+    image
+){
+
+    const name=
+        select.value;
+
+
+    if(!name){
+
+        image.src="";
+        image.style.display="none";
+
+        return;
+
+    }
+
+
+    image.style.display="none";
+
+
+    const logo=
+        await getCorrectTeamLogo(
+            name
+        );
+
+
+    if(!logo){
+
+        console.warn(
+            "No se encontró escudo:",
+            name
+        );
+
+        return;
+
+    }
+
+
+    image.src=logo.url;
+
+
+    image.onload=()=>{
+
+        image.style.display="block";
+
+    };
+
+
+    image.onerror=()=>{
+
+        image.style.display="none";
+
+    };
+
+}
+
+
+/* =========================================================
+   OPCIONES DE CLUBES
+========================================================= */
+
+function leagueOptions(league){
+
+    let html=
+        '<option value="">Seleccionar club</option>';
+
+
+    league.clubs.forEach(club=>{
+
+        html+=`
+            <option value="${esc(club)}">
+                ${esc(club)}
+            </option>
+        `;
+
+    });
+
+
+    return html;
+
+}
+
+
+function allClubOptions(){
+
+    let html=
+        '<option value="">Seleccionar club</option>';
+
+
+    ALL_CURRENT_CLUBS.forEach(club=>{
+
+        html+=`
+            <option value="${esc(club)}">
+                ${esc(club)}
+            </option>
+        `;
+
+    });
+
+
+    return html;
+
+}
+
+
+/* =========================================================
+   CONSTRUIR LIGAS
+========================================================= */
+
+function buildLeagues(){
+
+    const root=
+        document.getElementById("ligas");
+
+
+    let html="";
+
+
+    Object.entries(DATA).forEach(
+        ([name,league])=>{
+
+
+        html+=`
+
+        <div class="panel league">
+
+            <div class="section-title">
+
+                <div>
+
+                    <img
+                        class="competition-logo"
+                        src="${league.logo}"
+                        alt="${esc(name)}">
+
+                    <h2>
+                        ${esc(name)}
+                    </h2>
+
+                    <div class="sub">
+                        Selecciona los cinco primeros puestos.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="league-grid">
+
+        `;
+
+
+        for(let i=1;i<=5;i++){
+
+            html+=`
+
+                <div class="club-slot">
+
+                    <div class="slot-number">
+                        PUESTO #${i}
+                    </div>
+
+
+                    <img
+                        class="crest"
+                        style="display:none"
+                        alt="">
+
+
+                    <select
+                        class="club-select league-club-select">
+
+                        ${leagueOptions(league)}
+
+                    </select>
+
+
+                    <div class="club-name-preview"></div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        html+=`
+
+            </div>
+
+
+            <h3 class="cups-title">
+                🏆 Copas
+            </h3>
+
+
+            <div class="cups">
+
+        `;
+
+
+        league.cups.forEach(cup=>{
+
+            html+=`
+
+                <div class="cup">
+
+                    <div class="cup-head">
+
+                        <span>
+                            ${esc(cup[0])}
+                        </span>
+
+                    </div>
+
+
+                    <select class="club-select cup-select">
+
+                        ${leagueOptions(league)}
+
+                    </select>
+
+                </div>
+
+            `;
+
+        });
+
+
+        html+=`
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+
+    root.innerHTML=html;
+
+
+    document
+        .querySelectorAll(
+            ".league-club-select"
+        )
+        .forEach(select=>{
+
+            select.addEventListener(
+                "change",
+                async function(){
+
+                    const slot=
+                        this.closest(".club-slot");
+
+
+                    const image=
+                        slot.querySelector(".crest");
+
+
+                    const name=
+                        slot.querySelector(
+                            ".club-name-preview"
+                        );
+
+
+                    name.textContent=
+                        this.value || "";
+
+
+                    await updateClubLogo(
+                        this,
+                        image
+                    );
+
+                }
+            );
+
+        });
+
+
+    document
+        .querySelectorAll(
+            ".cup-select"
+        )
+        .forEach(select=>{
+
+            select.addEventListener(
+                "change",
+                async function(){
+
+                    this.dataset.club=
+                        this.value;
+
+                }
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   COMPETICIONES EUROPEAS
+========================================================= */
+
+function teamRow(category,match){
+
+    return `
+
+        <div class="team-row">
+
+            <img alt="">
+
+            <select
+                class="team-select"
+                data-category="${category}"
+                data-match="${match}">
+
+                ${allClubOptions()}
+
+            </select>
+
+        </div>
+
+    `;
+
+}
+
+
+function bracketHTML(category){
+
+    let quarter="";
+
+
+    for(let i=0;i<4;i++){
+
+        quarter+=`
+
+            <div class="match">
+
+                ${teamRow(
+                    category,
+                    "q"+i+"a"
+                )}
+
+                ${teamRow(
+                    category,
+                    "q"+i+"b"
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+
+    let semi="";
+
+
+    for(let i=0;i<2;i++){
+
+        semi+=`
+
+            <div class="match">
+
+                ${teamRow(
+                    category,
+                    "s"+i+"a"
+                )}
+
+                ${teamRow(
+                    category,
+                    "s"+i+"b"
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+
+    return `
+
+        <div
+            class="bracket"
+            data-bracket="${category}">
+
+            <div class="round">
+
+                <h3>
+                    CUARTOS DE FINAL
+                </h3>
+
+                ${quarter}
+
+            </div>
+
+
+            <div class="round">
+
+                <h3>
+                    SEMIFINALES
+                </h3>
+
+                ${semi}
+
+            </div>
+
+
+            <div class="final">
+
+                <h3>
+                    🏆 FINAL
+                </h3>
+
+                <div class="match">
+
+                    ${teamRow(
+                        category,
+                        "fa"
+                    )}
+
+                    ${teamRow(
+                        category,
+                        "fb"
+                    )}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+function buildBrackets(){
+
+    document
+        .getElementById("championsBox")
+        .innerHTML=
+            bracketHTML("champions");
+
+
+    document
+        .getElementById("conferenceBox")
+        .innerHTML=
+            bracketHTML("conference");
+
+
+    document
+        .querySelectorAll(".team-select")
+        .forEach(select=>{
+
+            select.addEventListener(
+                "change",
+                async function(){
+
+                    const img=
+                        this
+                        .parentElement
+                        .querySelector("img");
+
+
+                    await updateClubLogo(
+                        this,
+                        img
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+function clearBracket(category){
+
+    const bracket=
+        document.querySelector(
+            '[data-bracket="'+category+'"]'
+        );
+
+
+    if(!bracket)return;
+
+
+    bracket
+        .querySelectorAll("select")
+        .forEach(
+            select=>{
+                select.value="";
+            }
+        );
+
+
+    bracket
+        .querySelectorAll("img")
+        .forEach(img=>{
+
+            img.src="";
+            img.style.display="none";
+
+        });
+
+}
+
+
+/* =========================================================
+   BALÓN DE ORO
+========================================================= */
+
+const ballonPlayers=
+    Array(10).fill(null);
+
+
+const searchTimers={};
+
+
+/* =========================================================
+   CREAR 10 POSICIONES
+========================================================= */
+
+function buildBallonSlots(){
+
+    const root=
+        document.getElementById(
+            "balloonGrid"
+        );
+
+
+    let html="";
+
+
+    for(let i=0;i<10;i++){
+
+        html+=`
+
+            <div
+                class="balloon-slot"
+                id="balloon-slot-${i}">
+
+
+                <div class="balloon-slot-head">
+
+                    <div class="position">
+                        #${i+1}
+                    </div>
+
+
+                    <div class="balloon-search">
+
+                        <input
+                            class="player-search"
+                            data-index="${i}"
+                            placeholder="Escribe cualquier parte del nombre..."
+                            autocomplete="off">
+
+
+                        <div
+                            class="player-suggestions"
+                            id="suggestions-${i}">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="selected-player"
+                    id="selected-player-${i}">
+
+
+                    <div class="player-main">
+
+                        <img
+                            class="player-big-photo"
+                            id="player-photo-${i}"
+                            alt="">
+
+
+                        <div>
+
+                            <div
+                                class="player-big-name"
+                                id="player-name-${i}">
+                            </div>
+
+
+                            <div
+                                class="player-big-team"
+                                id="player-team-${i}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="player-status"
+                        id="player-status-${i}">
+                    </div>
+
+
+                    <button
+                        class="btn danger remove-player"
+                        onclick="removeBallonPlayer(${i})">
+
+                        Quitar jugador
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    root.innerHTML=html;
+
+
+    document
+        .querySelectorAll(".player-search")
+        .forEach(input=>{
+
+            input.addEventListener(
+                "input",
+                handlePlayerSearch
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   BUSCADOR DE JUGADORES
+========================================================= */
+
+async function searchFotMobPlayers(query){
+
+    const urls=[
+
+        "https://www.fotmob.com/api/data/search/suggest"+
+        "?term="+encodeURIComponent(query)+
+        "&hits=50"+
+        "&lang=en",
+
+        "https://apigw.fotmob.com/searchapi/suggest"+
+        "?term="+encodeURIComponent(query)+
+        "&hits=50"+
+        "&lang=en",
+
+        "https://www.fotmob.com/api/searchData"+
+        "?term="+encodeURIComponent(query)
+
+    ];
+
+
+    let lastError=null;
+
+
+    for(const url of urls){
+
+        try{
+
+            const data=
+                await fetchJSON(url);
+
+
+            const players=
+                extractPlayers(data);
+
+
+            if(players.length){
+
+                return players;
+
+            }
+
+        }catch(error){
+
+            lastError=error;
+
+        }
+
+    }
+
+
+    throw lastError ||
+        new Error(
+            "No se encontraron resultados."
+        );
+
+}
+
+
+/* =========================================================
+   EXTRAER JUGADORES
+========================================================= */
+
+function extractPlayers(data){
+
+    const players=[];
+    const seen=new Set();
+
+
+    function add(payload){
+
+        if(
+            !payload ||
+            typeof payload!=="object"
+        ){
+            return;
+        }
+
+
+        const id=
+            payload.id ??
+            payload.playerId ??
+            payload.squadMemberId;
+
+
+        const name=
+            payload.name ??
+            payload.playerName ??
+            payload.title;
+
+
+        if(!id || !name)return;
+
+
+        const idString=
+            String(id);
+
+
+        if(seen.has(idString))return;
+
+
+        seen.add(idString);
+
+
+        const team=
+            payload.teamName ??
+            payload.currentTeamName ??
+            payload.clubName ??
+            payload.team?.name ??
+            "";
+
+
+        players.push({
+
+            id:idString,
+
+            name:String(name),
+
+            team:String(team),
+
+            photo:
+                payload.imageUrl ??
+                payload.image ??
+                payload.photo ??
+                playerPhoto(idString)
+
+        });
+
+    }
+
+
+    function scan(value,depth=0){
+
+        if(depth>12)return;
+
+
+        if(Array.isArray(value)){
+
+            value.forEach(
+                item=>
+                    scan(item,depth+1)
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !value ||
+            typeof value!=="object"
+        ){
+
+            return;
+
+        }
+
+
+        const type=
+            String(
+                value.type ??
+                value.entityType ??
+                value.entity ??
+                ""
+            ).toLowerCase();
+
+
+        if(
+            type==="player" ||
+            type==="squadmember" ||
+            type==="squad_member"
+        ){
+
+            add(value);
+
+        }
+
+
+        if(
+            value.playerId &&
+            (
+                value.name ||
+                value.playerName
+            )
+        ){
+
+            add(value);
+
+        }
+
+
+        Object.values(value).forEach(
+            child=>
+                scan(child,depth+1)
+        );
+
+    }
+
+
+    scan(data);
+
+
+    return players;
+
+}
+
+
+/* =========================================================
+   OBTENER EQUIPO ACTUAL DEL JUGADOR
+========================================================= */
+
+const playerTeamCache=
+    new Map();
+
+
+async function verifyCurrentPlayer(
+    player
+){
+
+    if(
+        playerTeamCache.has(
+            player.id
+        )
+    ){
+
+        return playerTeamCache.get(
+            player.id
+        );
+
+    }
+
+
+    if(
+        player.team &&
+        !isAllowedClub(player.team)
+    ){
+
+        playerTeamCache.set(
+            player.id,
+            false
+        );
+
+        return false;
+
+    }
+
+
+    let team=
+        null;
+
+
+    if(player.team){
+
+        team=
+            await findFotMobTeam(
+                player.team
+            );
+
+    }
+
+
+    if(!team){
+
+        playerTeamCache.set(
+            player.id,
+            false
+        );
+
+        return false;
+
+    }
+
+
+    if(
+        !isAllowedClub(team.name)
+    ){
+
+        playerTeamCache.set(
+            player.id,
+            false
+        );
+
+        return false;
+
+    }
+
+
+    try{
+
+        const data=
+            await fetchJSON(
+                "https://www.fotmob.com/api/data/teams"+
+                "?id="+
+                encodeURIComponent(team.id)
+            );
+
+
+        const exists=
+            playerExistsInCurrentSquad(
+                data,
+                player.id
+            );
+
+
+        playerTeamCache.set(
+            player.id,
+            exists
+        );
+
+
+        return exists;
+
+    }catch(error){
+
+        console.warn(
+            "No se pudo verificar plantilla actual:",
+            player.name,
+            error
+        );
+
+
+        playerTeamCache.set(
+            player.id,
+            false
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   COMPROBAR SI EL JUGADOR ESTÁ EN LA PLANTILLA
+========================================================= */
+
+function playerExistsInCurrentSquad(
+    data,
+    playerId
+){
+
+    const wanted=
+        String(playerId);
+
+
+    function scan(value,depth=0){
+
+        if(depth>15)return false;
+
+
+        if(Array.isArray(value)){
+
+            return value.some(
+                item=>
+                    scan(item,depth+1)
+            );
+
+        }
+
+
+        if(
+            !value ||
+            typeof value!=="object"
+        ){
+
+            return false;
+
+        }
+
+
+        const directIds=[
+
+            value.id,
+            value.playerId,
+            value.squadMemberId
+
+        ];
+
+
+        for(const id of directIds){
+
+            if(
+                id!==undefined &&
+                id!==null &&
+                String(id)===wanted
+            ){
+
+                return true;
+
+            }
+
+        }
+
+
+        return Object.values(value).some(
+            child=>
+                scan(child,depth+1)
+        );
+
+    }
+
+
+    return scan(data);
+
+}
+
+
+/* =========================================================
+   BUSCAR JUGADORES
+========================================================= */
+
+async function handlePlayerSearch(event){
+
+    const input=
+        event.target;
+
+
+    const index=
+        Number(
+            input.dataset.index
+        );
+
+
+    const box=
+        document.getElementById(
+            "suggestions-"+index
+        );
+
+
+    const query=
+        input.value.trim();
+
+
+    clearTimeout(
+        searchTimers[index]
+    );
+
+
+    if(query.length<2){
+
+        box.innerHTML="";
+        return;
+
+    }
+
+
+    box.innerHTML=
+        '<div class="loading">Buscando jugadores actuales...</div>';
+
+
+    searchTimers[index]=
+        setTimeout(
+            async()=>{
+
+                try{
+
+                    let players=
+                        await searchFotMobPlayers(
+                            query
+                        );
+
+
+                    players=
+                        players.filter(
+                            player=>{
+
+                                return player.team &&
+                                    isAllowedClub(
+                                        player.team
+                                    );
+
+                            }
+                        );
+
+
+                    const normalized=
+                        normalize(query);
+
+
+                    players.sort((a,b)=>{
+
+                        const an=
+                            normalize(a.name);
+
+                        const bn=
+                            normalize(b.name);
+
+
+                        const aStarts=
+                            an.startsWith(
+                                normalized
+                            );
+
+                        const bStarts=
+                            bn.startsWith(
+                                normalized
+                            );
+
+
+                        if(
+                            aStarts &&
+                            !bStarts
+                        ){
+
+                            return -1;
+
+                        }
+
+
+                        if(
+                            !aStarts &&
+                            bStarts
+                        ){
+
+                            return 1;
+
+                        }
+
+
+                        const aContains=
+                            an.includes(
+                                normalized
+                            );
+
+                        const bContains=
+                            bn.includes(
+                                normalized
+                            );
+
+
+                        if(
+                            aContains &&
+                            !bContains
+                        ){
+
+                            return -1;
+
+                        }
+
+
+                        if(
+                            !aContains &&
+                            bContains
+                        ){
+
+                            return 1;
+
+                        }
+
+
+                        return an.length-bn.length;
+
+                    });
+
+
+                    const candidates=
+                        players.slice(0,15);
+
+
+                    const verified=[];
+
+
+                    for(
+                        const player
+                        of candidates
+                    ){
+
+                        if(
+                            verified.length>=10
+                        ){
+
+                            break;
+
+                        }
+
+
+                        const valid=
+                            await verifyCurrentPlayer(
+                                player
+                            );
+
+
+                        if(valid){
+
+                            verified.push(
+                                player
+                            );
+
+                        }
+
+                    }
+
+
+                    const finalPlayers=[];
+                    const ids=new Set();
+
+
+                    verified.forEach(player=>{
+
+                        if(
+                            ids.has(player.id)
+                        ){
+
+                            return;
+
+                        }
+
+
+                        ids.add(
+                            player.id
+                        );
+
+
+                        finalPlayers.push(
+                            player
+                        );
+
+                    });
+
+
+                    if(!finalPlayers.length){
+
+                        box.innerHTML=`
+
+                            <div class="error-search">
+
+                                No se encontraron
+                                jugadores actuales.
+
+                                <br>
+
+                                <small>
+                                    Solo se muestran jugadores
+                                    que pertenecen actualmente
+                                    a clubes de estas cinco ligas.
+                                </small>
+
+                            </div>
+
+                        `;
+
+                        return;
+
+                    }
+
+
+                    box.innerHTML=
+                        finalPlayers
+                        .map(
+                            player=>{
+
+                                return `
+
+                                    <div
+                                        class="player-suggestion"
+
+                                        data-index="${index}"
+
+                                        data-id="${esc(player.id)}"
+
+                                        data-name="${esc(player.name)}"
+
+                                        data-team="${esc(player.team)}"
+
+                                        data-photo="${esc(
+                                            player.photo ||
+                                            playerPhoto(player.id)
+                                        )}">
+
+
+                                        <img
+                                            src="${esc(
+                                                player.photo ||
+                                                playerPhoto(player.id)
+                                            )}"
+                                            alt="${esc(player.name)}"
+
+                                            onerror="
+                                                this.onerror=null;
+                                                this.src='${playerPhoto(player.id)}';
+                                            ">
+
+
+                                        <div class="suggestion-info">
+
+                                            <span class="suggestion-name">
+                                                ${esc(player.name)}
+                                            </span>
+
+
+                                            <span class="suggestion-team">
+                                                ${esc(player.team)}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                `;
+
+                            }
+                        )
+                        .join("");
+
+
+                }catch(error){
+
+                    console.error(
+                        "Error buscando jugadores:",
+                        error
+                    );
+
+
+                    box.innerHTML=`
+
+                        <div class="error-search">
+
+                            No se pudo conectar con
+                            la base de jugadores.
+
+                            <br>
+
+                            <small>
+                                Comprueba que tienes conexión
+                                a Internet y vuelve a intentarlo.
+                            </small>
+
+                        </div>
+
+                    `;
+
+                }
+
+            },
+            350
+        );
+
+}
+
+
+/* =========================================================
+   SELECCIONAR JUGADOR
+========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        const suggestion=
+            event.target.closest(
+                ".player-suggestion"
+            );
+
+
+        if(!suggestion)return;
+
+
+        const index=
+            Number(
+                suggestion.dataset.index
+            );
+
+
+        const player={
+
+            id:
+                suggestion.dataset.id,
+
+            name:
+                suggestion.dataset.name,
+
+            team:
+                suggestion.dataset.team,
+
+            photo:
+                suggestion.dataset.photo ||
+                playerPhoto(
+                    suggestion.dataset.id
+                )
+
+        };
+
+
+        ballonPlayers[index]=
+            player;
+
+
+        const input=
+            document.querySelector(
+                '.player-search[data-index="'+index+'"]'
+            );
+
+
+        if(input){
+
+            input.value=
+                player.name;
+
+        }
+
+
+        document
+            .getElementById(
+                "suggestions-"+index
+            )
+            .innerHTML="";
+
+
+        showSelectedPlayer(
+            index,
+            player
+        );
+
+    }
+);
+
+
+/* =========================================================
+   MOSTRAR JUGADOR
+========================================================= */
+
+function showSelectedPlayer(
+    index,
+    player
+){
+
+    document
+        .getElementById(
+            "balloon-slot-"+index
+        )
+        .classList.add("selected");
+
+
+    const card=
+        document.getElementById(
+            "selected-player-"+index
+        );
+
+
+    card.classList.add("visible");
+
+
+    const photo=
+        document.getElementById(
+            "player-photo-"+index
+        );
+
+
+    photo.src=
+        player.photo ||
+        playerPhoto(
+            player.id
+        );
+
+
+    photo.onerror=function(){
+
+        this.onerror=null;
+
+        this.src=
+            playerPhoto(
+                player.id
+            );
+
+    };
+
+
+    document
+        .getElementById(
+            "player-name-"+index
+        )
+        .textContent=
+            player.name;
+
+
+    document
+        .getElementById(
+            "player-team-"+index
+        )
+        .textContent=
+            player.team ||
+            "Club no disponible";
+
+
+    document
+        .getElementById(
+            "player-status-"+index
+        )
+        .textContent=
+            "Jugador actual verificado en FotMob.";
+
+}
+
+
+/* =========================================================
+   QUITAR JUGADOR
+========================================================= */
+
+function removeBallonPlayer(index){
+
+    ballonPlayers[index]=null;
+
+
+    const input=
+        document.querySelector(
+            '.player-search[data-index="'+index+'"]'
+        );
+
+
+    if(input){
+
+        input.value="";
+
+    }
+
+
+    document
+        .getElementById(
+            "selected-player-"+index
+        )
+        .classList.remove(
+            "visible"
+        );
+
+
+    document
+        .getElementById(
+            "balloon-slot-"+index
+        )
+        .classList.remove(
+            "selected"
+        );
+
+
+    document
+        .getElementById(
+            "suggestions-"+index
+        )
+        .innerHTML="";
+
+}
+
+
+/* =========================================================
+   LIMPIAR JUGADORES
+========================================================= */
+
+function clearPlayers(){
+
+    for(let i=0;i<10;i++){
+
+        removeBallonPlayer(i);
+
+    }
+
+
+    document
+        .getElementById(
+            "ballonResult"
+        )
+        .classList.remove(
+            "show"
+        );
+
+}
+
+
+/* =========================================================
+   REVELAR BALÓN DE ORO
+========================================================= */
+
+function revealBallon(){
+
+    const players=
+        ballonPlayers.filter(Boolean);
+
+
+    if(!players.length){
+
+        alert(
+            "Selecciona al menos un jugador."
+        );
+
+        return;
+
+    }
+
+
+    let html=
+        '<h2 class="gold">🥇 TU BALÓN DE ORO</h2>';
+
+
+    players.forEach(
+        (player,index)=>{
+
+            html+=`
+
+                <div class="result-row">
+
+                    <b>#${index+1}</b>
+                    —
+                    ${esc(player.name)}
+
+                    ${
+                        player.team
+                        ? " · "+esc(player.team)
+                        : ""
+                    }
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    const result=
+        document.getElementById(
+            "ballonResult"
+        );
+
+
+    result.innerHTML=
+        html;
+
+
+    result.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   GUARDAR
+========================================================= */
+
+function collectBracket(category){
+
+    const bracket=
+        document.querySelector(
+            '[data-bracket="'+category+'"]'
+        );
+
+
+    if(!bracket){
+
+        return [];
+
+    }
+
+
+    return[
+        ...bracket.querySelectorAll(
+            "select"
+        )
+    ].map(
+        select=>select.value
+    );
+
+}
+
+
+function collectData(){
+
+    return{
+
+        leagues:
+
+            [
+                ...document.querySelectorAll(
+                    ".league"
+                )
+            ]
+            .map(
+                league=>({
+
+                    name:
+                        league.querySelector("h2")
+                        ?.textContent || "",
+
+                    clubs:
+                        [
+                            ...league.querySelectorAll(
+                                ".league-club-select"
+                            )
+                        ]
+                        .map(
+                            select=>select.value
+                        ),
+
+                    cups:
+                        [
+                            ...league.querySelectorAll(
+                                ".cup-select"
+                            )
+                        ]
+                        .map(
+                            select=>select.value
+                        )
+
+                })
+            ),
+
+
+        champions:
+            collectBracket(
+                "champions"
+            ),
+
+
+        conference:
+            collectBracket(
+                "conference"
+            ),
+
+
+        ballonDOr:
+            ballonPlayers
+
+    };
+
+}
+
+
+function saveAll(){
+
+    localStorage.setItem(
+        "SIMULACION_TEMPORADA",
+        JSON.stringify(
+            collectData()
+        )
+    );
+
+
+    alert(
+        "✅ Temporada guardada."
+    );
+
+}
+
+
+function newSeason(){
+
+    if(
+        confirm(
+            "¿Quieres borrar la temporada actual?"
+        )
+    ){
+
+        localStorage.removeItem(
+            "SIMULACION_TEMPORADA"
+        );
+
+
+        location.reload();
+
+    }
+
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+document
+    .querySelectorAll(".tab")
+    .forEach(button=>{
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                document
+                    .querySelectorAll(".tab")
+                    .forEach(tab=>
+                        tab.classList.remove(
+                            "active"
+                        )
+                    );
+
+
+                document
+                    .querySelectorAll(".section")
+                    .forEach(section=>
+                        section.classList.remove(
+                            "active"
+                        )
+                    );
+
+
+                this.classList.add(
+                    "active"
+                );
+
+
+                document
+                    .getElementById(
+                        this.dataset.tab
+                    )
+                    .classList.add(
+                        "active"
+                    );
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   CERRAR SUGERENCIAS
+========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target.closest(
+                ".balloon-search"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        document
+            .querySelectorAll(
+                ".player-suggestions"
+            )
+            .forEach(
+                box=>{
+                    box.innerHTML="";
+                }
+            );
+
+    }
+);
+
+
+/* =========================================================
+   INICIAR
+========================================================= */
+
+buildLeagues();
+
+buildBrackets();
+
+buildBallonSlots();
+
+</script>
+
+</body>
+</html>
