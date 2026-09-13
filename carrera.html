@@ -346,6 +346,57 @@ select option{
     background:rgba(255,255,255,.02)
 }
 
+.country-search{
+    position:relative
+}
+
+.country-search input{
+    padding-right:42px
+}
+
+.country-suggestions{
+    position:absolute;
+    left:0;
+    right:0;
+    top:calc(100% + 6px);
+    z-index:100;
+    max-height:260px;
+    overflow-y:auto;
+    background:#0d1214;
+    border:1px solid rgba(66,255,136,.20);
+    border-radius:12px;
+    box-shadow:0 20px 45px rgba(0,0,0,.65);
+    display:none
+}
+
+.country-suggestions.show{
+    display:block
+}
+
+.country-option{
+    padding:12px 14px;
+    cursor:pointer;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    font-size:13px;
+    font-weight:800
+}
+
+.country-option:last-child{
+    border-bottom:0
+}
+
+.country-option:hover,
+.country-option.active{
+    background:rgba(66,255,136,.08);
+    color:var(--green)
+}
+
+.country-empty{
+    padding:13px 14px;
+    color:#777;
+    font-size:12px
+}
+
 .club{
     display:flex;
     align-items:center;
@@ -1068,10 +1119,30 @@ style="opacity:.65;cursor:not-allowed"
 <div class="field">
 
 <label>
-NACIONALIDAD
+SELECCIÓN NACIONAL
 </label>
 
-<select id="country"></select>
+<div class="country-search">
+
+<input
+id="countrySearch"
+type="text"
+placeholder="Escribe el país de tu selección..."
+autocomplete="off"
+>
+
+<div
+id="countrySuggestions"
+class="country-suggestions"
+></div>
+
+<input
+id="country"
+type="hidden"
+value=""
+>
+
+</div>
 
 </div>
 
@@ -1157,7 +1228,7 @@ según tu perfil y nivel inicial.
 <br><br>
 
 🎂 Todos los jugadores comienzan exactamente
-con <b>18 años</b>.
+con <b>16 años</b>. A partir de los 18 puedes empezar a alcanzar estadísticas realmente buenas.
 
 </div>
 
@@ -1906,9 +1977,15 @@ let individualTrophies=[];
 
 let competitionMvps=[];
 let individualResults=[];
+let nationalTrophies=[];
 let careerStartYear=2026;
 
 let careerEvents=0;
+
+/* Situaciones: 7 a 10 en TODA la carrera, no por temporada. */
+let seasonSituationCount=0;
+let seasonSituationTarget=random(7,10);
+let usedSituationIndexes=new Set();
 
 let freeAgent=false;
 
@@ -1942,6 +2019,16 @@ function esc(s){
     );
 }
 
+function normalize(text){
+
+    return String(text || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[^a-z0-9]/g,"");
+}
+
+
 function money(v){
 
     if(v>=100000000)
@@ -1960,25 +2047,91 @@ function money(v){
 
 function fillCountries(){
 
-    const select=$("country");
+    const input=$("countrySearch");
+    const hidden=$("country");
+    const box=$("countrySuggestions");
 
-    select.innerHTML=
-        '<option value="">Selecciona un país</option>';
+    if(!input || !hidden || !box) return;
 
-    countries.forEach(c=>{
+    function renderCountrySuggestions(query=""){
 
-        const option=document.createElement("option");
+        const q=normalize(query);
 
-        option.value=c[0];
+        const matches=countries
+            .filter(c=>!q || normalize(c[0]).includes(q))
+            .slice(0,14);
 
-        option.textContent=c[0];
+        box.innerHTML=
+            matches.length
+                ? matches.map(c=>`
+                    <div
+                        class="country-option"
+                        data-country="${esc(c[0])}"
+                    >
+                        ${esc(c[0])}
+                    </div>
+                `).join("")
+                : `<div class="country-empty">No encontramos esa selección.</div>`;
 
-        select.appendChild(option);
+        box.classList.add("show");
+    }
+
+    function selectCountry(name){
+
+        hidden.value=name;
+        input.value=name;
+        box.innerHTML="";
+        box.classList.remove("show");
+    }
+
+    input.addEventListener("focus",()=>{
+        renderCountrySuggestions(input.value);
+    });
+
+    input.addEventListener("input",()=>{
+        hidden.value="";
+        renderCountrySuggestions(input.value);
+    });
+
+    input.addEventListener("keydown",event=>{
+
+        if(event.key==="Enter"){
+
+            event.preventDefault();
+
+            const first=box.querySelector(".country-option");
+
+            if(first){
+                selectCountry(first.dataset.country);
+            }
+
+        }
 
     });
+
+    box.addEventListener("click",event=>{
+
+        const option=event.target.closest(".country-option");
+
+        if(!option) return;
+
+        selectCountry(option.dataset.country);
+
+    });
+
+    document.addEventListener("click",event=>{
+
+        if(!event.target.closest(".country-search")){
+            box.classList.remove("show");
+        }
+
+    });
+
+    renderCountrySuggestions("");
 }
 
 fillCountries();
+
 
 
 /* =========================================================
@@ -2043,6 +2196,17 @@ function startCareer(){
         return;
     }
 
+    const selectedCountry=$("country").value;
+
+    if(!selectedCountry){
+
+        alert("Escribe y selecciona el país de la selección nacional.");
+
+        $("countrySearch").focus();
+
+        return;
+    }
+
     selectedClub=chooseRandomStartingClub();
 
     const level=$("startLevel").value;
@@ -2059,7 +2223,7 @@ function startCareer(){
 
         foot:$("foot").value,
 
-        country:$("country").value||"Internacional",
+        country:selectedCountry,
 
         rating:base,
 
@@ -2113,6 +2277,9 @@ function startCareer(){
     individualTrophies=[];
 
     careerEvents=0;
+    seasonSituationCount=0;
+    seasonSituationTarget=random(7,10);
+    usedSituationIndexes=new Set();
 
     freeAgent=false;
 
@@ -2149,7 +2316,7 @@ function showRandomDebut(){
 
             <div class="notice" style="margin-top:15px">
 
-                🎂 Tienes <b>18 años</b>.
+                🎂 Tienes <b>16 años</b>.
 
                 <br><br>
 
@@ -2263,60 +2430,138 @@ function getCompetitions(club){
 
     const list=[];
 
-    if(club.rating>=70){
+    if(!club) return list;
 
+    /*
+       COMPETICIONES NACIONALES
+       Todo club juega únicamente las competiciones de su propio país.
+    */
+
+    const nationalLeagueName =
+        club.league==="Liga MX" ? "Liga MX" :
+        club.league==="MLS" ? "MLS" :
+        club.league==="Brasileirão" ? "Brasileirão" :
+        club.league==="Liga Argentina" ? "Liga Argentina" :
+        club.league==="Liga BetPlay" ? "Liga BetPlay" :
+        club.league==="Primera División" ? "Primera División" :
+        club.league==="LigaPro" ? "LigaPro" :
+        club.league==="Liga 1" ? "Liga 1" :
+        club.league==="Liga Portugal" ? "Liga Portugal" :
+        club.league==="Eredivisie" ? "Eredivisie" :
+        club.league==="Süper Lig" ? "Süper Lig" :
+        club.league==="Belgian Pro League" ? "Belgian Pro League" :
+        club.league==="Scottish Premiership" ? "Scottish Premiership" :
+        club.league==="Austrian Bundesliga" ? "Austrian Bundesliga" :
+        club.league==="Swiss Super League" ? "Swiss Super League" :
+        club.league==="Danish Superliga" ? "Danish Superliga" :
+        club.league==="Eliteserien" ? "Eliteserien" :
+        club.league==="Ekstraklasa" ? "Ekstraklasa" :
+        club.league==="Serbian SuperLiga" ? "Serbian SuperLiga" :
+        club.league==="HNL" ? "HNL" :
+        club.league==="Saudi Pro League" ? "Saudi Pro League" :
+        club.league==="LaLiga" ? "LaLiga" :
+        club.league==="Premier League" ? "Premier League" :
+        club.league==="Bundesliga" ? "Bundesliga" :
+        club.league==="Serie A" ? "Serie A" :
+        club.league==="Ligue 1" ? "Ligue 1" :
+        club.league;
+
+    if(nationalLeagueName){
         list.push({
             name:"Liga nacional",
-            chance:club.rating>=85?.48:.34
+            chance:club.rating>=90?.50:
+                  club.rating>=85?.40:
+                  club.rating>=80?.31:
+                  club.rating>=75?.24:.16
         });
 
         list.push({
             name:"Copa nacional",
-            chance:.30
+            chance:club.rating>=90?.39:
+                  club.rating>=85?.32:
+                  club.rating>=80?.26:
+                  club.rating>=75?.20:.14
         });
-
-    }else{
-
-        list.push({
-            name:"Liga nacional",
-            chance:.27
-        });
-
-        list.push({
-            name:"Copa nacional",
-            chance:.20
-        });
-
     }
 
+    /*
+       CONTINENTAL REAL.
+       MUY IMPORTANTE:
+       - UEFA solo existe para clubes europeos.
+       - CONCACAF para México/USA y resto de Norteamérica,
+         Centroamérica y Caribe.
+       - CONMEBOL para Sudamérica.
+       - AFC para Asia.
+       Nunca se asigna una competición europea a un club americano.
+    */
 
-    /* CONTINENTAL */
+    const europeanCountries=new Set([
+        "España","Inglaterra","Alemania","Italia","Francia",
+        "Portugal","Países Bajos","Turquía","Bélgica","Escocia",
+        "Austria","Suiza","Dinamarca","Noruega","Polonia",
+        "Serbia","Croacia"
+    ]);
 
-    if(club.rating>=84){
+    const conmebolCountries=new Set([
+        "Brasil","Argentina","Colombia","Uruguay","Chile",
+        "Ecuador","Perú","Paraguay","Bolivia","Venezuela"
+    ]);
+
+    const concacafCountries=new Set([
+        "México","Estados Unidos","Canadá","Costa Rica",
+        "Panamá","Honduras","Guatemala","El Salvador",
+        "Jamaica","Cuba","República Dominicana","Puerto Rico"
+    ]);
+
+    if(europeanCountries.has(club.country)){
+
+        /*
+           La competición UEFA depende del nivel del club.
+           Un club europeo solo puede tener UNA de las tres.
+        */
+        if(club.rating>=88){
+            list.push({
+                name:"Champions League",
+                chance:.20
+            });
+        }else if(club.rating>=78){
+            list.push({
+                name:"Europa League",
+                chance:.17
+            });
+        }else if(club.rating>=70){
+            list.push({
+                name:"Conference League",
+                chance:.15
+            });
+        }
+
+    }else if(conmebolCountries.has(club.country)){
 
         list.push({
-            name:"Champions League",
-            chance:.17
+            name:"Copa Libertadores",
+            chance:club.rating>=85?.18:
+                  club.rating>=78?.14:.09
         });
 
-    }else if(club.rating>=77){
+    }else if(concacafCountries.has(club.country)){
 
         list.push({
-            name:"Europa League",
-            chance:.14
+            name:"CONCACAF Champions Cup",
+            chance:club.rating>=85?.18:
+                  club.rating>=78?.14:.09
         });
 
-    }else if(club.rating>=70){
+    }else if(club.country==="Arabia Saudita"){
 
         list.push({
-            name:"Conference League",
-            chance:.10
+            name:"AFC Champions League Elite",
+            chance:club.rating>=85?.18:
+                  club.rating>=78?.14:.09
         });
-
     }
 
     return list;
-
 }
 
 
@@ -2336,18 +2581,47 @@ function calculateTrophies(){
         let probability=comp.chance;
 
         if(comp.name==="Champions League"){
-            probability = strength>=92 ? .34 : strength>=88 ? .25 : strength>=84 ? .16 : .07;
+            probability = strength>=92 ? .34 :
+                           strength>=88 ? .25 :
+                           strength>=84 ? .16 : .07;
+
         }else if(comp.name==="Europa League"){
-            probability = strength>=90 ? .36 : strength>=85 ? .27 : strength>=80 ? .17 : .08;
+            probability = strength>=90 ? .36 :
+                           strength>=85 ? .27 :
+                           strength>=80 ? .17 : .08;
+
         }else if(comp.name==="Conference League"){
-            probability = strength>=85 ? .42 : strength>=78 ? .30 : .16;
+            probability = strength>=85 ? .42 :
+                           strength>=78 ? .30 : .16;
+
+        }else if(comp.name==="Copa Libertadores"){
+            probability = strength>=90 ? .34 :
+                           strength>=85 ? .25 :
+                           strength>=80 ? .16 : .08;
+
+        }else if(comp.name==="CONCACAF Champions Cup"){
+            probability = strength>=90 ? .34 :
+                           strength>=85 ? .25 :
+                           strength>=80 ? .16 : .08;
+
+        }else if(comp.name==="AFC Champions League Elite"){
+            probability = strength>=90 ? .34 :
+                           strength>=85 ? .25 :
+                           strength>=80 ? .16 : .08;
+
         }else if(comp.name==="Liga nacional"){
-            probability = strength>=92 ? .52 : strength>=87 ? .39 : strength>=82 ? .28 : strength>=75 ? .18 : .10;
+            probability = strength>=92 ? .52 :
+                           strength>=87 ? .39 :
+                           strength>=82 ? .28 :
+                           strength>=75 ? .18 : .10;
+
         }else if(comp.name==="Copa nacional"){
-            probability = strength>=92 ? .42 : strength>=87 ? .34 : strength>=82 ? .25 : strength>=75 ? .16 : .09;
+            probability = strength>=92 ? .42 :
+                           strength>=87 ? .34 :
+                           strength>=82 ? .25 :
+                           strength>=75 ? .16 : .09;
         }
 
-        /* Rendimiento individual y experiencia ayudan, pero no garantizan títulos. */
         if(player.rating>=90) probability+=.05;
         if(player.rating>=95) probability+=.04;
         if(player.age>=23 && player.age<=34) probability+=.03;
@@ -2357,11 +2631,245 @@ function calculateTrophies(){
 
         if(chance(probability)){
             won.push(comp.name);
-            teamTrophies.push({name:comp.name,club:player.club.name,year:season});
+            teamTrophies.push({
+                name:comp.name,
+                club:player.club.name,
+                year:season
+            });
         }
     });
 
+    /*
+       TÍTULOS DE SELECCIÓN.
+       Solo se pueden ganar desde los 18 años y únicamente
+       en la confederación correspondiente al país elegido.
+    */
+    const national=calculateNationalCompetition();
+
+    if(national){
+        const result=simulateNationalCompetition(national);
+
+        if(result.won){
+            won.push(result.name);
+
+            nationalTrophies.push({
+                name:result.name,
+                country:player.country,
+                year:season
+            });
+
+            teamTrophies.push({
+                name:result.name,
+                club:"Selección de "+player.country,
+                year:season
+            });
+        }
+    }
+
     return won;
+}
+
+
+/* =========================================================
+   SELECCIÓN NACIONAL
+========================================================= */
+
+const nationalRegions={
+    UEFA:new Set([
+        "Albania","Alemania","Andorra","Armenia","Austria",
+        "Azerbaiyán","Bélgica","Bosnia y Herzegovina","Bulgaria",
+        "Croacia","Dinamarca","Eslovaquia","Eslovenia","España",
+        "Finlandia","Francia","Georgia","Grecia","Hungría",
+        "Inglaterra","Irlanda","Islandia","Israel","Italia",
+        "Kazajistán","Noruega","Países Bajos","Polonia","Portugal",
+        "República Checa","Rumanía","Rusia","Serbia","Suecia",
+        "Suiza","Turquía","Ucrania"
+    ]),
+
+    CONMEBOL:new Set([
+        "Argentina","Bolivia","Brasil","Chile","Colombia",
+        "Ecuador","Paraguay","Perú","Uruguay","Venezuela"
+    ]),
+
+    CONCACAF:new Set([
+        "Canadá","Costa Rica","Cuba","El Salvador","Estados Unidos",
+        "Guatemala","Honduras","Jamaica","México","Panamá",
+        "Puerto Rico","República Dominicana"
+    ]),
+
+    CAF:new Set([
+        "Angola","Argelia","Camerún","Egipto","Ghana","Marruecos",
+        "Nigeria","Senegal","Sudáfrica","Zambia","Zimbabue"
+    ]),
+
+    AFC:new Set([
+        "Afganistán","Arabia Saudita","Australia","Catar","China",
+        "Corea del Sur","Emiratos Árabes Unidos","India","Indonesia",
+        "Irak","Irán","Japón","Uzbekistán","Vietnam"
+    ]),
+
+    OFC:new Set([
+        "Nueva Zelanda"
+    ])
+};
+
+const nationalStrength={
+    "Argentina":96,"Francia":96,"España":95,"Brasil":94,
+    "Inglaterra":93,"Portugal":91,"Alemania":90,"Países Bajos":89,
+    "Italia":86,"Uruguay":86,"Colombia":85,"Bélgica":84,
+    "Croacia":83,"Marruecos":82,"Japón":81,"México":80,
+    "Estados Unidos":79,"Senegal":79,"Ecuador":77,
+    "Dinamarca":77,"Suiza":77,"Nigeria":76,"Chile":75,
+    "Canadá":74,"Corea del Sur":74,"Australia":73,
+    "Costa Rica":70,"Paraguay":73,"Perú":71,"Serbia":76,
+    "Turquía":78,"Polonia":78,"Austria":75,"Noruega":75,
+    "Escocia":73,"Ucrania":73,"Camerún":72,"Egipto":72,
+    "Sudáfrica":69,"Arabia Saudita":68,"Nueva Zelanda":64
+};
+
+function getNationalStrength(country){
+    return nationalStrength[country] || 62;
+}
+
+function getNationalRegion(country){
+    for(const [region,set] of Object.entries(nationalRegions)){
+        if(set.has(country)) return region;
+    }
+    return null;
+}
+
+function calculateNationalCompetition(){
+
+    if(!player || player.age<18 || !player.country)
+        return null;
+
+    const year=careerStartYear+season-1;
+    const region=getNationalRegion(player.country);
+
+    if(!region) return null;
+
+    /*
+       Calendario lógico:
+       Mundial: 2026, 2030, 2034...
+       Euro/Copa América: 2028, 2032...
+       Gold Cup: años impares.
+       AFCON: años impares.
+       Asian Cup: 2027, 2031...
+       OFC Nations Cup: años pares seleccionados.
+    */
+
+    if(year%4===2){
+        return {
+            name:"Mundial",
+            region,
+            year
+        };
+    }
+
+    if(region==="UEFA" && year%4===0){
+        return {
+            name:"Eurocopa",
+            region,
+            year
+        };
+    }
+
+    if(region==="CONMEBOL" && year%4===0){
+        return {
+            name:"Copa América",
+            region,
+            year
+        };
+    }
+
+    if(region==="CONCACAF" && year%2===1){
+        return {
+            name:"Copa Oro",
+            region,
+            year
+        };
+    }
+
+    if(region==="CAF" && year%2===1){
+        return {
+            name:"Copa Africana de Naciones",
+            region,
+            year
+        };
+    }
+
+    if(region==="AFC" && year%4===3){
+        return {
+            name:"Copa Asiática",
+            region,
+            year
+        };
+    }
+
+    if(region==="OFC" && year%4===0){
+        return {
+            name:"Copa de Naciones de Oceanía",
+            region,
+            year
+        };
+    }
+
+    return null;
+}
+
+function simulateNationalCompetition(comp){
+
+    const strength=getNationalStrength(player.country);
+    const rating=player.rating;
+    const reputation=player.reputation;
+
+    /*
+       Primero hay que ser suficientemente bueno para ser convocado.
+       Un jugador de 16/17 nunca entra aquí.
+    */
+    let callChance=
+        rating>=88 ? .88 :
+        rating>=82 ? .72 :
+        rating>=76 ? .52 :
+        rating>=70 ? .32 :
+        rating>=64 ? .16 : .06;
+
+    callChance += Math.max(0,reputation-50)/250;
+    callChance += Math.max(0,strength-90)/300;
+
+    if(player.age>=34) callChance*=.88;
+    if(player.age>=40) callChance*=.55;
+
+    if(!chance(clamp(callChance,0,.98))){
+        return {
+            called:false,
+            won:false,
+            name:comp.name
+        };
+    }
+
+    /*
+       El rendimiento del jugador influye, pero el nivel de la selección
+       sigue siendo determinante.
+    */
+    let titleChance=
+        .06 +
+        (strength-60)*.006 +
+        Math.max(0,rating-70)*.004;
+
+    if(comp.name==="Mundial")
+        titleChance*=.70;
+
+    if(comp.name==="Eurocopa" || comp.name==="Copa América")
+        titleChance*=.90;
+
+    titleChance=clamp(titleChance,.03,.48);
+
+    return {
+        called:true,
+        won:chance(titleChance),
+        name:comp.name
+    };
 }
 
 
@@ -2794,6 +3302,7 @@ function renderSeasonEvent(row){
     });
 
     const mvpCount=competitionMvps.filter(x=>x.year===season).length;
+    const nationalWon=nationalTrophies.filter(x=>x.year===season);
 
     $("seasonEvent").innerHTML=`
         <div class="event">
@@ -2804,6 +3313,7 @@ function renderSeasonEvent(row){
                 <b>${row.minutes}</b> minutos · valoración <b>${row.avg.toFixed(1)}</b>`}
                 ${row.award?`<br><br>⭐ <b>${esc(row.award)}</b>`:""}
                 ${mvpCount?`<br><br>🌟 <b>${mvpCount}</b> MVP de competición esta temporada.`:""}
+                ${nationalWon.length?`<br><br>🌎 <b>Selección:</b> ganaste ${nationalWon.map(x=>esc(x.name)).join(" · ")} con ${esc(x.country)}.`:""}
             </p>
             ${trophyHTML}
             ${resultHTML}
@@ -3123,8 +3633,442 @@ const situations=[
         }
     ]
 }
+,
+
+{
+    title:"Una cita que nunca debió ocurrir",
+    text:"Descubres que la pareja de uno de tus compañeros quiere salir contigo. La situación es privada, pero sabes que, si se descubre, puede romper el vestuario.",
+    choices:[
+        {
+            title:"Rechazar y hablar con mi compañero",
+            text:"Prefieres proteger la relación y el vestuario.",
+            effect(){
+                player.discipline+=6;
+                player.reputation+=5;
+                player.morale+=4;
+                return "Tu compañero valora tu honestidad. El vestuario sale reforzado.";
+            }
+        },
+        {
+            title:"Aceptar la cita a escondidas",
+            text:"Decides correr el riesgo.",
+            effect(){
+                player.reputation+=2;
+                player.morale+=8;
+                player.discipline-=18;
+                player.value*=1.02;
+                return "La cita funciona, pero alguien del vestuario empieza a sospechar. Si el rumor crece, tu situación en el club puede complicarse.";
+            }
+        },
+        {
+            title:"Contarlo al entrenador",
+            text:"Quieres cortar el problema antes de que crezca.",
+            effect(){
+                player.discipline+=4;
+                player.morale-=8;
+                player.reputation-=3;
+                return "El entrenador interviene y evita que el problema vaya a más, aunque algunos compañeros creen que llevaste un asunto personal demasiado lejos.";
+            }
+        }
+    ]
+},
+
+{
+    title:"La pareja de tu ídolo",
+    text:"Una persona cercana al club, pareja de una de tus grandes referencias dentro del fútbol, empieza a buscarte fuera del entorno deportivo.",
+    choices:[
+        {
+            title:"Poner límites",
+            text:"No quieres mezclar admiración, fútbol y vida personal.",
+            effect(){
+                player.discipline+=5;
+                player.reputation+=6;
+                return "Mantienes intacta tu relación con tu ídolo y ganas respeto dentro del club.";
+            }
+        },
+        {
+            title:"Comenzar una relación en secreto",
+            text:"Decides aceptar las consecuencias si algún día se descubre.",
+            effect(){
+                player.morale+=10;
+                player.discipline-=22;
+                player.reputation-=10;
+                return "La relación te hace feliz durante un tiempo, pero el secreto empieza a pesar. Si sale a la luz, puede convertirse en un escándalo enorme.";
+            }
+        },
+        {
+            title:"Contárselo directamente a tu ídolo",
+            text:"Prefieres afrontar la situación de frente.",
+            effect(){
+                player.morale-=5;
+                player.reputation+=8;
+                return "La conversación es incómoda, pero tu honestidad evita que la situación explote públicamente.";
+            }
+        }
+    ]
+},
+
+{
+    title:"Una relación prohibida dentro del vestuario",
+    text:"Has empezado a acercarte a la madre adulta de uno de tus compañeros. Ninguno quiere que el vestuario se entere.",
+    choices:[
+        {
+            title:"Terminar la relación",
+            text:"Decides que el vestuario está por encima de tu vida sentimental.",
+            effect(){
+                player.discipline+=8;
+                player.morale-=7;
+                player.reputation+=4;
+                return "La relación termina antes de convertirse en un problema para tu carrera.";
+            }
+        },
+        {
+            title:"Continuar a escondidas",
+            text:"Aceptas el riesgo de que tu compañero se entere.",
+            effect(){
+                player.morale+=12;
+                player.discipline-=24;
+                player.reputation-=12;
+                return "La relación continúa, pero el secreto se vuelve una bomba de tiempo dentro del vestuario.";
+            }
+        },
+        {
+            title:"Hablar primero con tu compañero",
+            text:"Quieres pedirle que escuche tu versión.",
+            effect(){
+                player.morale-=4;
+                player.reputation+=3;
+                player.discipline+=3;
+                return "La conversación es extremadamente incómoda, pero al menos evitas que se entere por terceros.";
+            }
+        }
+    ]
+},
+
+{
+    title:"Nace tu hijo el día de la final",
+    text:"Tu pareja se pone de parto justo cuando tu club va a disputar la final de la Champions League. El nacimiento de tu hijo y el partido ocurren prácticamente al mismo tiempo.",
+    eligible(){
+        return !!player.club &&
+            getCompetitions(player.club).some(c=>c.name==="Champions League");
+    },
+    choices:[
+        {
+            title:"Ir al hospital",
+            text:"Tu familia te necesita en ese momento.",
+            effect(){
+                const row=career[career.length-1];
+                const opponent=getFinalOpponent(player.club.name);
+                const won=chance(.18);
+
+                player.morale+=15;
+                player.reputation+=4;
+
+                if(row && row.trophies.includes("Champions League")){
+                    row.trophies=row.trophies.filter(t=>t!=="Champions League");
+                    teamTrophies=teamTrophies.filter(t=>
+                        !(t.year===season &&
+                          t.name==="Champions League" &&
+                          t.club===player.club.name)
+                    );
+                }
+
+                return `Fuiste al parto y estuviste presente en el nacimiento de tu hijo. ${player.club.name} jugó la final contra ${opponent} sin ti y ${won?"ganó":"perdió"} la Champions League.`;
+            }
+        },
+        {
+            title:"Jugar la final",
+            text:"Decides cumplir con tu club en el partido más importante de la temporada.",
+            effect(){
+                const row=career[career.length-1];
+                const opponent=getFinalOpponent(player.club.name);
+                const won=chance(.62);
+
+                player.morale-=8;
+                player.reputation+=won?12:-3;
+
+                if(row){
+                    const already=row.trophies.includes("Champions League");
+
+                    if(won && !already){
+                        row.trophies.push("Champions League");
+                        teamTrophies.push({
+                            name:"Champions League",
+                            club:player.club.name,
+                            year:season
+                        });
+                    }
+
+                    if(!won && already){
+                        row.trophies=row.trophies.filter(t=>t!=="Champions League");
+                        teamTrophies=teamTrophies.filter(t=>
+                            !(t.year===season &&
+                              t.name==="Champions League" &&
+                              t.club===player.club.name)
+                        );
+                    }
+                }
+
+                return `Decidiste jugar la final contra ${opponent}. ${player.club.name} ${won?"se proclamó campeón":"perdió la final"} de la Champions League. Tu hijo nació mientras estabas disputando el partido.`;
+            }
+        }
+    ]
+},
+
+{
+    title:"Tu compañero descubre el secreto",
+    text:"Una relación que intentabas mantener en privado llega a oídos de tu compañero. Ahora debes decidir cómo afrontar el conflicto.",
+    choices:[
+        {
+            title:"Pedir perdón y asumirlo",
+            text:"No intentas justificarte.",
+            effect(){
+                player.reputation-=5;
+                player.discipline+=4;
+                player.morale-=10;
+                return "El conflicto es fuerte, pero asumir tu responsabilidad evita que el vestuario termine completamente dividido.";
+            }
+        },
+        {
+            title:"Negarlo todo",
+            text:"Intentas convencer al vestuario de que el rumor es falso.",
+            effect(){
+                player.reputation-=14;
+                player.discipline-=10;
+                return "Las pruebas aparecen y la situación empeora. La directiva empieza a estudiar medidas disciplinarias.";
+            }
+        },
+        {
+            title:"Enfrentarte públicamente",
+            text:"Decides responder delante de todos.",
+            effect(){
+                player.reputation-=18;
+                player.discipline-=20;
+                player.morale-=18;
+                return "El enfrentamiento rompe la relación con varios compañeros y el club considera que cruzaste una línea.";
+            }
+        }
+    ]
+},
+
+{
+    title:"Te ofrecen un contrato enorme lejos de tu familia",
+    text:"Un club importante te ofrece el mejor contrato de tu carrera, pero tendrás que mudarte muy lejos durante varios años.",
+    choices:[
+        {
+            title:"Aceptar el contrato",
+            text:"Priorizas el crecimiento profesional.",
+            effect(){
+                player.value*=1.18;
+                player.reputation+=8;
+                player.morale-=8;
+                return "Aceptas el reto. El dinero y la exposición crecen, aunque empiezas a echar de menos tu vida anterior.";
+            }
+        },
+        {
+            title:"Rechazar y quedarte",
+            text:"La estabilidad personal es más importante.",
+            effect(){
+                player.morale+=12;
+                player.reputation+=3;
+                return "Tu familia está feliz con la decisión y tú mantienes la estabilidad en tu club.";
+            }
+        }
+    ]
+},
+
+{
+    title:"Una lesión aparece justo antes de un partido decisivo",
+    text:"Los médicos detectan una molestia importante. Puedes jugar, pero existe riesgo de agravar la lesión.",
+    choices:[
+        {
+            title:"Descansar",
+            text:"Sigues las indicaciones médicas.",
+            effect(){
+                player.fitness+=8;
+                player.morale-=3;
+                return "Evitas una lesión mayor y vuelves a entrenar con normalidad.";
+            }
+        },
+        {
+            title:"Jugar infiltrado",
+            text:"No quieres perderte el partido.",
+            effect(){
+                player.fitness-=18;
+                player.rating-=.8;
+                player.reputation+=6;
+                return "Juegas y demuestras compromiso, pero tu físico queda muy tocado.";
+            }
+        },
+        {
+            title:"Ocultarlo al cuerpo médico",
+            text:"Intentas convencer a todos de que estás bien.",
+            effect(){
+                player.fitness-=28;
+                player.rating-=1.5;
+                player.discipline-=15;
+                return "La lesión empeora y el club considera que pusiste en riesgo tu carrera por ocultar información médica.";
+            }
+        }
+    ]
+},
+
+{
+    title:"Una entrevista sobre tu vida privada se hace viral",
+    text:"Un medio publica detalles personales que no querías hacer públicos. Miles de aficionados empiezan a opinar sobre tu relación.",
+    choices:[
+        {
+            title:"No responder",
+            text:"Mantienes tu vida privada lejos de las cámaras.",
+            effect(){
+                player.discipline+=5;
+                player.morale-=2;
+                return "El ruido mediático baja poco a poco.";
+            }
+        },
+        {
+            title:"Explicar tu versión",
+            text:"Hablas con sinceridad.",
+            effect(){
+                player.reputation+=7;
+                player.morale+=4;
+                return "La entrevista conecta con la afición y recuperas parte del control de la situación.";
+            }
+        },
+        {
+            title:"Atacar al medio",
+            text:"Respondes con mucha dureza.",
+            effect(){
+                player.reputation-=8;
+                player.discipline-=12;
+                return "La discusión ocupa titulares durante varios días y el club te pide que bajes el tono.";
+            }
+        }
+    ]
+},
+
+{
+    title:"Tu familia te pide que dejes el fútbol",
+    text:"Después de una temporada especialmente dura, tu familia cree que el fútbol está consumiendo toda tu vida.",
+    choices:[
+        {
+            title:"Seguir luchando",
+            text:"Decides demostrar que puedes manejar ambas cosas.",
+            effect(){
+                player.morale+=10;
+                player.rating+=.5;
+                return "Encuentras un nuevo equilibrio y recuperas confianza.";
+            }
+        },
+        {
+            title:"Bajar el ritmo",
+            text:"Priorizas tu vida personal durante un tiempo.",
+            effect(){
+                player.morale+=15;
+                player.rating-=.4;
+                return "Te sientes mejor fuera del campo, aunque tu rendimiento baja ligeramente.";
+            }
+        },
+        {
+            title:"Alejarte de tu familia",
+            text:"Crees que están frenando tu carrera.",
+            effect(){
+                player.morale-=20;
+                player.reputation-=8;
+                return "Tu carrera continúa, pero la distancia familiar empieza a afectarte emocionalmente.";
+            }
+        }
+    ]
+},
+
+{
+    title:"Te conviertes en padre durante la temporada",
+    text:"El nacimiento de tu hijo cambia completamente tus prioridades. El club necesita saber cómo vas a gestionar la nueva responsabilidad.",
+    choices:[
+        {
+            title:"Tomarme unos días",
+            text:"Pides permiso para estar con tu familia.",
+            effect(){
+                player.morale+=15;
+                player.fitness+=2;
+                return "El club respeta tu decisión y vuelves con una motivación renovada.";
+            }
+        },
+        {
+            title:"Seguir entrenando normalmente",
+            text:"Quieres mantener tu nivel competitivo.",
+            effect(){
+                player.rating+=.3;
+                player.morale-=5;
+                return "Mantienes el ritmo deportivo, aunque sientes que te estás perdiendo algunos momentos importantes.";
+            }
+        },
+        {
+            title:"Intentar hacerlo todo",
+            text:"No quieres perderte nada ni dentro ni fuera del campo.",
+            effect(){
+                player.morale-=8;
+                player.fitness-=8;
+                player.reputation+=4;
+                return "La temporada se vuelve agotadora, pero consigues estar presente en ambos mundos.";
+            }
+        }
+    ]
+},
+
+{
+    title:"Tu agente quiere controlar tu carrera",
+    text:"Tu agente empieza a presionarte para aceptar movimientos que no te convencen porque cree que puede aumentar su comisión.",
+    choices:[
+        {
+            title:"Confiar en él",
+            text:"Sigues sus recomendaciones.",
+            effect(){
+                player.reputation+=5;
+                player.value*=1.08;
+                return "Tu agente mueve contactos y mejora tus oportunidades.";
+            }
+        },
+        {
+            title:"Negociar límites",
+            text:"Dejas claro que las decisiones finales son tuyas.",
+            effect(){
+                player.discipline+=4;
+                player.reputation+=4;
+                return "La relación profesional continúa, pero ahora existen límites claros.";
+            }
+        },
+        {
+            title:"Romper con el agente",
+            text:"Prefieres controlar personalmente tu futuro.",
+            effect(){
+                player.reputation-=4;
+                player.value*=.96;
+                return "Pierdes algunos contactos a corto plazo, pero recuperas el control de tu carrera.";
+            }
+        }
+    ]
+}
+
 
 ];
+
+
+function getFinalOpponent(currentClubName){
+
+    const top=[
+        "Real Madrid",
+        "Manchester City",
+        "Barcelona",
+        "Bayern München",
+        "Liverpool",
+        "Paris Saint-Germain",
+        "Arsenal",
+        "Inter"
+    ].filter(name=>name!==currentClubName);
+
+    return top[random(0,top.length-1)];
+}
 
 
 /* =========================================================
@@ -3135,62 +4079,44 @@ function maybeTriggerSituation(row){
 
     $("situationArea").innerHTML="";
 
-    if(
-        careerEvents>=7 ||
-        careerEvents>=career.length
-    ){
+    if(freeAgent){
+        generateFreeAgentOffers();
+        return;
+    }
+
+    /*
+       Cada carrera tiene entre 7 y 10 situaciones en TOTAL.
+       No se reinicia el contador al cambiar de temporada o de club.
+    */
+    if(seasonSituationCount>=seasonSituationTarget){
 
         generateOffers(row);
 
         return;
+
     }
 
+    /*
+       Las situaciones aparecen de forma poco frecuente.
+       Si quedan pocas temporadas para terminar y todavía faltan
+       situaciones, se fuerza una para garantizar el objetivo global.
+    */
+    const seasonsRemaining=Math.max(1,46-player.age);
+    const situationsRemaining=Math.max(0,seasonSituationTarget-seasonSituationCount);
+    const mustShow=situationsRemaining>=seasonsRemaining;
 
-    const remaining=
-        7-careerEvents;
-
-
-    const seasonsLeft=
-        Math.max(
-            1,
-            20-career.length
-        );
-
-
-    let probability=
-        .24;
-
-
-    if(
-        career.length>=3 &&
-        careerEvents<4
-    )
-        probability=.40;
-
-
-    if(
-        careerEvents>=6
-    )
-        probability=.16;
-
-
-    if(
-        career.length>=4 &&
-        careerEvents<7 &&
-        chance(.18)
-    )
-        probability=.55;
-
+    const probability=
+        mustShow ? .92 : .34;
 
     if(chance(probability)){
-
-        careerEvents++;
 
         showSituation();
 
     }else{
 
-        generateOffers(row);
+        setTimeout(()=>{
+            maybeTriggerSituation(row);
+        },450);
 
     }
 
@@ -3203,21 +4129,51 @@ function maybeTriggerSituation(row){
 
 function showSituation(){
 
-    currentSituation=
-        situations[
-            random(
-                0,
-                situations.length-1
+    const available=situations
+        .map((_,i)=>i)
+        .filter(i=>
+            !usedSituationIndexes.has(i) &&
+            (
+                typeof situations[i].eligible!=="function" ||
+                situations[i].eligible()
             )
-        ];
+        );
 
+    /*
+       Si ya hemos recorrido todo el catálogo, permitimos repetir.
+       Con solo 7-10 situaciones por carrera normalmente no será necesario.
+    */
+    if(!available.length){
+        usedSituationIndexes=new Set();
+    }
+
+    const pool=situations
+        .map((_,i)=>i)
+        .filter(i=>
+            typeof situations[i].eligible!=="function" ||
+            situations[i].eligible()
+        );
+
+    if(!pool.length){
+        generateOffers(career[career.length-1]);
+        return;
+    }
+
+    const situationIndex=
+        pool[random(0,pool.length-1)];
+
+    usedSituationIndexes.add(situationIndex);
+
+    currentSituation=situations[situationIndex];
+
+    seasonSituationCount++;
 
     $("situationArea").innerHTML=`
 
         <div class="situation">
 
             <div class="situation-tag">
-                ⚡ SITUACIÓN DE CARRERA
+                ⚡ SITUACIÓN DE CARRERA · ${seasonSituationCount}/${seasonSituationTarget} EN TODA TU CARRERA
             </div>
 
             <h3>
@@ -3330,15 +4286,20 @@ function chooseSituation(index){
 
         checkCareerDanger();
 
-        if(!freeAgent){
-
-            generateOffers(
-                career[career.length-1]
-            );
-
+        if(freeAgent){
+            return;
         }
 
-    },1200);
+        /*
+           Solo una situación por oportunidad de temporada.
+           La siguiente aparecerá en una temporada futura; el contador
+           es global para toda la carrera.
+        */
+        generateOffers(
+            career[career.length-1]
+        );
+
+    },1100);
 
 }
 
@@ -3371,7 +4332,7 @@ function checkCareerDanger(){
 
 
     if(
-        careerEvents>=5 &&
+        seasonSituationCount>=5 &&
         player.discipline<35
     )
         danger+=.10;
@@ -4301,8 +5262,12 @@ function stayClub(){
 ========================================================= */
 
 function nextSeason(){
-    /* 30 temporadas: desde 16 hasta completar la temporada de los 45. */
-    if(season>=30 || player.age>=45){
+
+    /*
+       Se puede jugar la temporada completa de los 45.
+       Cuando esa temporada termina, la carrera finaliza.
+    */
+    if(player.age>=45){
         finishCareer();
         return;
     }
@@ -4320,6 +5285,13 @@ function nextSeason(){
 
     $("offersArea").innerHTML="";
     $("situationArea").innerHTML="";
+
+    /*
+       IMPORTANTE: las situaciones son globales para toda la carrera.
+       No se reinician al cambiar de temporada ni de club.
+    */
+    usedSituationIndexes=new Set();
+
     runSeason();
 }
 
