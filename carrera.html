@@ -999,7 +999,7 @@ SIMULA TU <span>CARRERA</span>
 </h1>
 
 <p>
-Empieza con 16 años, recibe ofertas, toma decisiones,
+Empieza con 18 años, recibe ofertas, toma decisiones,
 vive situaciones inesperadas, gana títulos y descubre
 hasta dónde puede llegar tu carrera futbolística.
 </p>
@@ -1029,7 +1029,7 @@ Crea a tu jugador
 
 <div class="step-sub">
 Tu carrera comienza con las decisiones que tomes aquí.
-La edad inicial está fijada en 16 años.
+La edad inicial está fijada en 18 años.
 </div>
 
 <div class="form-grid">
@@ -1057,7 +1057,7 @@ EDAD INICIAL
 <input
 id="playerAge"
 type="text"
-value="16 años"
+value="18 años"
 disabled
 style="opacity:.65;cursor:not-allowed"
 >
@@ -1157,7 +1157,7 @@ según tu perfil y nivel inicial.
 <br><br>
 
 🎂 Todos los jugadores comienzan exactamente
-con <b>16 años</b>.
+con <b>18 años</b>.
 
 </div>
 
@@ -1904,6 +1904,10 @@ let teamTrophies=[];
 
 let individualTrophies=[];
 
+let competitionMvps=[];
+let individualResults=[];
+let careerStartYear=2026;
+
 let careerEvents=0;
 
 let freeAgent=false;
@@ -1984,18 +1988,12 @@ fillCountries();
 function getStartingRating(level){
 
     /*
-    PROGRESIÓN MÁS GENEROSA:
-    Gran Promesa empieza como un jugador realmente especial,
-    pero todavía necesita varias temporadas para llegar a 99.
+    MEDIA INICIAL REALISTA:
+    El jugador empieza con 18 años y todavía tiene mucho margen.
     */
-
-    if(level==="low")
-        return random(55,61);
-
-    if(level==="high")
-        return random(70,75);
-
-    return random(63,68);
+    if(level==="low") return random(40,44);
+    if(level==="high") return random(47,52);
+    return random(43,48);
 }
 
 
@@ -2055,7 +2053,7 @@ function startCareer(){
 
         name:name,
 
-        age:16,
+        age:18,
 
         position:$("position").value,
 
@@ -2067,10 +2065,10 @@ function startCareer(){
 
         potential:
             level==="high"
-                ? random(96,99)
+                ? random(93,99)
                 : level==="normal"
-                    ? random(91,97)
-                    : random(84,92),
+                    ? random(88,96)
+                    : random(80,92),
 
         value:
             level==="low"
@@ -2151,7 +2149,7 @@ function showRandomDebut(){
 
             <div class="notice" style="margin-top:15px">
 
-                🎂 Tienes <b>16 años</b>.
+                🎂 Tienes <b>18 años</b>.
 
                 <br><br>
 
@@ -2328,101 +2326,269 @@ function getCompetitions(club){
 
 function calculateTrophies(){
 
-    if(player.freeAgent)
-        return [];
+    if(player.freeAgent) return [];
 
-    const competitions=
-        getCompetitions(player.club);
-
+    const competitions=getCompetitions(player.club);
     const won=[];
+    const strength=(player.rating+player.club.rating)/2;
 
     competitions.forEach(comp=>{
-
-        const strength=
-            (player.rating+player.club.rating)/2;
-
-        let probability=
-            comp.chance;
+        let probability=comp.chance;
 
         if(comp.name==="Champions League"){
-
-            probability=
-                strength>=91
-                    ? .22
-                    : strength>=86
-                        ? .12
-                        : strength>=81
-                            ? .055
-                            : .018;
-
+            probability = strength>=92 ? .34 : strength>=88 ? .25 : strength>=84 ? .16 : .07;
+        }else if(comp.name==="Europa League"){
+            probability = strength>=90 ? .36 : strength>=85 ? .27 : strength>=80 ? .17 : .08;
+        }else if(comp.name==="Conference League"){
+            probability = strength>=85 ? .42 : strength>=78 ? .30 : .16;
+        }else if(comp.name==="Liga nacional"){
+            probability = strength>=92 ? .52 : strength>=87 ? .39 : strength>=82 ? .28 : strength>=75 ? .18 : .10;
+        }else if(comp.name==="Copa nacional"){
+            probability = strength>=92 ? .42 : strength>=87 ? .34 : strength>=82 ? .25 : strength>=75 ? .16 : .09;
         }
 
-        if(comp.name==="Europa League"){
+        /* Rendimiento individual y experiencia ayudan, pero no garantizan títulos. */
+        if(player.rating>=90) probability+=.05;
+        if(player.rating>=95) probability+=.04;
+        if(player.age>=23 && player.age<=34) probability+=.03;
+        if(player.age>=40) probability-=.04;
 
-            probability=
-                strength>=88
-                    ? .24
-                    : strength>=82
-                        ? .15
-                        : .07;
-
-        }
-
-        if(comp.name==="Conference League"){
-
-            probability=
-                strength>=82
-                    ? .27
-                    : .17;
-
-        }
-
-        if(comp.name==="Liga nacional"){
-
-            probability=
-                strength>=90
-                    ? .38
-                    : strength>=85
-                        ? .25
-                        : strength>=80
-                            ? .16
-                            : .08;
-
-        }
-
-        if(comp.name==="Copa nacional"){
-
-            probability=
-                strength>=90
-                    ? .32
-                    : strength>=85
-                        ? .23
-                        : strength>=80
-                            ? .15
-                            : .08;
-
-        }
+        probability=Math.max(.02,Math.min(.70,probability));
 
         if(chance(probability)){
-
             won.push(comp.name);
-
-            teamTrophies.push({
-
-                name:comp.name,
-
-                club:player.club.name,
-
-                year:season
-
-            });
-
+            teamTrophies.push({name:comp.name,club:player.club.name,year:season});
         }
-
     });
 
     return won;
+}
 
+
+/* =========================================================
+   PERFIL ESTADÍSTICO POR POSICIÓN
+========================================================= */
+
+const positionProfiles={
+    "Portero":{goal:[0,1],assist:[0,2],clean:.34},
+    "Defensa central":{goal:[1,6],assist:[1,5],clean:.25},
+    "Lateral derecho":{goal:[2,10],assist:[4,13],clean:.20},
+    "Lateral izquierdo":{goal:[2,10],assist:[4,13],clean:.20},
+    "Mediocentro":{goal:[2,10],assist:[5,13],clean:0},
+    "Interior":{goal:[4,16],assist:[6,17],clean:0},
+    "Mediapunta":{goal:[7,26],assist:[8,22],clean:0},
+    "Extremo derecho":{goal:[10,42],assist:[7,21],clean:0},
+    "Extremo izquierdo":{goal:[10,42],assist:[7,21],clean:0},
+    "Delantero":{goal:[14,58],assist:[4,15],clean:0}
+};
+
+function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
+
+function agePerformanceMultiplier(age){
+    if(age<=20) return .48 + (age-18)*.16;
+    if(age<=23) return .80 + (age-21)*.07;
+    if(age<=34) return 1.00 + Math.min(.10,(age-23)*.008);
+    if(age<=39) return 1.10 - (age-34)*.035;
+    return Math.max(.45, .925 - (age-39)*.10);
+}
+
+function poisson(lambda){
+    if(lambda<=0) return 0;
+    const L=Math.exp(-lambda);
+    let k=0,p=1;
+    do{ k++; p*=Math.random(); }while(p>L && k<120);
+    return k-1;
+}
+
+function generateSeasonStats(matches){
+    const profile=positionProfiles[player.position]||positionProfiles["Mediocentro"];
+    const ageMult=agePerformanceMultiplier(player.age);
+    const ratingMult=clamp(player.rating/82,.55,1.20);
+    const teamMult=clamp(player.club.rating/82,.72,1.18);
+    const roleMult=(player.position==="Delantero" && player.rating>=90 && player.club.rating>=88)?1.24:1;
+    const eliteMult=(player.rating>=96 && player.club.rating>=92)?1.10:1;
+    const firstTwo=player.age<=19;
+
+    let goalBase=0,assistBase=0;
+    const [gMin,gMax]=profile.goal;
+    const [aMin,aMax]=profile.assist;
+
+    goalBase=((gMin+gMax)/2)*(matches/45)*ratingMult*teamMult*ageMult*roleMult*eliteMult;
+    assistBase=((aMin+aMax)/2)*(matches/45)*ratingMult*teamMult*ageMult;
+
+    let goals=poisson(Math.max(.05,goalBase*.82));
+    let assists=poisson(Math.max(.05,assistBase*.88));
+
+    /* Primeras dos temporadas: adaptación, sin explosiones absurdas. */
+    if(firstTwo){
+        goals=Math.min(goals,player.age===18?6:12);
+        assists=Math.min(assists,player.age===18?5:9);
+    }
+
+    /* Máximos por posición. Un delantero élite puede llegar a 70. */
+    const caps={
+        "Portero":2,"Defensa central":10,"Lateral derecho":14,"Lateral izquierdo":14,
+        "Mediocentro":14,"Interior":20,"Mediapunta":32,
+        "Extremo derecho":48,"Extremo izquierdo":48,"Delantero":70
+    };
+    goals=Math.min(goals,caps[player.position]||25);
+    assists=Math.min(assists, player.position==="Delantero"?22: player.position.includes("Extremo")?24:25);
+
+    /* Si un delantero está en su prime, es élite y juega en un gigante,
+       existe una posibilidad pequeña de temporada histórica 55-70. */
+    if(player.position==="Delantero" && player.age>=23 && player.age<=34 && player.rating>=94 && player.club.rating>=90 && chance(.10)){
+        goals=Math.max(goals,random(52,70));
+    }
+
+    let clean=0;
+    if(profile.clean>0){
+        clean=Math.round(matches*profile.clean*clamp(player.club.rating/82,.75,1.20)*(.85+Math.random()*.30));
+        clean=Math.min(clean,matches);
+    }
+
+    return {goals,assists,clean};
+}
+
+
+/* =========================================================
+   COMPETIDORES REALISTAS PARA PREMIOS INDIVIDUALES
+========================================================= */
+
+const realStars=[
+    {name:"Lamine Yamal",birth:2007,position:"Extremo derecho",club:"Barcelona",power:96},
+    {name:"Kylian Mbappé",birth:1998,position:"Delantero",club:"Real Madrid",power:95},
+    {name:"Erling Haaland",birth:2000,position:"Delantero",club:"Manchester City",power:95},
+    {name:"Vinícius Júnior",birth:2000,position:"Extremo izquierdo",club:"Real Madrid",power:94},
+    {name:"Jude Bellingham",birth:2003,position:"Mediapunta",club:"Real Madrid",power:93},
+    {name:"Jamal Musiala",birth:2003,position:"Mediapunta",club:"Bayern München",power:92},
+    {name:"Florian Wirtz",birth:2003,position:"Mediapunta",club:"Bayern München",power:92},
+    {name:"Bukayo Saka",birth:2001,position:"Extremo derecho",club:"Arsenal",power:91},
+    {name:"Pedri",birth:2002,position:"Interior",club:"Barcelona",power:90},
+    {name:"Phil Foden",birth:2000,position:"Mediapunta",club:"Manchester City",power:91},
+    {name:"Cole Palmer",birth:2002,position:"Mediapunta",club:"Chelsea",power:91},
+    {name:"Rodrigo Hernández",birth:1996,position:"Mediocentro",club:"Manchester City",power:89},
+    {name:"Federico Valverde",birth:1998,position:"Interior",club:"Real Madrid",power:90},
+    {name:"Rafael Leão",birth:1999,position:"Extremo izquierdo",club:"Milan",power:89},
+    {name:"Victor Osimhen",birth:1998,position:"Delantero",club:"Galatasaray",power:88},
+    {name:"Lautaro Martínez",birth:1997,position:"Delantero",club:"Inter",power:91},
+    {name:"Khvicha Kvaratskhelia",birth:2001,position:"Extremo izquierdo",club:"PSG",power:90},
+    {name:"Michael Olise",birth:2001,position:"Extremo derecho",club:"Bayern München",power:89},
+    {name:"Désiré Doué",birth:2005,position:"Mediapunta",club:"PSG",power:86},
+    {name:"Endrick",birth:2006,position:"Delantero",club:"Real Madrid",power:86},
+    {name:"Kenan Yıldız",birth:2005,position:"Mediapunta",club:"Juventus",power:85},
+    {name:"Pau Cubarsí",birth:2007,position:"Defensa central",club:"Barcelona",power:84}
+];
+
+const fictionalFirst=[
+    ["Álex Montoro","Delantero"],["Thiago Moretti","Extremo izquierdo"],["Noah Bennett","Mediapunta"],
+    ["Iker Salvatierra","Interior"],["Mateo Rivas","Extremo derecho"],["Enzo Bellini","Delantero"],
+    ["Daniel Okafor","Extremo derecho"],["Lucas Ferreira","Delantero"],["Adrián Costa","Mediapunta"],
+    ["Nicolás Duarte","Delantero"]
+];
+
+function fictionalStar(index,year){
+    const data=fictionalFirst[index%fictionalFirst.length];
+    const cycle=Math.floor(index/fictionalFirst.length);
+    return {
+        name:data[0]+(cycle?" "+String.fromCharCode(66+cycle):""),
+        birth:year-random(19,27),
+        position:data[1],
+        club:["Real Madrid","Manchester City","Barcelona","Bayern München","Liverpool","PSG","Arsenal"][index%7],
+        power:84+Math.min(12,cycle*2)
+    };
+}
+
+function getAwardCompetitors(year){
+    const eligible=realStars.filter(p=>{
+        const age=year-p.birth;
+        return age>=18 && age<=40;
+    });
+    const result=[...eligible];
+    let i=0;
+    while(result.length<12){
+        result.push(fictionalStar(i++,year));
+    }
+    return result.slice(0,14);
+}
+
+function simulatedCompetitorStats(c,year,awardType){
+    const age=year-c.birth;
+    const ageMult=agePerformanceMultiplier(clamp(age,18,45));
+    const strength=(c.power/100)*ageMult;
+    if(awardType==="goldenBoot"){
+        const goalFactor=c.position==="Delantero"? .88 : c.position.includes("Extremo")?.55 : c.position==="Mediapunta"?.38:.14;
+        return Math.round(clamp(48*strength*goalFactor+random(-6,9),2,72));
+    }
+    const goalFactor=c.position==="Delantero"?.72:c.position.includes("Extremo")?.48:c.position==="Mediapunta"?.38:.14;
+    const assistFactor=c.position==="Delantero"?.25:c.position.includes("Extremo")?.34:c.position==="Mediapunta"?.42:.30;
+    const goals=Math.round(clamp(55*strength*goalFactor+random(-5,8),1,62));
+    const assists=Math.round(clamp(36*strength*assistFactor+random(-3,6),1,28));
+    const titles=Math.max(0,Math.round((strength-.72)*4+random(0,2)));
+    return {score:goals+assists+titles*12,goals,assists,titles};
+}
+
+function registerCompetitionMVPs(row){
+    if(player.freeAgent) return;
+    const competitions=getCompetitions(player.club);
+    const contribution=row.goals+row.assists;
+    competitions.forEach(comp=>{
+        let p=.025;
+        if(row.avg>=7.4) p+=.05;
+        if(row.avg>=8.0) p+=.09;
+        if(row.avg>=8.5) p+=.10;
+        if(contribution>=20) p+=.08;
+        if(contribution>=35) p+=.10;
+        if(row.trophies.includes(comp.name)) p+=.13;
+        if(player.rating>=90) p+=.04;
+        if(player.age>=23 && player.age<=34) p+=.03;
+        if(player.age>=40) p*=.45;
+        if(chance(Math.min(.72,p))){
+            competitionMvps.push({competition:comp.name,club:player.club.name,year:season});
+            individualTrophies.push({name:"MVP — "+comp.name,year:season,club:player.club.name,type:"mvp"});
+        }
+    });
+}
+
+function evaluateIndividualAwards(row){
+    if(player.freeAgent) return;
+    const year=careerStartYear+season-1;
+    const contributions=row.goals+row.assists;
+    const competitors=getAwardCompetitors(year);
+
+    /* Bota de Oro: solo se muestra si el jugador realmente entra en la pelea. */
+    if(row.goals>=18){
+        const scores=competitors.map(c=>({player:c,score:simulatedCompetitorStats(c,year,"goldenBoot")}));
+        scores.push({player:{name:player.name},score:row.goals});
+        scores.sort((a,b)=>b.score-a.score);
+        const rank=scores.findIndex(x=>x.player.name===player.name)+1;
+        if(rank<=2){
+            const above=scores[0].player.name===player.name?null:scores[0].player.name;
+            if(rank===1){
+                individualTrophies.push({name:"Bota de Oro",year:season,club:player.club.name});
+                individualResults.push({season,type:"Bota de Oro",rank:1,above:null,text:"Terminaste 1.º en la carrera por la Bota de Oro."});
+            }else{
+                individualResults.push({season,type:"Bota de Oro",rank:2,above,text:"Terminaste 2.º en la carrera por la Bota de Oro."});
+            }
+        }
+    }
+
+    /* Balón de Oro: 2+ títulos O 50+ contribuciones. Máximo 40 años. */
+    const eligibleAge=player.age<=40;
+    const eligibleRule=row.trophies.length>=2 || contributions>50;
+    if(eligibleAge && eligibleRule){
+        const scores=competitors.map(c=>({player:c,score:simulatedCompetitorStats(c,year,"ballon").score}));
+        const ownScore=contributions + row.trophies.length*15 + row.avg*8 + (row.rating>=90?18:0) + (row.rating>=95?18:0);
+        scores.push({player:{name:player.name},score:ownScore});
+        scores.sort((a,b)=>b.score-a.score);
+        const rank=scores.findIndex(x=>x.player.name===player.name)+1;
+        if(rank===1){
+            individualTrophies.push({name:"Balón de Oro",year:season,club:player.club.name});
+            individualResults.push({season,type:"Balón de Oro",rank:1,above:null,text:"Ganaste el Balón de Oro."});
+        }else if(rank===2){
+            const above=scores[0].player.name;
+            individualResults.push({season,type:"Balón de Oro",rank:2,above,text:"Terminaste 2.º en el Balón de Oro."});
+        }
+    }
 }
 
 
@@ -2434,370 +2600,106 @@ function runSeason(){
 
     renderDashboard();
 
-
-    let matches;
-
-    let minutes;
-
-
-    if(player.freeAgent){
-
-        matches=0;
-
-        minutes=0;
-
-    }else{
-
-        const quality=
-            (player.rating/player.club.rating);
-
-        matches=Math.max(
-            8,
-            Math.min(
-                48,
-                Math.round(
-                    18+
-                    quality*20+
-                    random(-5,8)
-                )
-            )
-        );
-
-        if(player.rating<player.club.rating-10)
-            matches=Math.max(
-                8,
-                matches-random(4,9)
-            );
-
-        minutes=
-            Math.max(
-                400,
-                Math.round(
-                    matches*
-                    random(62,84)
-                )
-            );
-
-    }
-
-
-    const attackingPositions=[
-        "Delantero",
-        "Extremo derecho",
-        "Extremo izquierdo",
-        "Mediapunta",
-        "Interior"
-    ];
-
-
-    const defensivePositions=[
-        "Portero",
-        "Defensa central",
-        "Lateral derecho",
-        "Lateral izquierdo"
-    ];
-
-
-    const attack=
-        attackingPositions.includes(
-            player.position
-        );
-
-
-    let goals;
-
-    let assists;
-
-    let clean;
-
-
-    if(player.freeAgent){
-
-        goals=0;
-
-        assists=0;
-
-        clean=0;
-
-    }else{
-
-        const form=
-            player.rating/100;
-
-        if(attack){
-
-            goals=Math.max(
-                0,
-                Math.round(
-                    matches*
-                    form*
-                    (.11+Math.random()*.20)
-                )
-            );
-
-            assists=Math.max(
-                0,
-                Math.round(
-                    matches*
-                    form*
-                    (.07+Math.random()*.16)
-                )
-            );
-
-        }else{
-
-            goals=Math.max(
-                0,
-                Math.round(
-                    matches*
-                    form*
-                    (.015+Math.random()*.07)
-                )
-            );
-
-            assists=Math.max(
-                0,
-                Math.round(
-                    matches*
-                    form*
-                    (.035+Math.random()*.10)
-                )
-            );
-
-        }
-
-        clean=
-            defensivePositions.includes(player.position)
-                ? Math.round(
-                    matches*
-                    (.10+Math.random()*.18)
-                  )
-                : 0;
-
-    }
-
-
-    let avg;
-
-    if(player.freeAgent){
-
-        avg=5.8;
-
-    }else{
-
-        avg=Math.min(
-            9.4,
-            Math.max(
-                5.5,
-                6.1+
-                (player.rating-player.club.rating)/18+
-                Math.random()*1.35
-            )
-        );
-
-    }
-
-
-    const trophies=
-        calculateTrophies();
-
-
-    let award=null;
-
-
-    if(
-        !player.freeAgent &&
-        avg>=7.7 &&
-        goals+assists>=12 &&
-        chance(
-            Math.min(
-                .40,
-                .10+
-                (avg-7.7)*.22+
-                player.reputation/600
-            )
-        )
-    ){
-
-        const awards=[
-
-            "Jugador del año del club",
-            "Jugador joven del año",
-            "Máximo goleador del club",
-            "Máximo asistente del club"
-
-        ];
-
-        award=
-            awards[
-                random(0,awards.length-1)
-            ];
-
-        individualTrophies.push({
-
-            name:award,
-
-            year:season,
-
-            club:player.club.name
-
-        });
-
-    }
-
-
-    const row={
-
-        season:season,
-
-        club:
-            player.freeAgent
-                ? {
-                    name:"Agente libre",
-                    league:"Sin club",
-                    country:"—",
-                    rating:0
-                  }
-                : {...player.club},
-
-        age:player.age,
-
-        rating:Math.round(player.rating),
-
-        matches:matches,
-
-        goals:goals,
-
-        assists:assists,
-
-        minutes:minutes,
-
-        clean:clean,
-
-        avg:avg,
-
-        trophies:trophies,
-
-        award:award
-
-    };
-
-
-    career.push(row);
-
-
-    totals.matches+=matches;
-
-    totals.goals+=goals;
-
-    totals.assists+=assists;
-
-    totals.minutes+=minutes;
-
-    totals.cleanSheets+=clean;
-
-
-    /* =====================================================
-       EVOLUCIÓN
-    ===================================================== */
+    let matches=0,minutes=0,goals=0,assists=0,clean=0;
 
     if(!player.freeAgent){
-
-        /*
-        =====================================================
-        PROGRESIÓN
-        =====================================================
-        Ahora subir de media es más alcanzable.
-        El rendimiento excelente acelera muchísimo la evolución.
-        No se aplica una penalización aleatoria por tener potencial.
-        Las bajadas vienen principalmente por edad y decisiones.
-        */
-
-        let growth=
-            (avg-6.25)*2.0;
-
-        if(avg>=7.5)
-            growth+=1.0;
-
-        if(avg>=8.0)
-            growth+=1.4;
-
-        if(avg>=8.5)
-            growth+=1.0;
-
-        if(goals+assists>=20)
-            growth+=1.2;
-
-        if(goals+assists>=35)
-            growth+=1.0;
-
-        if(player.rating<player.potential)
-            growth+=Math.random()*.9;
-
-        /* Nunca hacemos que una temporada normal destruya la media.
-           Las decisiones negativas se gestionan mediante situaciones. */
-        growth=Math.max(0,growth);
-
-
-        player.rating=Math.max(
-            45,
-            Math.min(
-                player.potential,
-                player.rating+growth
-            )
-        );
-
-
-        player.value=Math.round(
-            player.value*
-            (
-                1+
-                Math.max(
-                    -.20,
-                    Math.min(
-                        .50,
-                        growth*.06+
-                        (avg-7)*.035
-                    )
-                )
-            )
-        );
-
-
-        player.reputation=Math.max(
-            0,
-            Math.min(
-                100,
-                player.reputation+
-                (avg-6.5)*3+
-                (goals+assists>=20?3:0)
-            )
-        );
-
-
-        player.morale=Math.max(
-            35,
-            Math.min(
-                100,
-                player.morale+
-                (avg-7)*5
-            )
-        );
-
+        const quality=player.rating/player.club.rating;
+        const ageMult=agePerformanceMultiplier(player.age);
+        matches=clamp(Math.round(26 + quality*24 + ageMult*8 + random(-5,8)),18,62);
+        if(player.age<=19) matches=clamp(matches-random(8,14),12,34);
+        if(player.age>=40) matches=clamp(matches-random(4,12),12,50);
+        if(player.age>=44) matches=clamp(matches-random(8,14),8,38);
+        if(player.rating<player.club.rating-12) matches=Math.max(10,matches-random(5,10));
+        minutes=Math.max(500,Math.round(matches*(player.rating>=85?68:55+Math.random()*20)));
+        ({goals,assists,clean}=generateSeasonStats(matches));
     }
 
+    let avg=player.freeAgent?5.8:clamp(
+        6.15 + (player.rating-50)*.018 + (player.rating-player.club.rating)*.035 + Math.random()*.95,
+        5.9,9.15
+    );
+    if(player.age<=19) avg=clamp(avg-.25,5.8,8.0);
+    if(player.age>=40) avg=clamp(avg-.15,5.6,8.5);
+
+    const trophies=calculateTrophies();
+    const row={
+        season,
+        club:player.freeAgent?{name:"Agente libre",league:"Sin club",country:"—",rating:0}:{...player.club},
+        age:player.age,
+        rating:Math.round(player.rating),
+        matches,goals,assists,minutes,clean,
+        avg,trophies,award:null,
+        competitionMvps:[]
+    };
+
+    career.push(row);
+    totals.matches+=matches;
+    totals.goals+=goals;
+    totals.assists+=assists;
+    totals.minutes+=minutes;
+    totals.cleanSheets+=clean;
+
+    /* Premios individuales más frecuentes y lógicos. */
+    if(!player.freeAgent){
+        const contribution=goals+assists;
+        if(avg>=7.35 && contribution>=10 && chance(.18 + Math.min(.18,contribution/180))){
+            const awards=player.position==="Delantero"||player.position.includes("Extremo")
+                ? ["Jugador del año del club","Máximo goleador del club","Jugador del partido del año"]
+                : player.position==="Portero"
+                    ? ["Jugador del año del club","Portero del año"]
+                    : ["Jugador del año del club","Máximo asistente del club","Jugador del partido del año"];
+            const award=awards[random(0,awards.length-1)];
+            row.award=award;
+            individualTrophies.push({name:award,year:season,club:player.club.name});
+        }
+        registerCompetitionMVPs(row);
+        evaluateIndividualAwards(row);
+    }
+
+    /* Evolución: fácil ganar media, pero el 99 es excepcional. */
+    if(!player.freeAgent){
+        let growth=0;
+        const contribution=goals+assists;
+        if(player.age===18) growth=.8+Math.random()*1.2;
+        else if(player.age===19) growth=1.4+Math.random()*1.7;
+        else growth=.8+Math.random()*1.8;
+
+        if(avg>=7.2) growth+=.6;
+        if(avg>=7.7) growth+=.8;
+        if(avg>=8.2) growth+=1.0;
+        if(contribution>=20) growth+=.7;
+        if(contribution>=35) growth+=.8;
+        if(contribution>50) growth+=.7;
+        if(trophies.length>=2) growth+=.6;
+
+        if(player.age>=23 && player.age<=34) growth*=1.12;
+        if(player.age>=35 && player.age<40) growth*=.42;
+        if(player.age>=40) growth*=.20;
+        if(player.age>=43) growth*=.08;
+
+        /* Llegar a 99 requiere rendimiento extraordinario y no ocurre automáticamente. */
+        player.rating=Math.min(player.potential,player.rating+growth);
+        if(player.rating>=98 && !(player.rating>=99 && chance(.12))) player.rating=Math.min(98.9,player.rating);
+        if(player.rating>=97 && chance(.78)) player.rating=Math.min(98,player.rating);
+
+        if(player.age>=34){
+            player.rating=Math.max(40,player.rating-(.12+Math.random()*.35));
+        }
+        if(player.age>=40){
+            player.rating=Math.max(40,player.rating-(.35+Math.random()*.75));
+        }
+        if(player.age>=44){
+            player.rating=Math.max(40,player.rating-(.7+Math.random()*1.2));
+        }
+
+        player.value=Math.round(player.value*(1+clamp(growth*.055+(avg-7)*.035,-.18,.45)));
+        player.reputation=clamp(player.reputation+(avg-6.5)*3+(contribution>=20?3:0)+(trophies.length*2),0,100);
+        player.morale=clamp(player.morale+(avg-7)*5,35,100);
+    }
 
     renderCurrentStats(row);
-
     renderSeasonEvent(row);
-
-
-    /* =====================================================
-       SITUACIONES
-    ===================================================== */
-
     maybeTriggerSituation(row);
-
 }
 
 
@@ -2849,75 +2751,44 @@ function renderCurrentStats(row){
 ========================================================= */
 
 function renderSeasonEvent(row){
-
     let trophyHTML="";
-
     if(row.trophies.length){
-
-        trophyHTML=`
-
-            <div class="season-trophies">
-
-                ${row.trophies.map(t=>`
-
-                    <div class="trophy-pill achievement">
-                        🏆 ${esc(t)}
-                    </div>
-
-                `).join("")}
-
-            </div>
-
-        `;
-
+        trophyHTML=`<div class="season-trophies">${row.trophies.map(t=>`<div class="trophy-pill achievement">🏆 ${esc(t)}</div>`).join("")}</div>`;
     }
 
+    const results=individualResults.filter(x=>x.season===row.season);
+    let resultHTML="";
+    results.forEach(r=>{
+        if(r.rank===2){
+            resultHTML+=`<div class="consequence" style="margin-top:10px;border-color:rgba(255,216,74,.25)">
+                <b>🥈 ${esc(r.type)} — 2.º puesto</b><br>
+                El jugador que quedó por encima de ti fue <b>${esc(r.above)}</b>.
+            </div>`;
+        }else if(r.rank===1){
+            resultHTML+=`<div class="consequence" style="margin-top:10px;border-color:rgba(66,255,136,.25)">
+                <b>🏆 ${esc(r.type)} — 1.º puesto</b><br>${esc(r.text)}
+            </div>`;
+        }
+    });
+
+    const mvpCount=competitionMvps.filter(x=>x.year===season).length;
 
     $("seasonEvent").innerHTML=`
-
         <div class="event">
-
-            <h3>
-                Temporada ${row.season} completada
-            </h3>
-
+            <h3>Temporada ${row.season} completada</h3>
             <p>
-
-                ${player.freeAgent
-                    ? "Pasaste la temporada como agente libre."
-                    : `
-                    <b>${row.matches}</b> partidos ·
-                    <b>${row.goals}</b> goles ·
-                    <b>${row.assists}</b> asistencias ·
-                    <b>${row.minutes}</b> minutos ·
-                    valoración
-                    <b>${row.avg.toFixed(1)}</b>
-                    `
-                }
-
-                ${row.award
-                    ? `<br><br>⭐ <b>${esc(row.award)}</b>`
-                    : ""
-                }
-
+                ${player.freeAgent?"Pasaste la temporada como agente libre.":`
+                <b>${row.matches}</b> partidos · <b>${row.goals}</b> goles · <b>${row.assists}</b> asistencias ·
+                <b>${row.minutes}</b> minutos · valoración <b>${row.avg.toFixed(1)}</b>`}
+                ${row.award?`<br><br>⭐ <b>${esc(row.award)}</b>`:""}
+                ${mvpCount?`<br><br>🌟 <b>${mvpCount}</b> MVP de competición esta temporada.`:""}
             </p>
-
             ${trophyHTML}
-
+            ${resultHTML}
         </div>
-
     `;
 
-
-    if(row.trophies.length){
-
-        showTrophyFlash(
-            row.trophies,
-            player.club.name
-        );
-
-    }
-
+    if(row.trophies.length) showTrophyFlash(row.trophies,player.club?.name||"Tu club");
 }
 
 
@@ -4408,74 +4279,26 @@ function stayClub(){
 ========================================================= */
 
 function nextSeason(){
-
-    /*
-    MÁXIMO ABSOLUTO:
-    20 TEMPORADAS
-    */
-
-    if(season>=20){
-
+    /* 28 temporadas: desde 18 hasta completar la temporada de los 45. */
+    if(season>=28 || player.age>=45){
         finishCareer();
-
         return;
-
     }
-
 
     season++;
-
     player.age++;
 
-
-    /*
-    NUNCA MÁS DE 45
-    */
-
-    if(player.age>45){
-
-        finishCareer();
-
-        return;
-
+    /* No se fuerza un declive antes de los 34: el pico puede durar muchos años. */
+    if(player.age>=35 && player.age<40){
+        player.rating=Math.max(40,player.rating-(Math.random()*.25));
     }
-
-
-    /*
-    DECLIVE
-    */
-
-    if(player.age>=30){
-
-        player.rating=
-            Math.max(
-                45,
-                player.rating-
-                Math.random()*.6
-            );
-
+    if(player.age>=40){
+        player.rating=Math.max(40,player.rating-(.25+Math.random()*.55));
     }
-
-
-    if(player.age>=34){
-
-        player.rating=
-            Math.max(
-                45,
-                player.rating-
-                Math.random()*1.2
-            );
-
-    }
-
 
     $("offersArea").innerHTML="";
-
     $("situationArea").innerHTML="";
-
-
     runSeason();
-
 }
 
 
@@ -4538,7 +4361,8 @@ function renderSummary(){
 
         ["TÍTULOS",teamTrophies.length],
 
-        ["PREMIOS",individualTrophies.length]
+        ["PREMIOS",individualTrophies.length],
+        ["MVP COMPETICIONES",competitionMvps.length]
 
     ]
 
@@ -4725,53 +4549,26 @@ function renderSummary(){
         `;
 
 
-    $("individualTrophies").innerHTML=
+    const mvpHTML=competitionMvps.length
+        ? competitionMvps.map(t=>`<div class="trophy"><strong>🌟 MVP — ${esc(t.competition)}</strong><span>${esc(t.club)} · Temporada ${t.year}</span></div>`).join("")
+        : `<div class="trophy"><strong>Sin MVP</strong><span>No obtuviste MVP de una competición.</span></div>`;
 
-        individualTrophies.length
+    const otherAwards=individualTrophies.filter(t=>t.type!=="mvp");
+    const awardsHTML=otherAwards.length
+        ? otherAwards.map(t=>`<div class="trophy"><strong>⭐ ${esc(t.name)}</strong><span>${esc(t.club)} · Temporada ${t.year}</span></div>`).join("")
+        : `<div class="trophy"><strong>Sin premios</strong><span>No obtuviste premios individuales.</span></div>`;
 
-        ?
+    $("individualTrophies").innerHTML=mvpHTML+awardsHTML;
 
-        individualTrophies
-        .map(t=>`
-
+    const secondPlaces=individualResults.filter(x=>x.rank===2);
+    if(secondPlaces.length){
+        $("individualTrophies").innerHTML += secondPlaces.map(x=>`
             <div class="trophy">
-
-                <strong>
-                    ⭐ ${esc(t.name)}
-                </strong>
-
-                <span>
-
-                    ${esc(t.club)}
-
-                    · Temporada ${t.year}
-
-                </span>
-
+                <strong>🥈 ${esc(x.type)} — 2.º puesto</strong>
+                <span>Quedó por encima: ${esc(x.above)} · Temporada ${x.season}</span>
             </div>
-
-        `)
-
-        .join("")
-
-        :
-
-        `
-
-        <div class="trophy">
-
-            <strong>
-                Sin premios
-            </strong>
-
-            <span>
-                No obtuviste premios individuales.
-            </span>
-
-        </div>
-
-        `;
-
+        `).join("");
+    }
 }
 
 
