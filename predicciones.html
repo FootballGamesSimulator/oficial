@@ -312,6 +312,53 @@ header{
     color:#f2c94c;
 }
 
+.champion-box{
+    margin-top:15px;
+    background:#0b1117;
+    border:1px solid #67541e;
+    border-radius:12px;
+    padding:16px;
+}
+
+.champion-title{
+    text-align:center;
+    color:#f2c94c;
+    font-size:14px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.champion-select-wrap{
+    display:grid;
+    grid-template-columns:70px 1fr;
+    align-items:center;
+    gap:15px;
+    max-width:600px;
+    margin:auto;
+}
+
+.champion-crest{
+    width:60px;
+    height:60px;
+    object-fit:contain;
+    display:none;
+}
+
+.champion-select{
+    width:100%;
+    padding:12px;
+    background:#080d12;
+    color:#fff;
+    border:1px solid #67541e;
+    border-radius:8px;
+    outline:none;
+    font-weight:900;
+}
+
+.champion-select:focus{
+    border-color:#f2c94c;
+}
+
 
 /* =========================================================
    BALÓN DE ORO
@@ -597,6 +644,15 @@ footer{
     .player-big-photo{
         margin:auto;
     }
+
+    .champion-select-wrap{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .champion-crest{
+        margin:auto;
+    }
 }
 </style>
 </head>
@@ -609,12 +665,10 @@ footer{
 
 <div class="header-content">
 
-<!-- MISMO ENLACE DE REGRESAR -->
 <a href="index.html" class="logo">
 ⚽ <span>Football Games</span> Simulator
 </a>
 
-<!-- BOTÓN DE REGRESAR A LA DERECHA -->
 <a href="index.html" class="back-button">
 ← Regresar
 </a>
@@ -656,6 +710,10 @@ sus copas, competiciones europeas y Balón de Oro.
 🌎 Champions
 </button>
 
+<button class="tab" data-tab="europa">
+🟠 Europa League
+</button>
+
 <button class="tab" data-tab="conference">
 🟢 Conference League
 </button>
@@ -694,7 +752,7 @@ alt="Champions League">
 <h2>UEFA Champions League</h2>
 
 <div class="sub">
-Selecciona los equipos.
+Selecciona los equipos y el campeón.
 </div>
 
 </div>
@@ -706,6 +764,44 @@ Limpiar
 </div>
 
 <div id="championsBox"></div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     EUROPA LEAGUE
+===================================================== -->
+
+<section id="europa" class="section">
+
+<div class="panel">
+
+<div class="section-title">
+
+<div>
+
+<img
+class="competition-logo"
+src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/UEFA_Europa_League_logo_%282024_version%29.svg/1920px-UEFA_Europa_League_logo_%282024_version%29.svg.png"
+alt="UEFA Europa League">
+
+<h2>UEFA Europa League</h2>
+
+<div class="sub">
+Selecciona los equipos y el campeón.
+</div>
+
+</div>
+
+<button class="btn" onclick="clearBracket('europa')">
+Limpiar
+</button>
+
+</div>
+
+<div id="europaBox"></div>
 
 </div>
 
@@ -837,9 +933,6 @@ Limpiar
 
 /* =========================================================
    DATOS
-   IMPORTANTE:
-   Ya NO usamos IDs de equipos para los escudos.
-   El sistema los busca por nombre en FotMob.
 ========================================================= */
 
 const DATA = {
@@ -1791,6 +1884,48 @@ function teamRow(category,match){
 }
 
 
+/* =========================================================
+   CAMPEÓN
+========================================================= */
+
+function championHTML(category){
+
+    return `
+
+        <div class="champion-box">
+
+            <div class="champion-title">
+                🏆 CAMPEÓN
+            </div>
+
+            <div class="champion-select-wrap">
+
+                <img
+                    class="champion-crest"
+                    data-champion-logo="${category}"
+                    alt="">
+
+                <select
+                    class="champion-select"
+                    data-champion="${category}">
+
+                    ${allClubOptions()}
+
+                </select>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   BRACKET
+========================================================= */
+
 function bracketHTML(category){
 
     let quarter="";
@@ -1893,6 +2028,9 @@ function bracketHTML(category){
 
                 </div>
 
+
+                ${championHTML(category)}
+
             </div>
 
         </div>
@@ -1902,12 +2040,22 @@ function bracketHTML(category){
 }
 
 
+/* =========================================================
+   CONSTRUIR BRACKETS
+========================================================= */
+
 function buildBrackets(){
 
     document
         .getElementById("championsBox")
         .innerHTML=
             bracketHTML("champions");
+
+
+    document
+        .getElementById("europaBox")
+        .innerHTML=
+            bracketHTML("europa");
 
 
     document
@@ -1940,8 +2088,43 @@ function buildBrackets(){
 
         });
 
+
+    document
+        .querySelectorAll(".champion-select")
+        .forEach(select=>{
+
+            select.addEventListener(
+                "change",
+                async function(){
+
+                    const category=
+                        this.dataset.champion;
+
+
+                    const img=
+                        document.querySelector(
+                            '[data-champion-logo="'+
+                            category+
+                            '"]'
+                        );
+
+
+                    await updateClubLogo(
+                        this,
+                        img
+                    );
+
+                }
+            );
+
+        });
+
 }
 
+
+/* =========================================================
+   LIMPIAR COMPETICIÓN
+========================================================= */
 
 function clearBracket(category){
 
@@ -3147,7 +3330,7 @@ function revealBallon(){
 
 
 /* =========================================================
-   GUARDAR
+   GUARDAR BRACKET
 ========================================================= */
 
 function collectBracket(category){
@@ -3160,21 +3343,44 @@ function collectBracket(category){
 
     if(!bracket){
 
-        return [];
+        return {
+            teams:[],
+            champion:""
+        };
 
     }
 
 
-    return[
+    const teams=[
         ...bracket.querySelectorAll(
-            "select"
+            ".team-select"
         )
     ].map(
         select=>select.value
     );
 
+
+    const champion=
+        bracket
+        .querySelector(
+            ".champion-select"
+        )?.value || "";
+
+
+    return {
+
+        teams:teams,
+
+        champion:champion
+
+    };
+
 }
 
+
+/* =========================================================
+   GUARDAR DATOS
+========================================================= */
 
 function collectData(){
 
@@ -3224,6 +3430,12 @@ function collectData(){
             ),
 
 
+        europa:
+            collectBracket(
+                "europa"
+            ),
+
+
         conference:
             collectBracket(
                 "conference"
@@ -3237,6 +3449,10 @@ function collectData(){
 
 }
 
+
+/* =========================================================
+   GUARDAR
+========================================================= */
 
 function saveAll(){
 
@@ -3255,6 +3471,10 @@ function saveAll(){
 }
 
 
+/* =========================================================
+   NUEVA TEMPORADA
+========================================================= */
+
 function newSeason(){
 
     if(
@@ -3269,6 +3489,255 @@ function newSeason(){
 
 
         location.reload();
+
+    }
+
+}
+
+
+/* =========================================================
+   CARGAR TEMPORADA GUARDADA
+========================================================= */
+
+function loadSavedSeason(){
+
+    const saved=
+        localStorage.getItem(
+            "SIMULACION_TEMPORADA"
+        );
+
+
+    if(!saved)return;
+
+
+    try{
+
+        const data=
+            JSON.parse(saved);
+
+
+        /* =========================
+           LIGAS
+        ========================= */
+
+        if(data.leagues){
+
+            const leagues=
+                document.querySelectorAll(
+                    ".league"
+                );
+
+
+            data.leagues.forEach(
+                (savedLeague,index)=>{
+
+                    const league=
+                        leagues[index];
+
+
+                    if(!league)return;
+
+
+                    const clubSelects=
+                        league.querySelectorAll(
+                            ".league-club-select"
+                        );
+
+
+                    savedLeague.clubs
+                        ?.forEach(
+                            (value,i)=>{
+
+                                if(
+                                    clubSelects[i]
+                                ){
+
+                                    clubSelects[i].value=
+                                        value;
+
+
+                                    clubSelects[i].dispatchEvent(
+                                        new Event("change")
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    const cupSelects=
+                        league.querySelectorAll(
+                            ".cup-select"
+                        );
+
+
+                    savedLeague.cups
+                        ?.forEach(
+                            (value,i)=>{
+
+                                if(
+                                    cupSelects[i]
+                                ){
+
+                                    cupSelects[i].value=
+                                        value;
+
+                                }
+
+                            }
+                        );
+
+                }
+            );
+
+        }
+
+
+        /* =========================
+           COMPETICIONES EUROPEAS
+        ========================= */
+
+        ["champions","europa","conference"]
+            .forEach(category=>{
+
+                const savedBracket=
+                    data[category];
+
+
+                if(!savedBracket)return;
+
+
+                const bracket=
+                    document.querySelector(
+                        '[data-bracket="'+category+'"]'
+                    );
+
+
+                if(!bracket)return;
+
+
+                const selects=
+                    bracket.querySelectorAll(
+                        ".team-select"
+                    );
+
+
+                const teams=
+                    Array.isArray(
+                        savedBracket
+                    )
+                    ? savedBracket
+                    : savedBracket.teams;
+
+
+                teams?.forEach(
+                    (value,i)=>{
+
+                        if(selects[i]){
+
+                            selects[i].value=
+                                value;
+
+
+                            selects[i].dispatchEvent(
+                                new Event("change")
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                const champion=
+                    Array.isArray(
+                        savedBracket
+                    )
+                    ? ""
+                    : savedBracket.champion;
+
+
+                const championSelect=
+                    bracket.querySelector(
+                        ".champion-select"
+                    );
+
+
+                if(
+                    championSelect &&
+                    champion
+                ){
+
+                    championSelect.value=
+                        champion;
+
+
+                    championSelect.dispatchEvent(
+                        new Event("change")
+                    );
+
+                }
+
+            });
+
+
+        /* =========================
+           BALÓN DE ORO
+        ========================= */
+
+        if(
+            Array.isArray(
+                data.ballonDOr
+            )
+        ){
+
+            data.ballonDOr.forEach(
+                (player,index)=>{
+
+                    if(
+                        player &&
+                        index<10
+                    ){
+
+                        ballonPlayers[index]=
+                            player;
+
+
+                        showSelectedPlayer(
+                            index,
+                            player
+                        );
+
+
+                        const input=
+                            document.querySelector(
+                                '.player-search[data-index="'+
+                                index+
+                                '"]'
+                            );
+
+
+                        if(input){
+
+                            input.value=
+                                player.name;
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "No se pudo cargar la temporada:",
+            error
+        );
 
     }
 
@@ -3366,6 +3835,8 @@ buildLeagues();
 buildBrackets();
 
 buildBallonSlots();
+
+loadSavedSeason();
 
 </script>
 
