@@ -29,12 +29,46 @@ header{
     border-bottom:1px solid #27333d;
 }
 
+.header-content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
 .logo{
     font-size:18px;
     font-weight:900;
+    color:#fff;
+    text-decoration:none;
+    transition:.2s ease;
+}
+
+.logo:hover{
+    opacity:.85;
 }
 
 .logo span{
+    color:#36ef8b;
+}
+
+.back-button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    background:#10171d;
+    color:#fff;
+    border:1px solid #293740;
+    border-radius:9px;
+    padding:10px 15px;
+    font-weight:900;
+    text-decoration:none;
+    transition:.2s ease;
+}
+
+.back-button:hover{
+    border-color:#36ef8b;
     color:#36ef8b;
 }
 
@@ -533,6 +567,19 @@ footer{
 
 @media(max-width:600px){
 
+    .header-content{
+        gap:10px;
+    }
+
+    .logo{
+        font-size:15px;
+    }
+
+    .back-button{
+        padding:9px 11px;
+        font-size:11px;
+    }
+
     .league-grid,
     .cups{
         grid-template-columns:1fr;
@@ -557,13 +604,25 @@ footer{
 <body>
 
 <header>
+
 <div class="container">
 
-<div class="logo">
+<div class="header-content">
+
+<!-- MISMO ENLACE DE REGRESAR -->
+<a href="index.html" class="logo">
 ⚽ <span>Football Games</span> Simulator
+</a>
+
+<!-- BOTÓN DE REGRESAR A LA DERECHA -->
+<a href="index.html" class="back-button">
+← Regresar
+</a>
+
 </div>
 
 </div>
+
 </header>
 
 
@@ -1313,7 +1372,6 @@ function extractTeams(data){
             typeof value!=="object"
         ){
             return;
-
         }
 
 
