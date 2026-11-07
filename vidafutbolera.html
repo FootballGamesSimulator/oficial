@@ -968,6 +968,18 @@ footer strong{
         grid-template-columns:repeat(2,1fr)
     }
 }
+
+
+/* =========================================================
+   MEJORA 2026 — PANEL DE ESTADO + GUARDADO
+========================================================= */
+.save-panel{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:0 0 18px;padding:15px 17px;border:1px solid rgba(66,255,136,.18);border-radius:13px;background:linear-gradient(120deg,rgba(66,255,136,.07),rgba(255,255,255,.018))}
+.save-panel .save-copy{min-width:180px;flex:1}.save-panel strong{display:block;font-size:12px}.save-panel small{display:block;color:#7f8984;font-size:10px;margin-top:4px}.save-actions{display:flex;gap:8px;flex-wrap:wrap}.save-actions .btn{padding:10px 13px;font-size:10px}
+.status-panel{margin:0 0 18px;padding:19px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
+.status-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}.status-head h3{font-size:15px}.status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.status-item{min-width:0}.status-label{display:flex;justify-content:space-between;gap:6px;color:#90999a;font-size:9px;font-weight:900;letter-spacing:.6px;margin-bottom:7px}.status-label b{color:#fff;font-size:10px}.status-track{height:7px;border-radius:20px;background:#1a2222;overflow:hidden}.status-fill{height:100%;border-radius:20px;background:var(--green);transition:width .35s}.status-fill.warn{background:var(--gold)}.status-fill.low{background:var(--red)}
+.resume-banner{margin:0 auto 22px;max-width:850px;padding:16px 18px;border:1px solid rgba(66,255,136,.25);border-radius:14px;background:rgba(66,255,136,.065);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;text-align:left}.resume-banner strong{display:block;font-size:13px}.resume-banner p{font-size:11px;color:#9ba5a0;margin-top:4px}.resume-banner .resume-actions{display:flex;gap:8px;flex-wrap:wrap}.resume-banner button{white-space:nowrap}
+@media(max-width:700px){.status-grid{grid-template-columns:repeat(2,1fr)}.save-panel{align-items:flex-start}.save-actions{width:100%}.save-actions .btn{flex:1}.resume-banner .resume-actions{width:100%}.resume-banner .btn{flex:1}}
+
 </style>
 </head>
 
@@ -1325,6 +1337,25 @@ id="currentStats"
 
 </div>
 
+
+
+
+<!-- Estado físico y mental del jugador -->
+<div class="status-panel" id="playerStatusPanel">
+  <div class="status-head"><h3>🧠 Estado del jugador</h3><span id="playerStatusNote" style="font-size:10px;color:#7f8984">Preparación de temporada</span></div>
+  <div class="status-grid" id="playerStatusGrid"></div>
+</div>
+
+<!-- Guardado y copias de seguridad -->
+<div class="save-panel" id="careerSavePanel">
+  <div class="save-copy"><strong>💾 Tu carrera está protegida</strong><small id="saveStatus">El guardado automático está activado en este navegador.</small></div>
+  <div class="save-actions">
+    <button class="btn dark" type="button" onclick="saveCareerNow()">GUARDAR</button>
+    <button class="btn dark" type="button" onclick="exportCareerBackup()">EXPORTAR</button>
+    <button class="btn dark" type="button" onclick="document.getElementById('importCareerFile').click()">IMPORTAR</button>
+    <input id="importCareerFile" type="file" accept="application/json,.json" style="display:none" onchange="importCareerBackup(event)">
+  </div>
+</div>
 
 <div id="seasonEvent"></div>
 
@@ -5678,6 +5709,195 @@ window.patchFinishSeason=function(){
  maybeNationalPatch();renderSeasonEvent(patchMatchRow);
  if(!freeAgent){decisionInProgress=true;generateOffers(patchMatchRow);}
 };
+</script>
+
+
+<script>
+/* =========================================================
+   FOOTBALL GAMES — MEJORA DE CALIDAD DE VIDA Y PERSISTENCIA
+   - Guardado automático local
+   - Copia de seguridad JSON exportable/importable
+   - Panel de condición, moral, disciplina y reputación
+   - Reanudación segura desde la última temporada calculada
+========================================================= */
+(function(){
+  "use strict";
+  const SAVE_KEY="footballGamesCareer_v4";
+  const $id=id=>document.getElementById(id);
+  let restoring=false;
+
+  function safeClone(value){ return JSON.parse(JSON.stringify(value)); }
+  function currentSnapshot(){
+    if(!player) return null;
+    return {
+      version:4, savedAt:new Date().toISOString(),
+      player:safeClone(player), season, career:safeClone(career),
+      totals:safeClone(totals), teamTrophies:safeClone(teamTrophies),
+      individualTrophies:safeClone(individualTrophies),
+      competitionMvps:safeClone(competitionMvps),
+      individualResults:safeClone(individualResults),
+      careerStartYear, careerEvents, freeAgent,
+      nationalCaps:typeof nationalCaps==="undefined"?0:nationalCaps,
+      nationalGoals:typeof nationalGoals==="undefined"?0:nationalGoals,
+      nationalAssists:typeof nationalAssists==="undefined"?0:nationalAssists,
+      nationalTrophies:typeof nationalTrophies==="undefined"?[]:safeClone(nationalTrophies),
+      usedSituationTitles:typeof usedSituationTitles==="undefined"?[]:[...usedSituationTitles]
+    };
+  }
+  function setSaveStatus(message){ const el=$id("saveStatus"); if(el) el.textContent=message; }
+  function persist(showMessage=false){
+    if(restoring || !player) return false;
+    try{
+      const data=currentSnapshot();
+      localStorage.setItem(SAVE_KEY,JSON.stringify(data));
+      if(showMessage) setSaveStatus("Guardado correctamente · "+new Date().toLocaleTimeString());
+      return true;
+    }catch(err){
+      setSaveStatus("No se pudo guardar. Exporta una copia de seguridad.");
+      return false;
+    }
+  }
+  window.saveCareerNow=function(){
+    if(!player){ alert("Primero debes comenzar una carrera."); return; }
+    if(persist(true)) alert("Tu carrera se guardó correctamente en este navegador.");
+  };
+  window.exportCareerBackup=function(){
+    if(!player){ alert("No hay una carrera para exportar."); return; }
+    try{
+      const data=JSON.stringify(currentSnapshot(),null,2);
+      const blob=new Blob([data],{type:"application/json"});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      const safeName=(player.name||"jugador").replace(/[^a-z0-9_-]/gi,"_").slice(0,35);
+      a.href=url; a.download="football-games-"+safeName+"-carrera.json";
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      setSaveStatus("Copia de seguridad exportada.");
+    }catch(err){ alert("No se pudo exportar la carrera."); }
+  };
+  function validateSnapshot(d){
+    return !!(d && d.version===4 && d.player && typeof d.player.name==="string" &&
+      Number.isFinite(d.season) && Array.isArray(d.career) && d.totals &&
+      Number.isFinite(d.player.age) && Number.isFinite(d.player.rating));
+  }
+  function applySnapshot(d){
+    if(!validateSnapshot(d)) throw new Error("El archivo no contiene una carrera compatible.");
+    restoring=true;
+    player=d.player; season=d.season; career=d.career; totals=d.totals;
+    teamTrophies=d.teamTrophies||[]; individualTrophies=d.individualTrophies||[];
+    competitionMvps=d.competitionMvps||[]; individualResults=d.individualResults||[];
+    careerStartYear=d.careerStartYear||2026; careerEvents=d.careerEvents||0;
+    freeAgent=!!d.freeAgent; selectedClub=player.club||null;
+    if(typeof nationalCaps!=="undefined") nationalCaps=d.nationalCaps||0;
+    if(typeof nationalGoals!=="undefined") nationalGoals=d.nationalGoals||0;
+    if(typeof nationalAssists!=="undefined") nationalAssists=d.nationalAssists||0;
+    if(typeof nationalTrophies!=="undefined") nationalTrophies=d.nationalTrophies||[];
+    if(typeof usedSituationTitles!=="undefined"){
+      usedSituationTitles.clear(); (d.usedSituationTitles||[]).forEach(x=>usedSituationTitles.add(x));
+    }
+    restoring=false;
+    decisionInProgress=false;
+    currentSituation=null;
+    if(typeof clearDecisionAreas==="function") clearDecisionAreas();
+    goStep(3); renderDashboard(); renderStatus();
+    const last=career[career.length-1];
+    if(last){ renderCurrentStats(last); renderSeasonEvent(last); }
+    if(player.age>=45){ finishCareer(); }
+    else if(freeAgent || player.freeAgent){
+      if(typeof generateFreeAgentOffers==="function") generateFreeAgentOffers();
+      else if($id("offersArea")) $id("offersArea").innerHTML='<div class="event free-agent"><h3>AGENTE LIBRE</h3><p>Puedes buscar un nuevo club para continuar.</p><button class="btn primary" onclick="generateFreeAgentOffers()">BUSCAR CLUB</button></div>';
+    }else if(last){ generateOffers(last); }
+    setSaveStatus("Carrera restaurada · Temporada "+season+" · "+player.name);
+    persist(false);
+  }
+  window.importCareerBackup=function(event){
+    const file=event.target.files && event.target.files[0];
+    if(!file) return;
+    const reader=new FileReader();
+    reader.onload=function(){
+      try{
+        const data=JSON.parse(String(reader.result||""));
+        if(!validateSnapshot(data)) throw new Error("El archivo no es una copia válida de Football Games.");
+        if(!confirm("¿Quieres importar la carrera de "+data.player.name+"? Se reemplazará la carrera actual.")) return;
+        applySnapshot(data); alert("Carrera importada correctamente.");
+      }catch(err){ alert(err.message||"No se pudo leer el archivo."); }
+      finally{ event.target.value=""; }
+    };
+    reader.onerror=function(){ alert("No se pudo leer el archivo seleccionado."); event.target.value=""; };
+    reader.readAsText(file);
+  };
+
+  function bar(label,value){
+    const n=Math.max(0,Math.min(100,Number(value)||0));
+    const cls=n<30?"low":n<55?"warn":"";
+    return `<div class="status-item"><div class="status-label"><span>${label}</span><b>${Math.round(n)}/100</b></div><div class="status-track"><div class="status-fill ${cls}" style="width:${n}%"></div></div></div>`;
+  }
+  function renderStatus(){
+    const grid=$id("playerStatusGrid"); if(!grid || !player) return;
+    const fitness=player.fitness??75, morale=player.morale??70, discipline=player.discipline??70, reputation=player.reputation??0;
+    grid.innerHTML=bar("CONDICIÓN FÍSICA",fitness)+bar("ESTADO DE ÁNIMO",morale)+bar("DISCIPLINA",discipline)+bar("REPUTACIÓN",reputation);
+    const note=$id("playerStatusNote");
+    if(note){
+      const weakest=Math.min(fitness,morale,discipline);
+      note.textContent=weakest<30?"Necesitas recuperarte":weakest<55?"Estado mejorable":"Buen estado general";
+      note.style.color=weakest<30?"var(--red)":weakest<55?"var(--gold)":"var(--green)";
+    }
+  }
+  window.renderPlayerStatus=renderStatus;
+
+  // El guardado se actualiza después de cada simulación de temporada.
+  const originalRun=window.runSeason;
+  if(typeof originalRun==="function"){
+    window.runSeason=function(){
+      const result=originalRun.apply(this,arguments);
+      renderStatus(); persist(false);
+      return result;
+    };
+  }
+  // Actualiza el panel después de mostrar el dashboard.
+  const originalDashboard=window.renderDashboard;
+  if(typeof originalDashboard==="function"){
+    window.renderDashboard=function(){
+      const result=originalDashboard.apply(this,arguments);
+      renderStatus(); return result;
+    };
+  }
+  // Guardar los cambios de decisiones y transferencias sin interferir con sus flujos.
+  ["chooseSituation","patchResolveMatch","acceptOffer","acceptFreeAgentOffer","stayClub","continueAfterSituation"].forEach(name=>{
+    const original=window[name];
+    if(typeof original!=="function") return;
+    window[name]=function(){
+      const result=original.apply(this,arguments);
+      renderStatus(); persist(false); return result;
+    };
+  });
+
+  // Banner para continuar la última carrera guardada desde la pantalla inicial.
+  function installResumeBanner(){
+    const hero=document.querySelector("#step1 .hero");
+    if(!hero || $id("resumeCareerBanner")) return;
+    let data=null;
+    try{ data=JSON.parse(localStorage.getItem(SAVE_KEY)||"null"); }catch(e){}
+    if(!validateSnapshot(data)) return;
+    const banner=document.createElement("div");
+    banner.id="resumeCareerBanner"; banner.className="resume-banner";
+    const date=data.savedAt?new Date(data.savedAt).toLocaleString():"Guardado disponible";
+    banner.innerHTML=`<div><strong>⚽ Tienes una carrera guardada</strong><p>${esc(data.player.name)} · ${data.player.age} años · Temporada ${data.season} · ${esc(data.player.club?.name||"Agente libre")}<br><span style="opacity:.75">${esc(date)}</span></p></div><div class="resume-actions"><button class="btn primary" type="button" id="resumeCareerBtn">CONTINUAR</button><button class="btn dark" type="button" id="deleteCareerSaveBtn">BORRAR</button></div>`;
+    hero.insertAdjacentElement("afterend",banner);
+    $id("resumeCareerBtn").addEventListener("click",()=>{
+      try{ applySnapshot(data); }catch(err){ alert(err.message); }
+    });
+    $id("deleteCareerSaveBtn").addEventListener("click",()=>{
+      if(confirm("¿Borrar la carrera guardada de este navegador?")){
+        localStorage.removeItem(SAVE_KEY); banner.remove();
+      }
+    });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",installResumeBanner);
+  else installResumeBanner();
+
+  // Si se cierra o recarga la pestaña, conserva el último estado calculado.
+  window.addEventListener("beforeunload",()=>persist(false));
+})();
 </script>
 
 </body>
