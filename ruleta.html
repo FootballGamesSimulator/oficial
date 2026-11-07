@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Gira la ruleta futbolera, responde 30 preguntas y demuestra cuánto sabes de fútbol en FOOTBALL GAMES Simulator.">
+<meta name="theme-color" content="#050708">
 
 <title>⚽ Ruleta Futbolera | FOOTBALL GAMES Simulator</title>
 
@@ -256,6 +258,78 @@ nav{
 
 
 /* =========================================================
+   PROGRESO Y CONTROLES EXTRA
+========================================================= */
+
+.progress-wrap{
+    margin:-10px 0 28px;
+}
+.progress-meta{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    color:#8d9992;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1.2px;
+    margin-bottom:9px;
+}
+.progress-meta strong{color:#42ff88}
+.progress-track{
+    height:7px;
+    overflow:hidden;
+    border-radius:20px;
+    background:rgba(255,255,255,.08);
+}
+.progress-fill{
+    width:0%;
+    height:100%;
+    border-radius:inherit;
+    background:linear-gradient(90deg,#22c55e,#a3ffbd);
+    box-shadow:0 0 14px rgba(66,255,136,.35);
+    transition:width .35s ease;
+}
+.restart-button{
+    display:block;
+    margin:13px auto 0;
+    padding:10px 18px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:8px;
+    background:rgba(255,255,255,.045);
+    color:#b8c2bc;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:.2s;
+}
+.restart-button:hover{
+    border-color:rgba(66,255,136,.45);
+    color:#42ff88;
+    background:rgba(66,255,136,.07);
+}
+.answer-feedback{
+    display:none;
+    margin-top:16px;
+    padding:13px 15px;
+    border-radius:9px;
+    font-size:13px;
+    line-height:1.5;
+    font-weight:700;
+}
+.answer-feedback.show{display:block}
+.answer-feedback.good{
+    color:#8dffb1;
+    background:rgba(66,255,136,.09);
+    border:1px solid rgba(66,255,136,.22);
+}
+.answer-feedback.bad{
+    color:#ffaaaa;
+    background:rgba(255,80,80,.08);
+    border:1px solid rgba(255,80,80,.2);
+}
+
+/* =========================================================
    MARCADOR
 ========================================================= */
 
@@ -263,7 +337,7 @@ nav{
 
     display:grid;
 
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:repeat(4,minmax(0,1fr));
 
     gap:15px;
 
@@ -1188,7 +1262,7 @@ footer strong{
     }
 
     .scoreboard{
-        grid-template-columns:1fr;
+        grid-template-columns:repeat(2,minmax(0,1fr));
     }
 
     .answers{
@@ -1203,6 +1277,10 @@ footer strong{
         letter-spacing:-2px;
     }
 
+    .score-box{padding:13px 8px}
+    .score-box .value{font-size:22px}
+    .game-panel{padding:17px}
+    .question-box h3{font-size:19px}
     .roulette-wrapper{
 
         width:min(350px,90vw);
@@ -1263,9 +1341,8 @@ footer strong{
     </h1>
 
     <p>
-        Gira la ruleta, consigue puntos y demuestra
-        cuánto sabes de fútbol. Cada partida utiliza
-        preguntas diferentes.
+        Gira la ruleta y responde preguntas de fútbol.
+Cuanto mayor sea la dificultad, más puntos ganarás: 1, 2 o 3.
     </p>
 
 </section>
@@ -1315,6 +1392,17 @@ footer strong{
     <div class="score-box">
 
         <div class="label">
+            RACHA
+        </div>
+
+        <div class="value" id="streak">0</div>
+
+    </div>
+
+
+    <div class="score-box">
+
+        <div class="label">
             RÉCORD
         </div>
 
@@ -1327,6 +1415,16 @@ footer strong{
 
     </div>
 
+</div>
+
+<div class="progress-wrap" aria-label="Progreso de la partida">
+    <div class="progress-meta">
+        <span>PROGRESO DE LA PARTIDA</span>
+        <strong id="progressText">0%</strong>
+    </div>
+    <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
 </div>
 
 
@@ -1431,6 +1529,10 @@ footer strong{
         GIRAR RULETA
     </button>
 
+    <button class="restart-button" id="restartButton" onclick="restartGame()">
+        ↻ REINICIAR PARTIDA
+    </button>
+
 </div>
 
 
@@ -1499,6 +1601,8 @@ footer strong{
         id="answers"
     ></div>
 
+    <div class="answer-feedback" id="answerFeedback" role="status" aria-live="polite"></div>
+
 
     <button
         class="next-button"
@@ -1525,8 +1629,8 @@ footer strong{
         </strong>
 
         <span>
-            Preguntas accesibles sobre datos,
-            clubes, títulos y fútbol general.
+            Preguntas básicas de reglas, selecciones,
+clubes y datos conocidos. Cada acierto vale 1 punto.
         </span>
 
     </div>
@@ -1539,8 +1643,8 @@ footer strong{
         </strong>
 
         <span>
-            Preguntas de dificultad media sobre
-            jugadores, carreras e historia.
+            Preguntas intermedias sobre torneos,
+finales, jugadores e historia. Cada acierto vale 2 puntos.
         </span>
 
     </div>
@@ -1553,8 +1657,8 @@ footer strong{
         </strong>
 
         <span>
-            Preguntas difíciles para los verdaderos
-            enfermos del fútbol.
+            Preguntas avanzadas de historia y estadísticas.
+Cada acierto vale 3 puntos.
         </span>
 
     </div>
@@ -1685,7 +1789,112 @@ question:"¿Qué selección tiene como apodo 'La Roja'?",
 category:"SELECCIONES",
 answers:["España","Italia","Portugal","Bélgica"],
 correct:0
-}
+},
+
+{
+question:'¿Qué parte del cuerpo no puede usar normalmente un jugador de campo para tocar el balón?',
+category:'REGLAS',
+answers:['La cabeza', 'El pecho', 'Las manos y los brazos', 'Los pies'],
+correct:2
+},
+
+{
+question:'¿Qué selección es conocida como la Canarinha?',
+category:'SELECCIONES',
+answers:['Brasil', 'Argentina', 'Uruguay', 'Chile'],
+correct:0
+},
+
+{
+question:'¿De qué país es el club FC Barcelona?',
+category:'CLUBES',
+answers:['Italia', 'España', 'Francia', 'Portugal'],
+correct:1
+},
+
+{
+question:'¿Cuántos puntos vale una victoria en una liga de fútbol habitual?',
+category:'REGLAS',
+answers:['1', '2', '3', '4'],
+correct:2
+},
+
+{
+question:'¿Qué tarjeta significa expulsión?',
+category:'REGLAS',
+answers:['Amarilla', 'Azul', 'Verde', 'Roja'],
+correct:3
+},
+
+{
+question:'¿Qué selección ganó el Mundial de 2014?',
+category:'MUNDIALES',
+answers:['Argentina', 'Alemania', 'Brasil', 'Países Bajos'],
+correct:1
+},
+
+{
+question:'¿En qué país juega como local el Manchester United?',
+category:'CLUBES',
+answers:['Inglaterra', 'Escocia', 'Alemania', 'Irlanda'],
+correct:0
+},
+
+{
+question:'¿Qué jugador es famoso por el apodo CR7?',
+category:'JUGADORES',
+answers:['Kylian Mbappé', 'Cristiano Ronaldo', 'Karim Benzema', 'Erling Haaland'],
+correct:1
+},
+
+{
+question:'¿Qué selección ganó el Mundial femenino de 2023?',
+category:'MUNDIAL FEMENINO',
+answers:['Estados Unidos', 'Inglaterra', 'España', 'Suecia'],
+correct:2
+},
+
+{
+question:'¿Cómo se llama el torneo de clubes más importante de Europa?',
+category:'CHAMPIONS',
+answers:['Copa Libertadores', 'Champions League', 'Copa América', 'Europa League'],
+correct:1
+},
+
+{
+question:'¿Qué país ganó el Mundial de 2006?',
+category:'MUNDIALES',
+answers:['Francia', 'Italia', 'Alemania', 'Brasil'],
+correct:1
+},
+
+{
+question:'¿Qué posición suele ocupar el jugador que intenta evitar los goles?',
+category:'POSICIONES',
+answers:['Delantero', 'Portero', 'Extremo', 'Mediocentro'],
+correct:1
+},
+
+{
+question:"¿Qué selección tiene como apodo 'La Albiceleste'?",
+category:'SELECCIONES',
+answers:['Argentina', 'Uruguay', 'Paraguay', 'México'],
+correct:0
+},
+
+{
+question:'¿Qué club juega sus partidos como local en Anfield?',
+category:'CLUBES',
+answers:['Arsenal', 'Liverpool', 'Chelsea', 'Everton'],
+correct:1
+},
+
+{
+question:'¿Qué país organizó el Mundial de 2022?',
+category:'MUNDIALES',
+answers:['Qatar', 'Rusia', 'Japón', 'Sudáfrica'],
+correct:0
+},
 
 ],
 
@@ -1760,7 +1969,112 @@ question:"¿Qué selección ganó la Copa América 2021?",
 category:"SUDAMÉRICA",
 answers:["Brasil","Argentina","Chile","Uruguay"],
 correct:1
-}
+},
+
+{
+question:'¿Qué equipo derrotó al Bayern Múnich en la final de Champions de 2012?',
+category:'CHAMPIONS',
+answers:['Chelsea', 'Real Madrid', 'Barcelona', 'Borussia Dortmund'],
+correct:0
+},
+
+{
+question:'¿En qué año ganó España su primera Eurocopa?',
+category:'EUROCOPA',
+answers:['1964', '1984', '2008', '2012'],
+correct:0
+},
+
+{
+question:'¿Qué selección fue subcampeona del Mundial de 2014?',
+category:'MUNDIALES',
+answers:['Brasil', 'Alemania', 'Argentina', 'Países Bajos'],
+correct:2
+},
+
+{
+question:'¿Qué club ganó la primera edición de la Premier League en 1992-93?',
+category:'INGLATERRA',
+answers:['Arsenal', 'Manchester United', 'Blackburn Rovers', 'Liverpool'],
+correct:1
+},
+
+{
+question:'¿Quién marcó el gol decisivo en la final de la Eurocopa 2016?',
+category:'EUROCOPA',
+answers:['Cristiano Ronaldo', 'Éder', 'Nani', 'Renato Sanches'],
+correct:1
+},
+
+{
+question:'¿Qué selección eliminó a Brasil en los cuartos de final del Mundial 2006?',
+category:'MUNDIALES',
+answers:['Alemania', 'Francia', 'Italia', 'Portugal'],
+correct:1
+},
+
+{
+question:'¿Qué club ganó la Champions League de 2019?',
+category:'CHAMPIONS',
+answers:['Tottenham', 'Liverpool', 'Ajax', 'Manchester City'],
+correct:1
+},
+
+{
+question:'¿En qué club jugaba Diego Maradona cuando ganó el Mundial de 1986?',
+category:'MUNDIALES',
+answers:['Barcelona', 'Napoli', 'Boca Juniors', 'Atlético de Madrid'],
+correct:2
+},
+
+{
+question:'¿Qué país ganó la Copa América de 2015?',
+category:'SUDAMÉRICA',
+answers:['Argentina', 'Chile', 'Brasil', 'Colombia'],
+correct:1
+},
+
+{
+question:'¿Qué portero fue titular de España en la final del Mundial 2010?',
+category:'MUNDIALES',
+answers:['David de Gea', 'Pepe Reina', 'Iker Casillas', 'Víctor Valdés'],
+correct:2
+},
+
+{
+question:'¿Qué club remontó un 3-0 ante el AC Milan en la final de Champions de 2005?',
+category:'CHAMPIONS',
+answers:['Liverpool', 'Chelsea', 'Manchester United', 'Barcelona'],
+correct:0
+},
+
+{
+question:'¿Qué selección ganó la Eurocopa de 2004?',
+category:'EUROCOPA',
+answers:['Portugal', 'Grecia', 'República Checa', 'Francia'],
+correct:1
+},
+
+{
+question:'¿Qué jugador marcó el gol más rápido en la historia de los Mundiales masculinos?',
+category:'MUNDIALES',
+answers:['Hakan Şükür', 'Miroslav Klose', 'Ronaldo Nazário', 'Pelé'],
+correct:0
+},
+
+{
+question:'¿Qué club ganó la Copa Libertadores de 2018?',
+category:'SUDAMÉRICA',
+answers:['River Plate', 'Boca Juniors', 'Grêmio', 'Palmeiras'],
+correct:0
+},
+
+{
+question:'¿Qué selección derrotó a Argentina en la final del Mundial de 1990?',
+category:'MUNDIALES',
+answers:['Italia', 'Alemania Occidental', 'Brasil', 'Inglaterra'],
+correct:1
+},
 
 ],
 
@@ -1835,7 +2149,112 @@ question:"¿Qué jugador marcó dos goles en la final del Mundial 2002?",
 category:"MUNDIALES",
 answers:["Ronaldo Nazário","Rivaldo","Ronaldinho","Cafu"],
 correct:0
-}
+},
+
+{
+question:'¿Qué selección ganó el primer Campeonato Mundial de fútbol en 1930?',
+category:'HISTORIA',
+answers:['Argentina', 'Uruguay', 'Italia', 'Brasil'],
+correct:1
+},
+
+{
+question:'¿Quién fue el máximo goleador del Mundial de 2006?',
+category:'MUNDIALES',
+answers:['Miroslav Klose', 'Ronaldo Nazário', 'Thierry Henry', 'Zinedine Zidane'],
+correct:0
+},
+
+{
+question:'¿Qué equipo ganó la Copa de Europa de 1991?',
+category:'CHAMPIONS',
+answers:['Estrella Roja', 'Olympique de Marsella', 'AC Milan', 'Barcelona'],
+correct:0
+},
+
+{
+question:'¿Qué país fue subcampeón de la Eurocopa de 1996?',
+category:'EUROCOPA',
+answers:['Alemania', 'República Checa', 'Francia', 'Inglaterra'],
+correct:1
+},
+
+{
+question:'¿Quién marcó el gol de oro en la final de la Eurocopa 2000?',
+category:'EUROCOPA',
+answers:['David Trezeguet', 'Thierry Henry', 'Zinedine Zidane', 'Sylvain Wiltord'],
+correct:0
+},
+
+{
+question:'¿Qué club ganó la Copa Libertadores de 2013?',
+category:'SUDAMÉRICA',
+answers:['Atlético Mineiro', 'Olimpia', 'Boca Juniors', 'Corinthians'],
+correct:0
+},
+
+{
+question:'¿Qué selección terminó tercera en el Mundial de 1998?',
+category:'MUNDIALES',
+answers:['Croacia', 'Países Bajos', 'Brasil', 'Italia'],
+correct:0
+},
+
+{
+question:'¿Qué entrenador dirigió al Porto campeón de la Champions en 2004?',
+category:'ENTRENADORES',
+answers:['Rafael Benítez', 'José Mourinho', 'Carlo Ancelotti', 'Ottmar Hitzfeld'],
+correct:1
+},
+
+{
+question:'¿Qué país ganó la Eurocopa de 1988?',
+category:'EUROCOPA',
+answers:['Países Bajos', 'Unión Soviética', 'Alemania Occidental', 'Italia'],
+correct:0
+},
+
+{
+question:'¿Cómo terminó la final del Mundial de 1994 tras la prórroga, antes de la tanda de penaltis?',
+category:'MUNDIALES',
+answers:['1-0', '0-0', '2-1', '1-1'],
+correct:1
+},
+
+{
+question:'¿Qué club ganó la Recopa de Europa de 1994 al vencer al Parma?',
+category:'HISTORIA',
+answers:['Arsenal', 'Chelsea', 'Barcelona', 'Manchester United'],
+correct:0
+},
+
+{
+question:'¿Quién fue el máximo goleador de la Eurocopa 2004?',
+category:'EUROCOPA',
+answers:['Milan Baroš', 'Wayne Rooney', 'Ruud van Nistelrooy', 'Zlatan Ibrahimović'],
+correct:0
+},
+
+{
+question:'¿Qué selección eliminó a Brasil en el Mundial de 1982?',
+category:'MUNDIALES',
+answers:['Italia', 'Argentina', 'Alemania Occidental', 'Francia'],
+correct:0
+},
+
+{
+question:'¿Qué club ganó la Champions League de 2004?',
+category:'CHAMPIONS',
+answers:['AS Monaco', 'Deportivo La Coruña', 'FC Porto', 'Chelsea'],
+correct:2
+},
+
+{
+question:'¿Qué jugador recibió el Balón de Oro de 1995, el primero abierto a futbolistas de cualquier nacionalidad que jugaran en Europa?',
+category:'PREMIOS',
+answers:['George Weah', 'Jürgen Klinsmann', 'Paolo Maldini', 'Roberto Baggio'],
+correct:0
+},
 
 ]
 
@@ -1847,8 +2266,11 @@ correct:0
 ========================================================= */
 
 let score=0;
-
 let questionCount=0;
+let streak=0;
+let correctAnswers=0;
+let wrongAnswers=0;
+let questionAnswered=false;
 
 let currentPoints=0;
 
@@ -2067,6 +2489,18 @@ const questionNumber=
 
 const recordElement=
     document.getElementById("record");
+const streakElement=document.getElementById("streak");
+const progressFill=document.getElementById("progressFill");
+const progressText=document.getElementById("progressText");
+const answerFeedback=document.getElementById("answerFeedback");
+
+
+function updateProgress(){
+    const percent=Math.round((questionCount/maxQuestions)*100);
+    progressFill.style.width=percent+"%";
+    progressText.textContent=percent+"%";
+    questionNumber.textContent=`${questionCount} / ${maxQuestions}`;
+}
 
 
 /* =========================================================
@@ -2136,6 +2570,7 @@ function spinRoulette(){
     initAudio();
 
     isSpinning=true;
+    document.getElementById("restartButton").disabled=true;
 
     spinButton.disabled=true;
 
@@ -2418,7 +2853,7 @@ function showResult(){
     document.getElementById(
         "resultDescription"
     ).textContent=
-        "La ruleta ha elegido tu nivel de dificultad.";
+        currentPoints===1 ? "Nivel fácil: si aciertas, ganas 1 punto." : currentPoints===2 ? "Nivel medio: si aciertas, ganas 2 puntos." : "Nivel difícil: si aciertas, ganas 3 puntos.";
 
 
     result.classList.add("show");
@@ -2491,6 +2926,9 @@ function generateQuestion(){
 
 
     answers.innerHTML="";
+    answerFeedback.className="answer-feedback";
+    answerFeedback.textContent="";
+    questionAnswered=false;
 
 
     const shuffledAnswers=
@@ -2513,6 +2951,8 @@ function generateQuestion(){
 
 
         button.className="answer";
+        button.type="button";
+        button.setAttribute("aria-label", item.answer);
 
         button.textContent=
             item.answer;
@@ -2536,10 +2976,7 @@ function generateQuestion(){
 
 
     questionCount++;
-
-
-    questionNumber.textContent=
-        `${questionCount} / ${maxQuestions}`;
+    updateProgress();
 
 }
 
@@ -2552,6 +2989,8 @@ function checkAnswer(
     button,
     selectedIndex
 ){
+    if(questionAnswered || !currentQuestion) return;
+    questionAnswered=true;
 
     const allButtons=
         document.querySelectorAll(
@@ -2572,15 +3011,22 @@ function checkAnswer(
         button.classList.add("correct");
 
         score+=currentPoints;
-
+        correctAnswers++;
+        streak++;
+        streakElement.textContent=streak;
         scoreElement.textContent=score;
-
+        answerFeedback.className="answer-feedback show good";
+        answerFeedback.textContent=`¡Correcto! +${currentPoints} punto${currentPoints>1?"s":""}. Llevas ${correctAnswers} respuesta${correctAnswers===1?"":"s"} correcta${correctAnswers===1?"":"s"}.`;
         playCorrectSound();
 
     }else{
 
         button.classList.add("wrong");
-
+        wrongAnswers++;
+        streak=0;
+        streakElement.textContent=streak;
+        answerFeedback.className="answer-feedback show bad";
+        answerFeedback.textContent=`Respuesta incorrecta. La respuesta correcta era: ${currentQuestion.answers[currentQuestion.correct]}.`;
         playWrongSound();
 
 
@@ -2654,6 +3100,38 @@ function nextQuestion(){
 
 
 /* =========================================================
+   REINICIAR PARTIDA
+========================================================= */
+
+function restartGame(){
+    score=0;
+    questionCount=0;
+    streak=0;
+    correctAnswers=0;
+    wrongAnswers=0;
+    currentPoints=0;
+    usedQuestions=[];
+    currentQuestion=null;
+    isSpinning=false;
+    questionAnswered=false;
+    scoreElement.textContent="0";
+    streakElement.textContent="0";
+    updateProgress();
+    roulette.style.transform="translate(-50%,-50%) rotate(0deg)";
+    rotation=0;
+    result.classList.remove("show");
+    questionBox.classList.remove("show");
+    answerFeedback.className="answer-feedback";
+    answerFeedback.textContent="";
+    document.getElementById("nextButton").classList.remove("show");
+    spinButton.disabled=false;
+    document.getElementById("restartButton").disabled=false;
+    spinButton.textContent="GIRAR RULETA";
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
+
+/* =========================================================
    FINAL
 ========================================================= */
 
@@ -2674,10 +3152,11 @@ function finishGame(){
         `${score} PUNTOS`;
 
 
+    const accuracy=questionCount ? Math.round((correctAnswers/questionCount)*100) : 0;
     document.getElementById(
         "resultDescription"
     ).textContent=
-        "¡Buen trabajo! Tu puntuación ha quedado guardada como récord si superaste tu marca anterior.";
+        `Aciertos: ${correctAnswers} · Fallos: ${wrongAnswers} · Precisión: ${accuracy}%. Tu mejor puntuación queda guardada automáticamente.`;
 
 
     questionBox.classList.remove("show");
